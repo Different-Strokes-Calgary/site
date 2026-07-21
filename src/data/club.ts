@@ -1,5 +1,5 @@
 export const club = {
-  calendarEmbedUrl: 'https://calendar.google.com/calendar/embed?src=differentstrokesyyc%40gmail.com&ctz=America%2FEdmonton',
+  calendarEmbedUrl: 'https://calendar.google.com/calendar/embed?src=differentstrokesyyc%40gmail.com&ctz=America%2FEdmonton&color=%230087E2&bgcolor=%23FFFFFF',
   calendarOpenUrl: 'https://calendar.google.com/calendar/u/1?cid=ZGlmZmVyZW50c3Ryb2tlc3l5Y0BnbWFpbC5jb20',
   joinUrl: '',
   contactUrl: '',
