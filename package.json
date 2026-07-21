@@ -1,0 +1,17 @@
+{
+  "name": "different-strokes-calgary-site",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "check": "astro check",
+    "preview": "astro preview"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "astro": "^7.1.3",
+    "typescript": "^6.0.3"
+  }
+}
