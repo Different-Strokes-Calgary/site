@@ -395,7 +395,15 @@ section {
   text-wrap: pretty;
   margin-bottom: var(--space-md);
 }
-.hero__mark, .section-heading > p:first-child, .story__copy > p:first-child {
+.hero__mark {
+  margin-bottom: var(--space-xs);
+  color: var(--pink-deep);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.section-heading > p:first-child, .story__copy > p:first-child {
   margin-bottom: var(--space-xs);
   color: var(--pink-deep);
   font-size: var(--font-size-sm);
@@ -404,14 +412,13 @@ section {
 }
 
 .section-kicker {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.28rem 0.85rem;
+  display: block;
+  padding: 0;
   margin-bottom: var(--space-xs);
   color: var(--pink-deep);
-  background: color-mix(in oklch, var(--pink) 14%, transparent);
-  border: 1px solid color-mix(in oklch, var(--pink) 30%, transparent);
-  border-radius: 999px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
   font-size: var(--font-size-xs);
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -505,16 +512,16 @@ section {
   grid-template-columns: 5rem 7.5rem 1fr auto;
   gap: var(--space-sm);
   align-items: baseline;
-  padding: 0.65rem var(--space-2xs);
-  border-bottom: 1px solid color-mix(in oklch, var(--line) 55%, transparent);
-  border-radius: var(--space-2xs);
-  transition: color 180ms var(--ease-out-quart), background 180ms var(--ease-out-quart), transform 180ms var(--ease-out-quart), border-color 180ms var(--ease-out-quart);
+  padding: 0.45rem 0;
+  border-bottom: 0;
+  border-radius: 0;
+  transition: color 180ms var(--ease-out-quart);
 }
 .practice-list li:hover {
   color: var(--blue-deep);
-  background: color-mix(in oklch, var(--surface) 50%, transparent);
-  border-color: color-mix(in oklch, var(--pink) 48%, transparent);
-  transform: translateX(0.25rem);
+  background: transparent;
+  border-color: transparent;
+  transform: none;
 }
 .practice-list strong, .practice-list em {
   font-style: normal;
@@ -599,7 +606,7 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   margin-bottom: var(--space-xs);
 }
 .details-grid p {
-  max-width: var(--measure-body);
+  max-width: 100%;
 }
 
 .practice__details, .join__details, .story__copy details {
@@ -752,7 +759,7 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   margin-top: var(--space-md);
 }
 .join__details p {
-  max-width: var(--measure-body);
+  max-width: 100%;
   padding: var(--space-sm) var(--space-md);
   margin: 0;
 }
@@ -769,7 +776,7 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   padding: clamp(3rem, 5.2vw, 4.5rem) max(var(--gutter), calc((100vw - var(--max)) / 2)) clamp(2rem, 3.5vw, 3rem);
   background: color-mix(in oklch, var(--surface) 40%, var(--canvas));
   border-top: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
-  border-bottom: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
+  border-bottom: 0;
 }
 
 .story-grid {
@@ -854,14 +861,19 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   margin-top: 0;
 }
 
+.story__archive {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
 .archive-group p {
-  max-width: var(--measure-body);
+  max-width: 100%;
   margin-bottom: var(--space-sm);
 }
 
 .story-art {
   padding: 0 max(var(--gutter), calc((100vw - var(--max)) / 2)) clamp(3rem, 5vw, 4.5rem);
-  background: color-mix(in oklch, var(--surface) 40%, var(--canvas));
+  background: var(--canvas);
 }
 .story-art__figure {
   width: min(100%, 42.5rem);

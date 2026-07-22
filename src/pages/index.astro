@@ -106,7 +106,9 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
               </li>
             ))}
           </ol>
+        </div>
 
+        <div class="practice__details">
           <details class="calendar-details disclosure-card">
             <summary class="disclosure-bar">
               <span>View live practice calendar</span>
@@ -127,9 +129,7 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
               <p class="calendar-pending">The public calendar link will appear here. Until then, email <a href="mailto:info@differentstrokescalgary.org">info@differentstrokescalgary.org</a> for the latest schedule.</p>
             )}
           </details>
-        </div>
 
-        <div class="practice__details">
           <details class="disclosure-card">
             <summary class="disclosure-bar">
               <span>Winter schedule, locations &amp; parking</span>
@@ -236,42 +236,6 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
             <h2 id="story-title">A place to swim<br />as yourself.</h2>
             <p>Different Strokes Calgary began with its first workout in 1995. Today, we are a volunteer-run club making room for fitness, friendship, and the full range of swimmers in our community.</p>
             <p>We support the inclusion of trans athletes in recreational and competitive swimming, without qualification.</p>
-
-            <details class="disclosure-card story__archive">
-              <summary class="disclosure-bar">
-                <span>Full Coach Bios, Club History &amp; Competition Highlights</span>
-                <span class="chevron" aria-hidden="true">▾</span>
-              </summary>
-              <div class="story-archive__content">
-                <section class="archive-group">
-                  <h3>Dan MacGregor · Co-Founder &amp; Beginner Coach</h3>
-                  <p>Dan co-founded DSC and has coached beginner swimmers since the club began. An accountant by trade, he may vanish during tax season, but the club makes sure swimmers are looked after. His continued volunteer work earned Swim Canada’s Volunteer of the Year award in 2024.</p>
-
-                  <h3>William (Bill) Culham · Head Coach</h3>
-                  <p>Bill joined DSC in the 2017–18 season. He is a Level III NCCP coach, Level V masters official, and Skills Coach Assessor. His aquatic career has taken him from Saskatchewan to the Yukon and Alberta, including founding the Aquanauts summer club in Lloydminster, leading the St. Paul summer club, teaching Swim Alberta’s “I Can Swim” program, and earning Swim Alberta’s Builder of the Year recognition.</p>
-                  <p>Bill has worked Pan Pacific Swim Meets, led Alberta Summer Games Zone D, coached at Mountain View Games and Commonwealth Games Trials, offered official clinics for Red Deer and Ponoka clubs, and coached the Red Deer Masters Silver Sharks through provincial and World Masters competition.</p>
-
-                  <h3>Tammy Andersen · Masters Coach</h3>
-                  <p>Tammy joined DSC in November 2022 and full time in spring 2025. With more than 25 years of coaching, she has led the Glenmore Seals and Okotoks Stingrays summer clubs, assisted the Calgary Tritons, and helped the City of Calgary develop youth and adult conditioning programs.</p>
-                  <p>She coached junior national swimmers in Limburg, Belgium while studying education. Tammy is now Sprocket Coordinator and Junior 1 Lead Coach at Killarney Swim Club, leads the swim program at 3433 Sport Performance at MNP, and is a Swim Canada-certified coach working toward full 201 certification. Her coaching focuses on swimming science, individual feedback, form, and celebrating every swimmer’s progress.</p>
-                </section>
-
-                <section class="archive-group">
-                  <h3>Mission</h3>
-                  <p>Different Strokes Calgary is a non-profit, volunteer club for LGBTQ+ members. DSC follows a “fun and fitness for life” philosophy in a positive, supportive space where members can choose recreational, competitive, and social participation.</p>
-
-                  <h3>Club History</h3>
-                  <p>Calgary’s first swim club for lesbian, gay, and bisexual communities began in early 1993 as Chinook City Aquatics, organized by David Whiteside. It ended after six months because interest was too low.</p>
-                  <p>Dan MacGregor and James Cooke revived the idea as Different Strokes Calgary. After gathering swimmers to test interest, the group agreed to a three-month trial of weekly swims. The first DSC workout was held March 5, 1995 at Lindsay Park Sports Centre, with Dan as head coach, Nancy Ingram coaching beginners, Rick Matthews coaching competitive swimmers, and thirteen swimmers on deck.</p>
-                  <p>That September, DSC moved to the YWCA and added Wednesday and Sunday practices. Rita Bercan later became head coach with Graham Taylor as assistant; after Rita left, Graham became head coach while Dan and Pat Lee Loy continued beginner coaching. Pat later moved to Pennsylvania and joined the Philadelphia Fins. By 1997, DSC averaged about 20 swimmers per practice and had more than 40 members.</p>
-                  <p>In 2007, Sunday practice moved to SAIT while Wednesday remained at the YWCA; later that year both sessions moved to SAIT on Thursdays and Sundays. In 2015, DSC added Wednesday nights at Talisman Centre. From fall 2016, Friday and Sunday practices moved to Repsol Sports Centre, now MNP Community &amp; Sports Centre.</p>
-
-                  <h3>Competition, Social Life &amp; Inclusion</h3>
-                  <p>DSC belongs to Swim Alberta, FINA, and International Gay and Lesbian Aquatics. Members have competed across North America, including Washington DC, Seattle, San Francisco, Atlanta, Edmonton, Calgary, and Vancouver, and in Paris, Reykjavik, Amsterdam, and Copenhagen. The club has also participated in Gay Games and Outgames events in Sydney, Chicago, Montréal, and Copenhagen.</p>
-                  <p>Alongside swimming, DSC is known for social events and community fundraising, including a breast-cancer swim-a-thon, Small Change Big Changes, and Calgary Cares. DSC supports inclusive sport where people can build confidence, community, and lifelong swimming skills regardless of gender identity, and unequivocally supports trans athletes in recreational and competitive swimming.</p>
-                </section>
-              </div>
-            </details>
           </div>
 
           <div class="story__coaches">
@@ -294,6 +258,42 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
               </article>
             </div>
           </div>
+
+          <details class="disclosure-card story__archive">
+            <summary class="disclosure-bar">
+              <span>Full Coach Bios, Club History &amp; Competition Highlights</span>
+              <span class="chevron" aria-hidden="true">▾</span>
+            </summary>
+            <div class="story-archive__content">
+              <section class="archive-group">
+                <h3>Dan MacGregor · Co-Founder &amp; Beginner Coach</h3>
+                <p>Dan co-founded DSC and has coached beginner swimmers since the club began. An accountant by trade, he may vanish during tax season, but the club makes sure swimmers are looked after. His continued volunteer work earned Swim Canada’s Volunteer of the Year award in 2024.</p>
+
+                <h3>William (Bill) Culham · Head Coach</h3>
+                <p>Bill joined DSC in the 2017–18 season. He is a Level III NCCP coach, Level V masters official, and Skills Coach Assessor. His aquatic career has taken him from Saskatchewan to the Yukon and Alberta, including founding the Aquanauts summer club in Lloydminster, leading the St. Paul summer club, teaching Swim Alberta’s “I Can Swim” program, and earning Swim Alberta’s Builder of the Year recognition.</p>
+                <p>Bill has worked Pan Pacific Swim Meets, led Alberta Summer Games Zone D, coached at Mountain View Games and Commonwealth Games Trials, offered official clinics for Red Deer and Ponoka clubs, and coached the Red Deer Masters Silver Sharks through provincial and World Masters competition.</p>
+
+                <h3>Tammy Andersen · Masters Coach</h3>
+                <p>Tammy joined DSC in November 2022 and full time in spring 2025. With more than 25 years of coaching, she has led the Glenmore Seals and Okotoks Stingrays summer clubs, assisted the Calgary Tritons, and helped the City of Calgary develop youth and adult conditioning programs.</p>
+                <p>She coached junior national swimmers in Limburg, Belgium while studying education. Tammy is now Sprocket Coordinator and Junior 1 Lead Coach at Killarney Swim Club, leads the swim program at 3433 Sport Performance at MNP, and is a Swim Canada-certified coach working toward full 201 certification. Her coaching focuses on swimming science, individual feedback, form, and celebrating every swimmer’s progress.</p>
+              </section>
+
+              <section class="archive-group">
+                <h3>Mission</h3>
+                <p>Different Strokes Calgary is a non-profit, volunteer club for LGBTQ+ members. DSC follows a “fun and fitness for life” philosophy in a positive, supportive space where members can choose recreational, competitive, and social participation.</p>
+
+                <h3>Club History</h3>
+                <p>Calgary’s first swim club for lesbian, gay, and bisexual communities began in early 1993 as Chinook City Aquatics, organized by David Whiteside. It ended after six months because interest was too low.</p>
+                <p>Dan MacGregor and James Cooke revived the idea as Different Strokes Calgary. After gathering swimmers to test interest, the group agreed to a three-month trial of weekly swims. The first DSC workout was held March 5, 1995 at Lindsay Park Sports Centre, with Dan as head coach, Nancy Ingram coaching beginners, Rick Matthews coaching competitive swimmers, and thirteen swimmers on deck.</p>
+                <p>That September, DSC moved to the YWCA and added Wednesday and Sunday practices. Rita Bercan later became head coach with Graham Taylor as assistant; after Rita left, Graham became head coach while Dan and Pat Lee Loy continued beginner coaching. Pat later moved to Pennsylvania and joined the Philadelphia Fins. By 1997, DSC averaged about 20 swimmers per practice and had more than 40 members.</p>
+                <p>In 2007, Sunday practice moved to SAIT while Wednesday remained at the YWCA; later that year both sessions moved to SAIT on Thursdays and Sundays. In 2015, DSC added Wednesday nights at Talisman Centre. From fall 2016, Friday and Sunday practices moved to Repsol Sports Centre, now MNP Community &amp; Sports Centre.</p>
+
+                <h3>Competition, Social Life &amp; Inclusion</h3>
+                <p>DSC belongs to Swim Alberta, FINA, and International Gay and Lesbian Aquatics. Members have competed across North America, including Washington DC, Seattle, San Francisco, Atlanta, Edmonton, Calgary, and Vancouver, and in Paris, Reykjavik, Amsterdam, and Copenhagen. The club has also participated in Gay Games and Outgames events in Sydney, Chicago, Montréal, and Copenhagen.</p>
+                <p>Alongside swimming, DSC is known for social events and community fundraising, including a breast-cancer swim-a-thon, Small Change Big Changes, and Calgary Cares. DSC supports inclusive sport where people can build confidence, community, and lifelong swimming skills regardless of gender identity, and unequivocally supports trans athletes in recreational and competitive swimming.</p>
+              </section>
+            </div>
+          </details>
         </div>
       </section>
 
