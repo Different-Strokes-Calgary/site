@@ -163,8 +163,14 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
             <summary>View full schedule <span aria-hidden="true">+</span></summary>
             {calendarReady ? (
               <div class="calendar-frame">
+                <div class="calendar-header">
+                  <div class="calendar-status">
+                    <span class="calendar-status__dot"></span>
+                    <span>Live practice schedule</span>
+                  </div>
+                  <a class="text-link calendar-open-link" href={calendarOpenHref} target="_blank" rel="noreferrer">Open in Google Calendar <span aria-hidden="true">↗</span></a>
+                </div>
                 <iframe title="Different Strokes Calgary practice calendar" src={club.calendarEmbedUrl} loading="lazy"></iframe>
-                <a class="text-link" href={calendarOpenHref} target="_blank" rel="noreferrer">Open in Google Calendar <span aria-hidden="true">↗</span></a>
               </div>
             ) : (
               <p class="calendar-pending">The public calendar link will appear here. Until then, email <a href="mailto:info@differentstrokescalgary.org">info@differentstrokescalgary.org</a> for the latest schedule.</p>
