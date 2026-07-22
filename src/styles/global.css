@@ -682,39 +682,62 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   padding: clamp(3rem, 5.2vw, 4.5rem) max(var(--gutter), calc((100vw - var(--max)) / 2));
   background: var(--canvas);
 }
-.fee-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: clamp(1.25rem, 2.5vw, 2.25rem);
-  margin: clamp(2rem, 5vw, 3.5rem) 0 var(--space-md);
-}
-.fee {
-  padding: var(--space-sm);
+
+/* Tabular Membership Fee List */
+.fee-table {
+  display: flex;
+  flex-direction: column;
+  margin: clamp(1.75rem, 4vw, 3rem) 0 var(--space-md);
+  border: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
   border-radius: var(--space-xs);
-  border: 1px solid color-mix(in oklch, var(--line) 45%, transparent);
-  background: color-mix(in oklch, var(--surface) 20%, var(--canvas));
-  transition: transform 220ms var(--ease-out-quart), background 180ms var(--ease-out-quart), border-color 180ms var(--ease-out-quart);
+  background: color-mix(in oklch, var(--surface) 25%, var(--canvas));
+  overflow: hidden;
 }
-.fee:hover {
-  transform: translateY(-0.18rem);
-  background: color-mix(in oklch, var(--surface) 50%, var(--canvas));
-  border-color: color-mix(in oklch, var(--blue) 45%, transparent);
-}
-.fee h3 {
-  margin-bottom: var(--space-3xs);
-}
-.fee__price {
-  margin: var(--space-2xs) 0 var(--space-3xs);
-  color: var(--pink-deep);
-  font-size: var(--font-size-xl);
+
+.fee-table__header {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr 2fr;
+  gap: var(--space-sm);
+  padding: 0.6rem var(--space-md);
+  font-size: var(--font-size-xs);
   font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1;
+  color: var(--pink-deep);
+  background: color-mix(in oklch, var(--surface) 50%, transparent);
+  border-bottom: 1px solid color-mix(in oklch, var(--line) 55%, transparent);
 }
-.fee p:last-child {
-  max-width: var(--measure-narrow);
-  margin-bottom: 0;
+
+.fee-row {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr 2fr;
+  gap: var(--space-sm);
+  align-items: baseline;
+  padding: 0.85rem var(--space-md);
+  font-size: var(--font-size-sm);
+  border-bottom: 1px solid color-mix(in oklch, var(--line) 45%, transparent);
+  transition: background 180ms var(--ease-out-quart);
 }
+
+.fee-row:last-child {
+  border-bottom: 0;
+}
+
+.fee-row:hover {
+  background: color-mix(in oklch, var(--surface) 60%, transparent);
+}
+
+.fee-row__name {
+  font-weight: 700;
+}
+
+.fee-row__price {
+  color: var(--pink-deep);
+  font-weight: 700;
+}
+
+.fee-row__detail {
+  color: color-mix(in oklch, var(--ink) 85%, var(--canvas));
+}
+
 .join__action {
   display: flex;
   flex-wrap: wrap;
@@ -748,36 +771,97 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   border-top: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
   border-bottom: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
 }
-.story__copy {
-  width: min(100%, var(--max));
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  align-items: start;
+  width: 100%;
 }
-.story__copy > p:not(:first-child) {
+
+.story__mission > p:not(:first-child) {
   max-width: var(--measure-body);
   font-size: var(--font-size-base);
   line-height: 1.6;
   text-wrap: pretty;
 }
-.story__copy details {
-  margin-top: var(--space-xs);
+
+.coaches-title {
+  margin-top: 0;
+  margin-bottom: var(--space-xs);
+  font-size: var(--font-size-md);
+  color: var(--blue-deep);
 }
-.coach-list {
+
+.coach-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.coach-card {
+  padding: 0.85rem 1rem;
+  border: 1px solid color-mix(in oklch, var(--line) 55%, transparent);
+  border-radius: var(--space-xs);
+  background: color-mix(in oklch, var(--surface) 20%, var(--canvas));
+  transition: transform 180ms var(--ease-out-quart), border-color 180ms var(--ease-out-quart);
+}
+
+.coach-card:hover {
+  transform: translateY(-0.12rem);
+  border-color: color-mix(in oklch, var(--blue) 45%, transparent);
+}
+
+.coach-card strong {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.coach-card span {
+  display: block;
+  margin-bottom: var(--space-3xs);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--pink-deep);
+}
+
+.coach-card p {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: color-mix(in oklch, var(--ink) 78%, var(--canvas));
+}
+
+.story-archive__content {
   padding: var(--space-md);
 }
-.coach-list p {
+
+.archive-group + .archive-group {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid color-mix(in oklch, var(--line) 45%, transparent);
+}
+
+.archive-group h3 {
+  color: var(--blue-deep);
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-2xs);
+}
+
+.archive-group h3:first-child {
+  margin-top: 0;
+}
+
+.archive-group p {
   max-width: var(--measure-body);
   margin-bottom: var(--space-sm);
 }
-.coach-list h3 {
-  margin-top: var(--space-md);
-  color: var(--blue-deep);
-  margin-bottom: var(--space-2xs);
-}
-.coach-list h3:first-child {
-  margin-top: var(--space-3xs);
-}
 
 .story-art {
-  padding: 0 max(var(--gutter), calc((100vw - var(--max)) / 2)) clamp(4rem, 7vw, 6.5rem);
+  padding: 0 max(var(--gutter), calc((100vw - var(--max)) / 2)) clamp(3rem, 5vw, 4.5rem);
+  background: color-mix(in oklch, var(--surface) 40%, var(--canvas));
 }
 .story-art__figure {
   width: min(100%, 42.5rem);
