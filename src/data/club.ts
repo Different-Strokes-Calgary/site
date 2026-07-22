@@ -3,6 +3,7 @@ export const club = {
   calendarOpenUrl: 'https://calendar.google.com/calendar/u/1?cid=ZGlmZmVyZW50c3Ryb2tlc3l5Y0BnbWFpbC5jb20',
   joinUrl: '',
   contactUrl: '',
+  merchStoreUrl: 'https://stores.freshbrandgear.com/Different_Strokes_Calgary/shop/home',
   practices: [
     { day: 'Wed', time: '6:00 PM', place: 'MNP Community & Sports Centre', level: 'Intermediate / Advanced' },
     { day: 'Fri', time: '6:00 PM', place: 'MNP Community & Sports Centre', level: 'All levels' },

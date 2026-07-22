@@ -221,7 +221,8 @@ nav a, footer a {
   border-radius: 0.65rem;
   transition: color 180ms var(--ease-out-quart), background 180ms var(--ease-out-quart), transform 180ms var(--ease-out-quart);
 }
-.site-header nav .nav-contact {
+.site-header nav .nav-contact,
+.site-header nav .nav-merch {
   display: none;
 }
 nav a:hover, nav a[aria-current] {
@@ -991,7 +992,7 @@ footer p {
     flex: 0 0 2.75rem;
     gap: var(--space-2xs);
   }
-  .header-contact {
+  .header-contact, .header-merch {
     display: none;
   }
   .menu-toggle {
@@ -1045,7 +1046,9 @@ footer p {
     display: flex;
     animation: menu-drop 220ms var(--ease-out-quart) both;
   }
-  .site-header nav a, .site-header nav .nav-contact {
+  .site-header nav a,
+  .site-header nav .nav-contact,
+  .site-header nav .nav-merch {
     display: inline-flex;
     min-height: auto;
     padding: var(--space-xs) 0;

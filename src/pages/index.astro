@@ -10,6 +10,9 @@ const calendarReady = isConfigured(club.calendarEmbedUrl);
 const calendarOpenHref = isConfigured(club.calendarOpenUrl)
   ? club.calendarOpenUrl
   : club.calendarEmbedUrl;
+const merchHref = isConfigured(club.merchStoreUrl)
+  ? club.merchStoreUrl
+  : 'https://differentstrokescalgary.org/merch';
 ---
 
 <!doctype html>
@@ -55,12 +58,15 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
         <a href="#practice">Practice &amp; Schedule</a>
         <a href="#join">Join Us</a>
         <a href="#story">Our Story</a>
-        <a class="nav-contact" href={contactHref}>Contact us</a>
+        <a class="nav-contact" href={contactHref}>Contact Us</a>
+        <a class="nav-merch" href={merchHref} target="_blank" rel="noreferrer">Merch Store ↗</a>
       </nav>
       <a class="brand" href="#top" aria-label="Different Strokes Calgary home">
         <img src="/site/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBT+ Masters Swim Club" width="137" height="68" />
       </a>
       <div class="header-actions">
+        <a class="button button--outline header-merch" href={merchHref} target="_blank" rel="noreferrer">Merch Store</a>
+        <a class="button header-contact" href={contactHref}>Contact Us</a>
         <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
           <span class="theme-toggle__sun" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -82,7 +88,6 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
           </span>
           <span class="sr-only">Switch theme</span>
         </button>
-        <a class="button header-contact" href={contactHref}>Contact us</a>
       </div>
     </header>
 
@@ -207,7 +212,7 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
         <div class="section-heading reveal">
           <p class="section-kicker">Membership</p>
           <h2 id="join-title">Find your way in.</h2>
-          <p class="section-intro">There is currently a waitlist for new non-returning members. Click Join us to sign up for the waitlist. Returning members can click Join us to renew membership.</p>
+          <p class="section-intro">There is currently a waitlist for new non-returning members. Click Join Us to sign up for the waitlist. Returning members can click Join Us to renew membership.</p>
         </div>
         <div class="fee-table reveal">
           <div class="fee-table__header">
@@ -225,9 +230,9 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
         </div>
         <div class="join__action reveal">
           {joinReady ? (
-            <a class="button" href={club.joinUrl} target="_blank" rel="noreferrer">Join us <span aria-hidden="true">↗</span></a>
+            <a class="button" href={club.joinUrl} target="_blank" rel="noreferrer">Join Us <span aria-hidden="true">↗</span></a>
           ) : (
-            <span class="button button--disabled" aria-disabled="true">Join us</span>
+            <span class="button button--disabled" aria-disabled="true">Join Us</span>
           )}
           <span>{joinReady ? 'Start your registration with the club.' : 'Sign-up link coming soon.'}</span>
         </div>
