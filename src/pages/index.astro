@@ -209,9 +209,14 @@ const merchHref = isConfigured(club.merchStoreUrl)
       </section>
 
       <section class="join" id="join" aria-labelledby="join-title">
-        <div class="section-heading reveal">
-          <p class="section-kicker">Membership</p>
-          <h2 id="join-title">Find your way in.</h2>
+        <div class="section-heading join__heading reveal">
+          <div class="join__header-row">
+            <div>
+              <p class="section-kicker">Membership</p>
+              <h2 id="join-title">Find your way in.</h2>
+            </div>
+            <a class="button join__button" href={club.joinUrl} target="_blank" rel="noreferrer">Join Us <span aria-hidden="true">↗</span></a>
+          </div>
           <p class="section-intro">There is currently a waitlist for new non-returning members. Click Join Us to sign up for the waitlist. Returning members can click Join Us to renew membership.</p>
         </div>
         <div class="fee-table reveal">
@@ -227,14 +232,6 @@ const merchHref = isConfigured(club.merchStoreUrl)
               <span class="fee-row__detail">{fee.detail}</span>
             </div>
           ))}
-        </div>
-        <div class="join__action reveal">
-          {joinReady ? (
-            <a class="button" href={club.joinUrl} target="_blank" rel="noreferrer">Join Us <span aria-hidden="true">↗</span></a>
-          ) : (
-            <span class="button button--disabled" aria-disabled="true">Join Us</span>
-          )}
-          <span>{joinReady ? 'Start your registration with the club.' : 'Sign-up link coming soon.'}</span>
         </div>
       </section>
 

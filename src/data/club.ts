@@ -1,8 +1,8 @@
 export const club = {
   calendarEmbedUrl: 'https://calendar.google.com/calendar/embed?src=differentstrokesyyc%40gmail.com&ctz=America%2FEdmonton&color=%230087E2&bgcolor=%23FFFFFF&showTitle=0&showPrint=0&showCalendars=0&showTz=0',
   calendarOpenUrl: 'https://calendar.google.com/calendar/u/1?cid=ZGlmZmVyZW50c3Ryb2tlc3l5Y0BnbWFpbC5jb20',
-  joinUrl: '',
-  contactUrl: '',
+  joinUrl: 'https://clubbots.wlabscode.com/tony-test/join',
+  contactUrl: 'https://clubbots.wlabscode.com/tony-test/contact',
   merchStoreUrl: 'https://stores.freshbrandgear.com/Different_Strokes_Calgary/shop/home',
   practices: [
     { day: 'Wed', time: '6:00 PM', place: 'MNP Community & Sports Centre', level: 'Intermediate / Advanced' },

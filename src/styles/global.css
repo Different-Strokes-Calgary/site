@@ -677,6 +677,18 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   background: var(--canvas);
 }
 
+.join__header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xs);
+}
+
+.join__header-row h2 {
+  margin-bottom: 0;
+}
+
 /* Tabular Membership Fee List */
 .fee-table {
   display: flex;
