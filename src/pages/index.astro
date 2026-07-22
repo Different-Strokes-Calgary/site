@@ -17,8 +17,19 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="description" content="Different Strokes Calgary is an LGBTQ+ masters swim club for fun and fitness for life." />
     <title>Different Strokes Calgary | Fun and fitness for life</title>
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem('dsc-theme');
+          document.documentElement.dataset.theme = saved ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        } catch {
+          document.documentElement.dataset.theme = 'light';
+        }
+      })();
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -34,20 +45,45 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
         <a href="#practice">Practice &amp; Schedule</a>
         <a href="#join">Join Us</a>
         <a href="#story">Our Story</a>
+        <a class="nav-contact" href={contactHref}>Contact us</a>
       </nav>
-      <a class="button button--outline header-contact" href={contactHref}>Contact us</a>
+      <div class="header-actions">
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+          <span class="theme-toggle__sun" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2" />
+              <path d="M12 20v2" />
+              <path d="m4.93 4.93 1.41 1.41" />
+              <path d="m17.66 17.66 1.41 1.41" />
+              <path d="M2 12h2" />
+              <path d="M20 12h2" />
+              <path d="m6.34 17.66-1.41 1.41" />
+              <path d="m19.07 4.93-1.41 1.41" />
+            </svg>
+          </span>
+          <span class="theme-toggle__moon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
+          </span>
+          <span class="sr-only">Switch theme</span>
+        </button>
+        <a class="button header-contact" href={contactHref}>Contact us</a>
+      </div>
     </header>
 
     <main id="main">
       <section class="hero" id="top" aria-labelledby="hero-title">
         <div class="hero__copy reveal">
           <p class="hero__mark">Calgary’s LGBTQ+ masters swim club</p>
-          <h1 id="hero-title">Fun and<br />fitness for life.</h1>
+          <h1 id="hero-title">Fun and fitness<span class="hero__desktop-break"><br /></span> for life.</h1>
           <p>Swim for fitness, friendship, and the joy of feeling at home in the water. All ages, abilities, LGBTQ+ swimmers, and allies welcome.</p>
           <a class="text-link" href="#story">Learn more <span aria-hidden="true">→</span></a>
         </div>
         <div class="hero__art">
-          <img class="hero__illustration" src="/site/assets/hero-art.png" alt="Four diverse swimmers moving through water and a sweeping rainbow." width="1774" height="887" />
+          <img class="hero__illustration hero__illustration--light" src="/site/assets/hero-art-light.png" alt="Four diverse swimmers moving through water and a sweeping rainbow." width="1774" height="887" />
+          <img class="hero__illustration hero__illustration--dark" src="/site/assets/hero-art-dark.png" alt="" aria-hidden="true" width="1774" height="887" />
         </div>
       </section>
 
@@ -58,8 +94,8 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
           <p class="section-intro">Coached workouts for recreational and competitive swimmers. Work at your own pace, in the lane that suits you.</p>
         </div>
         <ol class="practice-list" aria-label="Summer practice times">
-          {club.practices.map((practice) => (
-            <li class="reveal">
+          {club.practices.map((practice, index) => (
+            <li class="reveal" style={`--i: ${index}`}>
               <strong>{practice.day}</strong>
               <span>{practice.time}</span>
               <span>{practice.place}</span>
@@ -144,8 +180,8 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
           <p class="section-intro">There is currently a waitlist for the 2025–26 season. Before coming to a practice, tell us about your swimming experience and whether you’re part of the LGBTQ+ community or an ally.</p>
         </div>
         <div class="fee-list">
-          {club.fees.map((fee) => (
-            <article class="fee reveal">
+          {club.fees.map((fee, index) => (
+            <article class="fee reveal" style={`--i: ${index}`}>
               <h3>{fee.name}</h3>
               <p class="fee__price">{fee.price}</p>
               <p>{fee.detail}</p>
@@ -205,7 +241,8 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
 
       <section class="story-art" aria-label="Different Strokes Calgary community illustration">
         <figure class="story-art__figure reveal">
-          <img src="/site/assets/story-community.png" alt="A diverse group of swimmers smiling together in a pool beneath rainbow bunting." width="1774" height="887" />
+          <img class="story-art__illustration story-art__illustration--light" src="/site/assets/story-community-light.png" alt="A diverse group of swimmers smiling together in a pool beneath rainbow bunting." width="1774" height="887" />
+          <img class="story-art__illustration story-art__illustration--dark" src="/site/assets/story-community-dark.png" alt="" aria-hidden="true" width="1774" height="887" />
           <figcaption class="sr-only">Different Strokes Calgary community.</figcaption>
         </figure>
       </section>
@@ -216,7 +253,7 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
       <p>Fun and fitness for life.</p>
       <div>
         <a href={contactHref}>Contact us</a>
-        <a href="https://clubbots.wlabscode.com" target="_blank" rel="noreferrer">Board sign in <span aria-hidden="true">↗</span></a>
+        <a href="https://clubbots.wlabscode.com" target="_blank" rel="external noopener noreferrer" data-external-browser>Board sign in <span aria-hidden="true">↗</span></a>
       </div>
     </footer>
 
@@ -234,7 +271,49 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
         nav.removeAttribute('data-open');
       }));
 
-      const navLinks = [...document.querySelectorAll<HTMLAnchorElement>('#site-nav a')];
+      const themeToggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
+      const themeLabel = themeToggle?.querySelector<HTMLElement>('.sr-only');
+      const updateThemeToggle = (theme: string) => {
+        const nextTheme = theme === 'dark' ? 'light' : 'dark';
+        themeToggle?.setAttribute('aria-pressed', String(theme === 'dark'));
+        themeToggle?.setAttribute('aria-label', `Switch to ${nextTheme} theme`);
+        if (themeLabel) themeLabel.textContent = `Switch to ${nextTheme} theme`;
+      };
+      updateThemeToggle(document.documentElement.dataset.theme ?? 'light');
+      themeToggle?.addEventListener('click', () => {
+        const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = theme;
+        localStorage.setItem('dsc-theme', theme);
+        updateThemeToggle(theme);
+      });
+
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+        || (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
+      if (isStandalone) {
+        document.querySelectorAll<HTMLAnchorElement>('a[data-external-browser]').forEach((link) => {
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            window.open(link.href, '_blank', 'noopener,noreferrer');
+          });
+        });
+      }
+
+      const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReducedMotion) {
+        document.querySelectorAll<HTMLElement>('.button, .theme-toggle, .menu-toggle').forEach((control) => {
+          control.addEventListener('pointerdown', (event) => {
+            const rect = control.getBoundingClientRect();
+            const ripple = document.createElement('span');
+            ripple.className = 'button__ripple';
+            ripple.style.left = `${event.clientX - rect.left}px`;
+            ripple.style.top = `${event.clientY - rect.top}px`;
+            control.append(ripple);
+            ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
+          });
+        });
+      }
+
+      const navLinks = [...document.querySelectorAll<HTMLAnchorElement>('#site-nav a[href^="#"]')];
       const sections = navLinks
         .map((link) => document.querySelector(link.hash))
         .filter((section): section is HTMLElement => Boolean(section));
