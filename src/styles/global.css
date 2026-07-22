@@ -180,7 +180,7 @@ h3 {
   padding: var(--space-xs) max(var(--gutter), calc((100vw - var(--max)) / 2));
   background: color-mix(in oklch, var(--canvas) 92%, transparent);
   backdrop-filter: blur(18px) saturate(1.18);
-  border-bottom: 1px solid color-mix(in oklch, var(--line) 40%, transparent);
+  border-bottom: 0;
 }
 
 .brand {
@@ -497,6 +497,7 @@ section {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
+  align-self: end;
 }
 .practice-schedule-group .calendar-details {
   margin-top: 0;
@@ -504,7 +505,7 @@ section {
 .practice-list {
   display: grid;
   gap: var(--space-2xs);
-  align-self: start;
+  align-self: end;
   padding: 0;
   margin: 0;
   list-style: none;
