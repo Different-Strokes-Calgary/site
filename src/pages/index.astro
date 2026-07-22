@@ -148,16 +148,10 @@ const merchHref = isConfigured(club.merchStoreUrl)
 
           <details class="disclosure-card">
             <summary class="disclosure-bar">
-              <span>Winter schedule, locations &amp; parking</span>
+              <span>Locations &amp; parking</span>
               <span class="chevron" aria-hidden="true">▾</span>
             </summary>
             <div class="details-grid">
-              <div>
-                <h3>Winter schedule · Jan–Jun 2026</h3>
-                <ul class="winter-list">
-                  {club.winterPractices.map((practice) => <li><strong>{practice.day} {practice.time}</strong> · {practice.place} · {practice.level}</li>)}
-                </ul>
-              </div>
               <div>
                 <h3>Locations &amp; parking</h3>
                 <p>MNP Community &amp; Sports Centre · 2225 Macleod Trail S<br />Killarney Aquatic &amp; Recreation Centre · 1919 29 St SW<br />Bowview Outdoor Pool · 1910 6 Ave NW</p>
