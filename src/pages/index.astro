@@ -13,11 +13,11 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="dark light" />
     <meta name="description" content="Different Strokes Calgary is an LGBTQ+ masters swim club for fun and fitness for life." />
     <title>Different Strokes Calgary | Fun and fitness for life</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,9 +26,9 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
       (() => {
         try {
           const saved = localStorage.getItem('dsc-theme');
-          document.documentElement.dataset.theme = saved ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.dataset.theme = saved ?? 'dark';
         } catch {
-          document.documentElement.dataset.theme = 'light';
+          document.documentElement.dataset.theme = 'dark';
         }
       })();
     </script>
@@ -36,9 +36,6 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header" data-header>
-      <a class="brand" href="#top" aria-label="Different Strokes Calgary home">
-        <img src="/site/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBT+ Masters Swim Club" width="137" height="68" />
-      </a>
       <button class="menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false">
         <span class="sr-only">Open navigation</span>
         <span aria-hidden="true"></span><span aria-hidden="true"></span>
@@ -49,6 +46,9 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
         <a href="#story">Our Story</a>
         <a class="nav-contact" href={contactHref}>Contact us</a>
       </nav>
+      <a class="brand" href="#top" aria-label="Different Strokes Calgary home">
+        <img src="/site/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBT+ Masters Swim Club" width="137" height="68" />
+      </a>
       <div class="header-actions">
         <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
           <span class="theme-toggle__sun" aria-hidden="true">
@@ -240,13 +240,8 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
                 <p>Co-founded DSC in 1995. Swim Canada Volunteer of the Year 2024.</p>
               </article>
               <article class="coach-card">
-                <strong>Bill Culham</strong>
-                <span>Head Coach</span>
-                <p>Level III NCCP coach &amp; Level V official. Swim Alberta Builder of the Year.</p>
-              </article>
-              <article class="coach-card">
                 <strong>Tammy Andersen</strong>
-                <span>Masters Coach</span>
+                <span>Head Coach</span>
                 <p>25+ years coaching experience. Killarney Swim Club Lead &amp; MNP 3433 coach.</p>
               </article>
             </div>
@@ -262,11 +257,7 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
                 <h3>Dan MacGregor · Co-Founder &amp; Beginner Coach</h3>
                 <p>Dan co-founded DSC and has coached beginner swimmers since the club began. An accountant by trade, he may vanish during tax season, but the club makes sure swimmers are looked after. His continued volunteer work earned Swim Canada’s Volunteer of the Year award in 2024.</p>
 
-                <h3>William (Bill) Culham · Head Coach</h3>
-                <p>Bill joined DSC in the 2017–18 season. He is a Level III NCCP coach, Level V masters official, and Skills Coach Assessor. His aquatic career has taken him from Saskatchewan to the Yukon and Alberta, including founding the Aquanauts summer club in Lloydminster, leading the St. Paul summer club, teaching Swim Alberta’s “I Can Swim” program, and earning Swim Alberta’s Builder of the Year recognition.</p>
-                <p>Bill has worked Pan Pacific Swim Meets, led Alberta Summer Games Zone D, coached at Mountain View Games and Commonwealth Games Trials, offered official clinics for Red Deer and Ponoka clubs, and coached the Red Deer Masters Silver Sharks through provincial and World Masters competition.</p>
-
-                <h3>Tammy Andersen · Masters Coach</h3>
+                <h3>Tammy Andersen · Head Coach</h3>
                 <p>Tammy joined DSC in November 2022 and full time in spring 2025. With more than 25 years of coaching, she has led the Glenmore Seals and Okotoks Stingrays summer clubs, assisted the Calgary Tritons, and helped the City of Calgary develop youth and adult conditioning programs.</p>
                 <p>She coached junior national swimmers in Limburg, Belgium while studying education. Tammy is now Sprocket Coordinator and Junior 1 Lead Coach at Killarney Swim Club, leads the swim program at 3433 Sport Performance at MNP, and is a Swim Canada-certified coach working toward full 201 certification. Her coaching focuses on swimming science, individual feedback, form, and celebrating every swimmer’s progress.</p>
               </section>
@@ -332,7 +323,7 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
         themeToggle?.setAttribute('aria-label', `Switch to ${nextTheme} theme`);
         if (themeLabel) themeLabel.textContent = `Switch to ${nextTheme} theme`;
       };
-      updateThemeToggle(document.documentElement.dataset.theme ?? 'light');
+      updateThemeToggle(document.documentElement.dataset.theme ?? 'dark');
       themeToggle?.addEventListener('click', () => {
         const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
         document.documentElement.dataset.theme = theme;
