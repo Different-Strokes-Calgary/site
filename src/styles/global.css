@@ -184,8 +184,10 @@ h3 {
 }
 
 .brand {
+  position: relative;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   justify-self: center;
   width: 8.5rem;
   padding: 0.2rem 0;
@@ -194,10 +196,12 @@ h3 {
 .brand img {
   width: 100%;
   height: auto;
+  transform: scale(1.2);
+  transform-origin: center center;
   transition: transform 260ms var(--ease-out-quart);
 }
 .brand:hover img {
-  transform: rotate(-1.5deg) scale(1.02);
+  transform: scale(1.224) rotate(-1.5deg);
 }
 
 nav {
