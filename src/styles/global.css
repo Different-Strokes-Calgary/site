@@ -361,18 +361,7 @@ section {
   min-height: clamp(38rem, 50vw, 54rem);
   overflow: hidden;
   padding: clamp(2.5rem, 4vw, 4rem) max(var(--gutter), calc((100vw - var(--max)) / 2)) clamp(5rem, 8vw, 7.5rem);
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background: radial-gradient(46rem 20rem at 68% 78%, color-mix(in oklch, var(--blue) 18%, transparent), transparent 65%),
-              radial-gradient(26rem 16rem at 25% 22%, color-mix(in oklch, var(--pink) 13%, transparent), transparent 70%);
-  opacity: 0;
-  transform: scale(0.98);
-  animation: pool-light 900ms 120ms var(--ease-out-expo) forwards;
-  pointer-events: none;
+  background: var(--canvas);
 }
 .hero__copy, .story__copy {
   position: relative;
@@ -980,6 +969,8 @@ footer p {
 @media (max-width: 780px) {
   .site-header {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: var(--space-xs);
     min-height: 4.75rem;
   }
@@ -990,15 +981,16 @@ footer p {
     font-size: clamp(1.8rem, 6.5vw, 2.25rem);
   }
   .brand {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
     width: 6.2rem;
-    margin-right: auto;
+    margin: 0 auto;
+    justify-content: center;
   }
   .menu-toggle {
-    flex: 0 0 auto;
+    flex: 0 0 2.75rem;
   }
   .header-actions {
-    flex: 0 0 auto;
+    flex: 0 0 2.75rem;
     gap: var(--space-2xs);
   }
   .header-contact {
