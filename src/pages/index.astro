@@ -56,18 +56,19 @@ const merchHref = isConfigured(club.merchStoreUrl)
       </button>
       <nav id="site-nav" aria-label="Main navigation">
         <a href="#practice">Practice &amp; Schedule</a>
-        <a href="#join">Join Us</a>
+        <a href="#join">Join</a>
         <a href="#story">Our Story</a>
-        <a class="nav-contact" href={contactHref}>Contact Us</a>
-        <a class="nav-merch" href={merchHref} target="_blank" rel="noreferrer">Merch Store ↗</a>
+        <a class="nav-contact" href={contactHref}>Contact</a>
+        <a class="nav-merch" href={merchHref} target="_blank" rel="noreferrer">Merch ↗</a>
       </nav>
       <a class="brand" href="#top" aria-label="Different Strokes Calgary home">
         <img src="/site/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBT+ Masters Swim Club" width="137" height="68" />
       </a>
       <div class="header-actions">
-        <a class="button button--outline header-merch" href={merchHref} target="_blank" rel="noreferrer">Merch Store</a>
-        <a class="button header-contact" href={contactHref}>Contact Us</a>
-        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <a class="button header-join" href={club.joinUrl}>Join</a>
+        <a class="button button--outline header-merch" href={merchHref} target="_blank" rel="noreferrer">Merch</a>
+        <a class="button header-contact" href={contactHref}>Contact</a>
+        <button class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
           <span class="theme-toggle__sun" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
               <circle cx="12" cy="12" r="4" />
@@ -210,9 +211,8 @@ const merchHref = isConfigured(club.merchStoreUrl)
               <p class="section-kicker">Membership</p>
               <h2 id="join-title">Find your way in.</h2>
             </div>
-            <a class="button join__button" href={club.joinUrl}>Join Us</a>
           </div>
-          <p class="section-intro">There is currently a waitlist for new non-returning members. Click Join Us to sign up for the waitlist. Returning members can click Join Us to renew membership.</p>
+          <p class="section-intro">There is currently a waitlist for new non-returning members. Use the Join button above to sign up for the waitlist. Returning members can use the Join button to renew membership.</p>
         </div>
         <div class="fee-table reveal">
           <div class="fee-table__header">

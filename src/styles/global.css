@@ -1004,7 +1004,7 @@ footer p {
     flex: 0 0 2.75rem;
     gap: var(--space-2xs);
   }
-  .header-contact, .header-merch {
+  .header-contact, .header-merch, .header-join {
     display: none;
   }
   .menu-toggle {
