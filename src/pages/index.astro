@@ -107,12 +107,13 @@ const merchHref = isConfigured(club.merchStoreUrl)
 
       <section class="practice" id="practice" aria-labelledby="practice-title">
         <div class="section-heading practice__heading reveal">
-          <p class="section-kicker">Summer schedule · Jul–Aug 2026</p>
+          <p class="section-kicker">Schedule</p>
           <h2 id="practice-title">Practice at<br />a glance.</h2>
           <p class="section-intro">Coached workouts for recreational and competitive swimmers. Work at your own pace, in the lane that suits you.</p>
         </div>
         <div class="practice-schedule-group">
-          <ol class="practice-list" aria-label="Summer practice times">
+          <h3>Summer Jul-Aug 2026</h3>
+        <ol class="practice-list" aria-label="Summer practice times">
             {club.practices.map((practice, index) => (
               <li class="reveal" style={`--i: ${index}`}>
                 <strong>{practice.day}</strong>
