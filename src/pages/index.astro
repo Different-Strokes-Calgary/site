@@ -19,7 +19,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
 <html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="dark light" />
     <meta name="description" content="Different Strokes Calgary is an LGBTQ+ masters swim club for fun and fitness for life." />
     <title>Different Strokes Calgary | Fun and fitness for life</title>
@@ -44,6 +44,9 @@ const merchHref = isConfigured(club.merchStoreUrl)
         } catch {
           document.documentElement.dataset.theme = 'dark';
         }
+        // Opt-in to JS-dependent styling (e.g. scroll-driven reveals hide-then-show)
+        // so users without JS still see the full page on first paint.
+        document.documentElement.classList.add('has-js');
       })();
     </script>
   </head>
@@ -55,8 +58,8 @@ const merchHref = isConfigured(club.merchStoreUrl)
         <span aria-hidden="true"></span><span aria-hidden="true"></span>
       </button>
       <nav id="site-nav" aria-label="Main navigation">
-        <a href="#practice">Practice &amp; Schedule</a>
-        <a href="#join">Join</a>
+        <a href="#practice">Practice</a>
+        <a href="#join">Membership</a>
         <a href="#story">Our Story</a>
         <a class="nav-contact" href={contactHref}>Contact</a>
         <a class="nav-merch" href={merchHref} target="_blank" rel="noreferrer">Merch ↗</a>
@@ -67,7 +70,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
       <div class="header-actions">
         <a class="button header-join" href={club.joinUrl}>Join</a>
         <a class="button button--outline header-merch" href={merchHref} target="_blank" rel="noreferrer">Merch</a>
-        <a class="button header-contact" href={contactHref}>Contact</a>
+        <a class="button button--outline header-contact" href={contactHref}>Contact</a>
         <button class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
           <span class="theme-toggle__sun" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -108,8 +111,8 @@ const merchHref = isConfigured(club.merchStoreUrl)
 
       <section class="practice" id="practice" aria-labelledby="practice-title">
         <div class="section-heading practice__heading reveal">
-          <p class="section-kicker">Schedule</p>
-          <h2 id="practice-title">Practice at<br />a glance.</h2>
+          <p class="section-kicker">Practice</p>
+          <h2 id="practice-title">Schedule at<br />a glance.</h2>
           <p class="section-intro">Coached workouts for recreational and competitive swimmers. Work at your own pace, in the lane that suits you.</p>
         </div>
         <div class="practice-schedule-group">
@@ -312,16 +315,71 @@ const merchHref = isConfigured(club.merchStoreUrl)
     <script>
       const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
       const nav = document.querySelector<HTMLElement>('#site-nav');
+      const main = document.querySelector<HTMLElement>('main');
+      const footer = document.querySelector<HTMLElement>('footer');
+      const setDrawerOpen = (open: boolean) => {
+        toggle?.setAttribute('aria-expanded', String(open));
+        nav?.toggleAttribute('data-open', open);
+        if (open) {
+          main?.setAttribute('inert', '');
+          footer?.setAttribute('inert', '');
+        } else {
+          main?.removeAttribute('inert');
+          footer?.removeAttribute('inert');
+        }
+      };
+      const brandLink = document.querySelector<HTMLAnchorElement>('.brand');
+      const isExternalNavLink = (link: HTMLAnchorElement) => {
+        const href = link.getAttribute('href') ?? '';
+        return link.target === '_blank' || /^(https?:|mailto:|tel:)/i.test(href);
+      };
+
       toggle?.addEventListener('click', () => {
         const open = toggle.getAttribute('aria-expanded') === 'true';
-        toggle.setAttribute('aria-expanded', String(!open));
-        nav?.toggleAttribute('data-open', !open);
+        setDrawerOpen(!open);
+        if (open) {
+          // Closing: return focus to the toggle so the keyboard focus ring is visible.
+          toggle?.focus({ preventScroll: true });
+        } else {
+          // Opening: jump focus to the first nav link so keyboard users land inside the menu.
+          const firstLink = nav?.querySelector<HTMLAnchorElement>('a');
+          firstLink?.focus({ preventScroll: true });
+        }
       });
 
+      // In-page anchors (#practice, #join, #story) must keep focus on the clicked
+      // link so the browser's hash-scroll + focus position is preserved. External
+      // links have a different focus story: we close the drawer and return focus
+      // to the toggle so keyboard users know where they are after navigation.
       nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
-        toggle?.setAttribute('aria-expanded', 'false');
-        nav.removeAttribute('data-open');
+        if (isExternalNavLink(link)) {
+          setDrawerOpen(false);
+          toggle?.focus({ preventScroll: true });
+        } else {
+          // Defer the drawer close to the next frame so the browser can complete
+          // its hash-navigation (scroll + focus on the link) before the drawer
+          // (<nav>) collapses to display:none.
+          requestAnimationFrame(() => setDrawerOpen(false));
+        }
       }));
+
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+          setDrawerOpen(false);
+          brandLink?.focus({ preventScroll: true });
+        }
+      });
+
+      // Close the drawer if the viewport widens past the collapse breakpoint so
+      // inert state never gets stranded on desktop resize, and move focus off any
+      // hidden nav link so Tab order resumes from a visible, focusable element.
+      const drawerMql = matchMedia('(max-width: 960px)');
+      drawerMql.addEventListener('change', () => {
+        if (!drawerMql.matches) {
+          setDrawerOpen(false);
+          brandLink?.focus({ preventScroll: true });
+        }
+      });
 
       const themeToggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
       const themeLabel = themeToggle?.querySelector<HTMLElement>('.sr-only');
@@ -375,6 +433,26 @@ const merchHref = isConfigured(club.merchStoreUrl)
         navLinks.forEach((link) => link.toggleAttribute('aria-current', link.hash === `#${current.target.id}`));
       }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
       sections.forEach((section) => observer.observe(section));
+
+// Scroll-driven reveals: arm each .reveal element when it enters the viewport so
+// the settle keyframe fires on visibility rather than only at page load. Falls
+// back to arming all elements immediately when IO or motion is unavailable, so
+// the page never stays half-hidden if either fails.
+const revealTargets = document.querySelectorAll<HTMLElement>('.reveal');
+const armReveal = (el: Element) => el.setAttribute('data-revealed', 'true');
+if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+  revealTargets.forEach(armReveal);
+} else {
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        armReveal(entry.target);
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+  revealTargets.forEach((el) => revealObserver.observe(el));
+}
     </script>
   </body>
 </html>
