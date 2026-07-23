@@ -498,18 +498,45 @@ section {
 .practice-schedule-group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  /* h3 has margin: 0 and .practice-list has margin: 0, so a gap of 0 collapses
+     to nothing between them and the first row's 0.25rem top-padding acts as
+     the breathing room — same rhythm as the row-to-row gap inside the list. */
+  gap: 0;
+  /* Push the schedule heading ("Summer Jul-Aug 2026") down to the same baseline
+     as "Schedule at a glance." in the left column — i.e., past the
+     .section-kicker and its margin-bottom. Calc re-uses the kicker's font-size
+     token and its bottom-margin token so the offset tracks the same scale. */
+  padding-top: calc(var(--font-size-sm) * 1.6 + var(--space-xs));
   /* Start (not end) so the schedule sits at the top of its column rather than
      floating at whatever baseline the left intro paragraph happens to end at. */
   align-self: start;
+}
+.practice-schedule-group h3 {
+  /* Match the schedule rows: same font-size + line-height as .practice-list so
+     "Summer Jul-Aug 2026" reads as a caption label rather than a separate
+     tier of heading above the list. Font-weight 700 is inherited from the
+     global h1/h2/h3 rule. `letter-spacing: 0` overrides the global h3 tracking
+     (which sits at -0.02em) because negative tracking at body-copy size would
+     visually amplify the small size. */
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--blue-deep);
+  margin: 0;
 }
 .practice-schedule-group .calendar-details {
   margin-top: 0;
 }
 .practice-list {
   display: grid;
-  gap: var(--space-2xs);
+  /* Tight vertical rhythm: rows stack with no inter-row gap and a slim line of
+     internal padding, mirroring .section-intro's reading-rhythm to the left.
+     `font-size` + `line-height` are made explicit so the two grid cells read
+     as one body of text rather than as a heading + a small caption. */
+  gap: 0;
   align-self: start;
+  font-size: var(--font-size-base);
+  line-height: 1.6;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -517,9 +544,17 @@ section {
 .practice-list li {
   display: grid;
   grid-template-columns: 5rem 7.5rem 1fr auto;
-  gap: var(--space-sm);
+  /* Adaptive horizontal gap: floor at --space-2xs (8px) so the four columns
+     read as one continuous row of inline metadata at narrow viewports, grows
+     to --space-xs (12px) on wide desktop. Floor and ceiling are both reused
+     tokens so the clamp() doesn't introduce magic literals. */
+  column-gap: clamp(var(--space-2xs), 0.4rem + 0.4vw, var(--space-xs));
   align-items: baseline;
-  padding: 0.45rem 0;
+  /* Real-tightening (was 0.45rem → 0.25rem, ≈4px reclaimed per row, ×3 rows =
+     a perceptible 12px lighter overall block that breathes in the same column
+     as the intro paragraph; 4px top padding is the smallest that still keeps
+     descender clearance on the row below when a wrap forces a second line). */
+  padding: 0.25rem 0;
   border-bottom: 0;
   border-radius: 0;
   font-variant-numeric: tabular-nums;
@@ -817,10 +852,22 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   text-wrap: pretty;
 }
 
+.story__coaches {
+  /* Push "Meet the Coaches" down to the same baseline as "A place to swim
+     as yourself." — i.e., past the .section-kicker and its margin-bottom —
+     mirroring the practice-schedule-group trick used for the Summer heading.
+     Calc re-uses the kicker's font-size token and its bottom-margin token so
+     the offset tracks the same scale. */
+  padding-top: calc(var(--font-size-sm) * 1.6 + var(--space-xs));
+}
 .coaches-title {
-  margin-top: 0;
-  margin-bottom: var(--space-xs);
-  font-size: var(--font-size-md);
+  /* Mirrors .practice-schedule-group h3 exactly: same body-copy size as the
+     schedule rows; same line-height, tracking, and color so the two headings
+     read as the same visual tier despite living in different sections. */
+  margin: 0 0 var(--space-xs);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  letter-spacing: 0;
   color: var(--blue-deep);
 }
 
@@ -1166,8 +1213,9 @@ footer p {
     object-position: 52% center;
   }
   .practice-list li {
+    /* Column gap inherits from the desktop clamp() so mobile also reads as
+     tight inline metadata; only the column-widths reflow at this breakpoint. */
     grid-template-columns: 3.8rem 1fr;
-    gap: 0.3rem var(--space-xs);
   }
   .practice-list li span:nth-of-type(2), .practice-list em {
     grid-column: 2;
