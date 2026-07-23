@@ -29,6 +29,25 @@
   --space-2xl: 4.5rem;   /* 72px */
   --space-3xl: 6rem;     /* 96px */
 
+  /* Sticky Header Min Height — the .site-header rule uses min-height on this
+     token so .site-header and --header-height share one source of truth. If
+     the header content grows taller than this, --header-height still falls
+     short (see --header-height composition notes). */
+  --header-min-height: 5.25rem;
+
+  /* Sticky Header Height — used for fragment-scroll offset so clicking a nav
+     tab lands the section's top edge just below the sticky header.
+     Composed from the same tokens as .site-header so the offset tracks the
+     header's actual rendered height: min-height + padded top + padded bottom
+     + buffer. The `max()` against env(safe-area-inset-*) handles the iPhone
+     notch case so the offset grows to match. */
+  --header-height: calc(
+    var(--header-min-height) +
+    max(var(--space-xs), env(safe-area-inset-top)) +
+    max(var(--space-xs), env(safe-area-inset-bottom)) +
+    var(--space-2xs)
+  );
+
   /* Reading Line-Length Measure */
   --measure-narrow: 44ch;
   --measure-body: 66ch;
@@ -181,7 +200,7 @@ h3 {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  min-height: 5.25rem;
+  min-height: var(--header-min-height);
   padding-top: max(var(--space-xs), env(safe-area-inset-top));
   padding-right: max(var(--gutter), env(safe-area-inset-right), calc((100vw - var(--max)) / 2));
   padding-bottom: max(var(--space-xs), env(safe-area-inset-bottom));
@@ -357,7 +376,11 @@ nav a:hover {
 
 /* Sections & Structural Layout */
 section {
-  scroll-margin-top: 6rem;
+  /* When a nav tab is clicked, fragment-scroll lands the section's top edge
+     this far below the viewport's top edge — just clear of the sticky
+     .site-header. Token reference keeps the offset and the header height
+     in lockstep if either changes. */
+  scroll-margin-top: var(--header-height);
 }
 
 /* Hero Section */
@@ -598,6 +621,39 @@ details {
 }
 .disclosure-card:hover {
   border-color: color-mix(in oklch, var(--blue) 50%, transparent);
+}
+
+/* Promote .calendar-details as the primary CTA among the disclosure cards.
+   The static reference cards below ("Locations & parking", "Workout guide")
+   stay neutral and accessible; the calendar card is tinted blue so the eye
+   lands on it first. All overrides use existing --blue / --blue-deep tokens
+   and respect both light and dark themes via the OKLCH color-mix scale.
+   `.calendar-details` is unique to this single calendar card on the page,
+   so the chained .disclosure-card in selectors is unnecessary and was dropped.
+   Tint percentages are tuned to stay visible in dark mode (where the site
+   ships by default): 20% blue over dark canvas still produces a perceptible
+   navy chroma shift, where 10–15% would have read as flat neutral. */
+.calendar-details {
+  background: color-mix(in oklch, var(--blue) 20%, var(--canvas));
+  border-color: color-mix(in oklch, var(--blue) 45%, transparent);
+}
+.calendar-details summary.disclosure-bar {
+  color: var(--blue-deep);
+}
+.calendar-details:hover {
+  background: color-mix(in oklch, var(--blue) 25%, var(--canvas));
+  border-color: color-mix(in oklch, var(--blue) 60%, transparent);
+}
+details[open].calendar-details > summary.disclosure-bar {
+  /* Match the resting border (45%) so the open divider composes with the
+     card border instead of stepping down. The open state is signaled
+     separately by the bar's bg-color change and the chevron rotation. */
+  border-bottom-color: color-mix(in oklch, var(--blue) 45%, transparent);
+}
+.calendar-details:focus-within summary.disclosure-bar {
+  /* The default disclosure-bar focus outline is --pink; on a blue-tinted
+     card, a blue-deep focus ring is on-brand and avoids a color race. */
+  outline-color: var(--blue-deep);
 }
 summary.disclosure-bar {
   display: flex;
