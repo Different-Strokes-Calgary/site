@@ -1032,6 +1032,7 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
 .story-art__figure {
   width: min(100%, 42.5rem);
   margin: 0 0 0 auto;
+  pointer-events: none;
 }
 .story-art__illustration {
   width: 100%;
@@ -1041,10 +1042,6 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   object-position: 45% center;
   transform-origin: 50% 70%;
   border-radius: var(--space-xs);
-  transition: transform 600ms var(--ease-out-expo);
-}
-.story-art__figure:hover .story-art__illustration {
-  transform: translateY(-0.25rem) scale(1.01);
 }
 .story-art__illustration--dark {
   display: none;
