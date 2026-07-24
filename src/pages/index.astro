@@ -16,7 +16,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -70,7 +70,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
             document.documentElement.dataset.theme = prefersDark ? 'dark' : 'light';
           }
         } catch {
-          document.documentElement.dataset.theme = 'dark';
+          document.documentElement.dataset.theme = 'light';
         }
         // Opt-in to JS-dependent styling (e.g. scroll-driven reveals hide-then-show)
         // so users without JS still see the full page on first paint.
@@ -436,7 +436,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
         themeToggle?.setAttribute('aria-label', `Switch to ${nextTheme} theme`);
         if (themeLabel) themeLabel.textContent = `Switch to ${nextTheme} theme`;
       };
-      updateThemeToggle(document.documentElement.dataset.theme ?? 'dark');
+      updateThemeToggle(document.documentElement.dataset.theme ?? 'light');
       themeToggle?.addEventListener('click', () => {
         const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
         document.documentElement.dataset.theme = theme;
