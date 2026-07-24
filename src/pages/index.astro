@@ -22,25 +22,53 @@ const merchHref = isConfigured(club.merchStoreUrl)
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="dark light" />
     <meta name="description" content="Different Strokes Calgary is an LGBTQ+ masters swim club for fun and fitness for life." />
+    <!-- Content Security Policy: locks the page to its own assets plus the
+         Google Fonts CDN (style) and Google Calendar embed (frame). Inline
+         script/style are allowed because Astro injects critical CSS and a
+         theme-detection inline script that would each require a hash nonce to
+         fully lock down. Placed right after charset+viewport+color-scheme +
+         description so it's parsed before any out-of-policy resource fetches
+         could begin. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; font-src https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; frame-src https://calendar.google.com; connect-src 'self'; base-uri 'self'; form-action 'self';" />
     <title>Different Strokes Calgary | Fun and fitness for life</title>
     <!-- OpenGraph / Social Media Link Preview -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Different Strokes Calgary | Fun and fitness for life" />
     <meta property="og:description" content="Different Strokes Calgary is an LGBTQ+ masters swim club for fun and fitness for life." />
-    <meta property="og:image" content="/site/assets/hero-art-dark.png" />
+    <meta property="og:image" content="/site/assets/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="600" />
     <meta property="og:image:alt" content="Different Strokes Calgary swimmers moving through water under a sweeping rainbow on dark background." />
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Different Strokes Calgary | Fun and fitness for life" />
     <meta name="twitter:description" content="Different Strokes Calgary is an LGBTQ+ masters swim club for fun and fitness for life." />
-    <meta name="twitter:image" content="/site/assets/hero-art-dark.png" />
+    <meta name="twitter:image" content="/site/assets/og-image.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Single stylesheet link. The earlier "<link rel=preload as=style> +
+         <link rel=stylesheet>" pair was an anti-pattern: the preload scanner
+         already prioritizes the stylesheet, and pairing the two forces competing
+         fetch-priority logic. Italic weights are intentionally omitted — site
+         typography never uses italics, so loading them would just waste WOFF2
+         bytes. The matching @font-face rules Google Fonts serves include
+         font-display:swap (via the &display=swap param) so first paint shows
+         the system-ui fallback while the WOFF2 downloads. -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" />
     <script is:inline>
       (() => {
         try {
           const saved = localStorage.getItem('dsc-theme');
-          document.documentElement.dataset.theme = saved ?? 'dark';
+          if (saved === 'light' || saved === 'dark') {
+            // Saved user preference always wins; we only autoselect on first visit.
+            document.documentElement.dataset.theme = saved;
+          } else {
+            // First visit: read the OS color-scheme preference. Match-media is
+            // universally supported in browsers shipped since 2015, so a try/catch
+            // is still cheap insurance for anything that throws on access.
+            const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.dataset.theme = prefersDark ? 'dark' : 'light';
+          }
         } catch {
           document.documentElement.dataset.theme = 'dark';
         }
@@ -104,8 +132,26 @@ const merchHref = isConfigured(club.merchStoreUrl)
           <a class="text-link" href="#story">Learn more <span aria-hidden="true">→</span></a>
         </div>
         <div class="hero__art">
-          <img class="hero__illustration hero__illustration--light" src="/site/assets/hero-art-light.png" alt="Four diverse swimmers moving through water and a sweeping rainbow." width="1774" height="887" />
-          <img class="hero__illustration hero__illustration--dark" src="/site/assets/hero-art-dark.png" alt="" aria-hidden="true" width="1774" height="887" />
+          {/* Above-the-fold: both light and dark variants are always in the DOM so
+              a no-JS first visit shows the dark default and a JS-localStorage
+              flip reveals the user-saved theme instantly. Neither sets
+              fetchpriority because we can't know which is the LCP candidate at
+              HTML parse time — the inline head script flips data-theme
+              synchronously based on localStorage/prefers-color-scheme, and the
+              visible variant depends on the result. The big LCP win is the
+              <picture> wrapper cutting payload from ~850KB PNG to ~52KB WebP;
+              both variants now sit at the browser's default priority and race
+              symmetrically. The PNG inside <img> remains a fallback for
+              browsers without WebP; the 1774×887 width/height attributes
+              preserve CLS. */}
+          <picture class="hero__illustration hero__illustration--light">
+            <source type="image/webp" srcset="/site/assets/hero-art-light.webp" />
+            <img src="/site/assets/hero-art-light.png" alt="Four diverse swimmers moving through water and a sweeping rainbow." width="1774" height="887" decoding="async" />
+          </picture>
+          <picture class="hero__illustration hero__illustration--dark">
+            <source type="image/webp" srcset="/site/assets/hero-art-dark.webp" />
+            <img src="/site/assets/hero-art-dark.png" alt="" aria-hidden="true" width="1774" height="887" decoding="async" />
+          </picture>
         </div>
       </section>
 
@@ -144,7 +190,12 @@ const merchHref = isConfigured(club.merchStoreUrl)
                   </div>
                   <a class="text-link calendar-open-link" href={calendarOpenHref} target="_blank" rel="noreferrer">Open in Google Calendar <span aria-hidden="true">↗</span></a>
                 </div>
-                <iframe title="Different Strokes Calgary practice calendar" src={club.calendarEmbedUrl} loading="lazy"></iframe>
+                {/* Lazy-bind src: defer the 3rd-party Google Calendar request
+                    until the disclosure is opened, so the iframe (and any
+                    trackers inside) only loads when the user expressed intent.
+                    referrerpolicy + sandbox lock down what the embed can read
+                    from the parent page and what it can spawn. */}
+                <iframe title="Different Strokes Calgary practice calendar" data-src={club.calendarEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
               </div>
             ) : (
               <p class="calendar-pending">The public calendar link will appear here. Until then, email <a href="mailto:info@differentstrokescalgary.org">info@differentstrokescalgary.org</a> for the latest schedule.</p>
@@ -294,8 +345,16 @@ const merchHref = isConfigured(club.merchStoreUrl)
 
       <section class="story-art" aria-label="Different Strokes Calgary community illustration">
         <figure class="story-art__figure reveal">
-          <img class="story-art__illustration story-art__illustration--light" src="/site/assets/story-community-light.png" alt="A diverse group of swimmers smiling together in a pool beneath rainbow bunting." width="1774" height="887" />
-          <img class="story-art__illustration story-art__illustration--dark" src="/site/assets/story-community-dark.png" alt="" aria-hidden="true" width="1774" height="887" />
+          {/* Below-the-fold: lazy-load with async decode so they don't compete
+              with the hero for bandwidth during the critical first render. */}
+          <picture class="story-art__illustration story-art__illustration--light">
+            <source type="image/webp" srcset="/site/assets/story-community-light.webp" />
+            <img src="/site/assets/story-community-light.png" alt="A diverse group of swimmers smiling together in a pool beneath rainbow bunting." width="1774" height="887" loading="lazy" decoding="async" />
+          </picture>
+          <picture class="story-art__illustration story-art__illustration--dark">
+            <source type="image/webp" srcset="/site/assets/story-community-dark.webp" />
+            <img src="/site/assets/story-community-dark.png" alt="" aria-hidden="true" width="1774" height="887" loading="lazy" decoding="async" />
+          </picture>
           <figcaption class="sr-only">Different Strokes Calgary community.</figcaption>
         </figure>
       </section>
@@ -405,6 +464,30 @@ const merchHref = isConfigured(club.merchStoreUrl)
             event.preventDefault();
             window.open(link.href, '_blank', 'noopener,noreferrer');
           });
+        });
+      }
+
+      // Lazy-bind the calendar iframe src only when the disclosure is opened.
+      // until-then the iframe's data-src is held in reserve, so the embed
+      // (and any 3rd-party tracking inside) doesn't run until the visitor
+      // clicked "View live practice calendar". Once bound, the src sticks.
+      const calendarDetails = document.querySelector<HTMLDetailsElement>('.calendar-details');
+      const calendarIframe = calendarDetails?.querySelector<HTMLIFrameElement>('iframe');
+      if (calendarDetails && calendarIframe && !calendarIframe.src) {
+        const bindSrc = () => {
+          const pending = calendarIframe.getAttribute('data-src');
+          if (pending) {
+            calendarIframe.src = pending;
+            calendarIframe.removeAttribute('data-src');
+          }
+        };
+        // Guard against the rare case where the disclosure is already open at
+        // script load (e.g. browser-restore from history with the calendar
+        // expanded, or any future deep link that pre-opens the card). No
+        // `toggle` event will fire in that case — we must call once now.
+        if (calendarDetails.open) bindSrc();
+        calendarDetails.addEventListener('toggle', () => {
+          if (calendarDetails.open) bindSrc();
         });
       }
 

@@ -1,8 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+/* Atkinson Hyperlegible is loaded via a single <link rel="stylesheet"> in the
+   document <head> (see src/pages/index.astro), with preconnect hints to both the
+   CSS and WOFF2 origins. Moving the font request out of a CSS @import lets the
+   browser discover the font origin in parallel with the CSS file rather than
+   serially after parsing the @import graph. Italic weights are intentionally
+   omitted from the URL — site typography never uses italics, so loading them
+   would just waste WOFF2 bytes. */
 
 :root {
   /* Brand OKLCH Palette */
-  --canvas: #ffffff;
+  --canvas: oklch(1 0 0);
   --ink: oklch(0.22 0.06 254);
   --blue: oklch(0.61 0.17 247);
   --blue-deep: oklch(0.43 0.13 252);
@@ -67,7 +73,9 @@
 }
 
 :root[data-theme='dark'] {
-  --canvas: #061425;
+  /* Was #061425 (RGB 6,20,37). Converted to OKLCH keeps the palette on a single
+     color spec so brand harmonics with --blue-deep (~252 hue) stay traceable. */
+  --canvas: oklch(0.18 0.07 252);
   --ink: oklch(0.94 0.02 245);
   --blue: oklch(0.72 0.15 247);
   --blue-deep: oklch(0.78 0.11 247);
@@ -206,9 +214,27 @@ h3 {
   padding-bottom: max(var(--space-xs), env(safe-area-inset-bottom));
   padding-left: max(var(--gutter), env(safe-area-inset-left), calc((100vw - var(--max)) / 2));
   background: color-mix(in oklch, var(--canvas) 92%, transparent);
-  -webkit-backdrop-filter: blur(18px) saturate(1.18);
-  backdrop-filter: blur(18px) saturate(1.18);
+  /* backdrop-filter: the @supports gate below only applies the blur/saturate
+     where supported, and the prefers-reduced-transparency media query clamps
+     it to opaque canvas for users who opt out of translucency. Browsers that
+     neither support backdrop-filter nor list the media query fall back to the
+     92% alpha color-mix above, which reads almost opaque anyway. */
   border-bottom: 0;
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header {
+    -webkit-backdrop-filter: blur(18px) saturate(1.18);
+    backdrop-filter: blur(18px) saturate(1.18);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .site-header {
+    background: var(--canvas);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 .brand {
@@ -477,10 +503,21 @@ section {
   pointer-events: none;
 }
 .hero__illustration {
+  /* <picture> now wraps the inner <img> so the source list (WebP + PNG
+     fallback) can swap format. <picture> is a non-replaced container; the
+     dropped properties (object-fit, object-position, transform-origin,
+     animation, aspect-ratio) were replaced-element-only and now live on the
+     descendant selector below where they actually take effect. */
+  display: block;
   position: relative;
   width: 100%;
   height: 100%;
-  aspect-ratio: auto;
+}
+.hero__illustration > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   object-position: center bottom;
   transform-origin: 58% 82%;
@@ -493,6 +530,10 @@ section {
   display: none;
 }
 :root[data-theme='dark'] .hero__illustration--dark {
+  /* Override the default .hero__illustration--dark { display: none } so the
+     dark variant shows in dark mode. (Specificity (0,2,0) beats the base
+     .hero__illustration--dark rule; without this declaration the picture
+     would stay hidden in dark mode and the hero would render empty.) */
   display: block;
 }
 
@@ -1008,16 +1049,24 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   margin: 0 0 0 auto;
 }
 .story-art__illustration {
+  /* Same story as .hero__illustration: <picture> is a non-replaced container;
+     the replaced-element-only properties (object-fit, object-position,
+     transform-origin, border-radius) live on the descendant <img> below. */
+  display: block;
+  position: relative;
   width: 100%;
-  height: auto;
   aspect-ratio: 1774 / 887;
+}
+.story-art__illustration > img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: 45% center;
   transform-origin: 50% 70%;
   border-radius: var(--space-xs);
   transition: transform 600ms var(--ease-out-expo);
 }
-.story-art__figure:hover .story-art__illustration {
+.story-art__figure:hover .story-art__illustration > img {
   transform: translateY(-0.25rem) scale(1.01);
 }
 .story-art__illustration--dark {
@@ -1027,6 +1076,8 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   display: none;
 }
 :root[data-theme='dark'] .story-art__illustration--dark {
+  /* Override the default .story-art__illustration--dark { display: none }
+     so the dark variant shows in dark mode. See --hero equivalent. */
   display: block;
 }
 
@@ -1164,6 +1215,12 @@ footer p {
   .header-contact, .header-merch, .header-join {
     display: none;
   }
+  .story-grid {
+    grid-template-columns: 1fr;
+  }
+  .story__coaches {
+    padding-top: 0;
+  }
   .menu-toggle {
     position: relative;
     isolation: isolate;
@@ -1226,11 +1283,14 @@ footer p {
   .practice {
     grid-template-columns: 1fr;
   }
+  .practice-schedule-group {
+    padding-top: 0;
+  }
   .hero {
     min-height: auto;
     align-items: flex-start;
     padding-top: var(--space-md);
-    padding-bottom: 16rem;
+    padding-bottom: 14rem;
   }
   .hero__copy, .story__copy {
     width: 100%;
@@ -1245,7 +1305,7 @@ footer p {
     height: auto;
     aspect-ratio: 1774 / 887;
   }
-  .hero__illustration {
+  .hero__illustration > img {
     object-position: 74% center;
     object-fit: contain;
   }
@@ -1265,7 +1325,7 @@ footer p {
   .story-art__figure {
     width: min(90%, 40.8rem);
   }
-  .story-art__illustration {
+  .story-art__illustration > img {
     object-position: 52% center;
   }
   .practice-list li {
@@ -1297,6 +1357,81 @@ footer p {
   }
   .footer-links {
     flex-wrap: wrap;
+  }
+}
+
+/* ── Narrow mobile (< 700px) ── */
+/* Fee table → stacked cards, calendar shrink, hero tighter */
+@media (max-width: 699px) {
+  .fee-table__header {
+    display: none;
+  }
+  .fee-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-3xs);
+    padding: 0.85rem var(--space-sm);
+  }
+  .fee-row__detail {
+    grid-column: 1;
+  }
+  .calendar-frame iframe {
+    min-height: 24rem;
+  }
+  .hero {
+    padding-top: var(--space-sm);
+    padding-bottom: 10rem;
+  }
+  .hero__copy h1 {
+    font-size: clamp(2.2rem, 9vw, 2.8rem);
+  }
+  .hero__mark {
+    font-size: var(--font-size-base);
+  }
+  .practice-list li {
+    grid-template-columns: 3rem 1fr;
+  }
+  .story-art__figure {
+    width: 100%;
+  }
+  .details-grid {
+    padding: var(--space-sm);
+  }
+  .story-archive__content {
+    padding: var(--space-sm);
+  }
+}
+
+/* ── Tablet (768–959px) ── */
+/* Intermediate layouts: show header Join, story 2-col, footer 2-col, details 2-col */
+@media (min-width: 768px) and (max-width: 959px) {
+  .header-join {
+    display: inline-flex;
+  }
+  .header-actions {
+    flex: 0 1 auto;
+  }
+  .story-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+  .story__coaches {
+    padding-top: calc(var(--font-size-sm) * 1.6 + var(--space-xs));
+  }
+  .details-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  footer {
+    grid-template-columns: auto 1fr;
+    gap: var(--space-md);
+  }
+  .footer-links {
+    grid-column: 1 / -1;
+  }
+  .hero {
+    padding-bottom: 12rem;
+  }
+  .story-art__figure {
+    width: min(80%, 40.8rem);
   }
 }
 

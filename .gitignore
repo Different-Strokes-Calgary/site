@@ -2,3 +2,7 @@ node_modules/
 dist/
 .astro/
 .DS_Store
+# Freebuff (the editor running this site) writes a local preview server and
+# SQLite state under .freebuff/ — same pattern as .codegraph/ above: keep it
+# out of version control.
+.freebuff/
