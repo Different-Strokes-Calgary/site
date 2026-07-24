@@ -503,21 +503,10 @@ section {
   pointer-events: none;
 }
 .hero__illustration {
-  /* <picture> now wraps the inner <img> so the source list (WebP + PNG
-     fallback) can swap format. <picture> is a non-replaced container; the
-     dropped properties (object-fit, object-position, transform-origin,
-     animation, aspect-ratio) were replaced-element-only and now live on the
-     descendant selector below where they actually take effect. */
-  display: block;
   position: relative;
   width: 100%;
   height: 100%;
-}
-.hero__illustration > img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  aspect-ratio: auto;
   object-fit: contain;
   object-position: center bottom;
   transform-origin: 58% 82%;
@@ -530,10 +519,6 @@ section {
   display: none;
 }
 :root[data-theme='dark'] .hero__illustration--dark {
-  /* Override the default .hero__illustration--dark { display: none } so the
-     dark variant shows in dark mode. (Specificity (0,2,0) beats the base
-     .hero__illustration--dark rule; without this declaration the picture
-     would stay hidden in dark mode and the hero would render empty.) */
   display: block;
 }
 
@@ -1049,24 +1034,16 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   margin: 0 0 0 auto;
 }
 .story-art__illustration {
-  /* Same story as .hero__illustration: <picture> is a non-replaced container;
-     the replaced-element-only properties (object-fit, object-position,
-     transform-origin, border-radius) live on the descendant <img> below. */
-  display: block;
-  position: relative;
   width: 100%;
+  height: auto;
   aspect-ratio: 1774 / 887;
-}
-.story-art__illustration > img {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
   object-position: 45% center;
   transform-origin: 50% 70%;
   border-radius: var(--space-xs);
   transition: transform 600ms var(--ease-out-expo);
 }
-.story-art__figure:hover .story-art__illustration > img {
+.story-art__figure:hover .story-art__illustration {
   transform: translateY(-0.25rem) scale(1.01);
 }
 .story-art__illustration--dark {
@@ -1076,8 +1053,6 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   display: none;
 }
 :root[data-theme='dark'] .story-art__illustration--dark {
-  /* Override the default .story-art__illustration--dark { display: none }
-     so the dark variant shows in dark mode. See --hero equivalent. */
   display: block;
 }
 
@@ -1305,7 +1280,7 @@ footer p {
     height: auto;
     aspect-ratio: 1774 / 887;
   }
-  .hero__illustration > img {
+  .hero__illustration {
     object-position: 74% center;
     object-fit: contain;
   }
@@ -1325,7 +1300,7 @@ footer p {
   .story-art__figure {
     width: min(90%, 40.8rem);
   }
-  .story-art__illustration > img {
+  .story-art__illustration {
     object-position: 52% center;
   }
   .practice-list li {

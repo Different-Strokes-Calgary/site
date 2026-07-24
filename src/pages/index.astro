@@ -144,14 +144,8 @@ const merchHref = isConfigured(club.merchStoreUrl)
               symmetrically. The PNG inside <img> remains a fallback for
               browsers without WebP; the 1774×887 width/height attributes
               preserve CLS. */}
-          <picture class="hero__illustration hero__illustration--light">
-            <source type="image/webp" srcset="/site/assets/hero-art-light.webp" />
-            <img src="/site/assets/hero-art-light.png" alt="Four diverse swimmers moving through water and a sweeping rainbow." width="1774" height="887" decoding="async" />
-          </picture>
-          <picture class="hero__illustration hero__illustration--dark">
-            <source type="image/webp" srcset="/site/assets/hero-art-dark.webp" />
-            <img src="/site/assets/hero-art-dark.png" alt="" aria-hidden="true" width="1774" height="887" decoding="async" />
-          </picture>
+          <img class="hero__illustration hero__illustration--light" src="/site/assets/hero-art-light.png" alt="Four diverse swimmers moving through water and a sweeping rainbow." width="1774" height="887" decoding="async" />
+          <img class="hero__illustration hero__illustration--dark" src="/site/assets/hero-art-dark.png" alt="" aria-hidden="true" width="1774" height="887" decoding="async" />
         </div>
       </section>
 
@@ -347,14 +341,8 @@ const merchHref = isConfigured(club.merchStoreUrl)
         <figure class="story-art__figure reveal">
           {/* Below-the-fold: lazy-load with async decode so they don't compete
               with the hero for bandwidth during the critical first render. */}
-          <picture class="story-art__illustration story-art__illustration--light">
-            <source type="image/webp" srcset="/site/assets/story-community-light.webp" />
-            <img src="/site/assets/story-community-light.png" alt="A diverse group of swimmers smiling together in a pool beneath rainbow bunting." width="1774" height="887" loading="lazy" decoding="async" />
-          </picture>
-          <picture class="story-art__illustration story-art__illustration--dark">
-            <source type="image/webp" srcset="/site/assets/story-community-dark.webp" />
-            <img src="/site/assets/story-community-dark.png" alt="" aria-hidden="true" width="1774" height="887" loading="lazy" decoding="async" />
-          </picture>
+          <img class="story-art__illustration story-art__illustration--light" src="/site/assets/story-community-light.png" alt="A diverse group of swimmers smiling together in a pool beneath rainbow bunting." width="1774" height="887" loading="lazy" decoding="async" />
+          <img class="story-art__illustration story-art__illustration--dark" src="/site/assets/story-community-dark.png" alt="" aria-hidden="true" width="1774" height="887" loading="lazy" decoding="async" />
           <figcaption class="sr-only">Different Strokes Calgary community.</figcaption>
         </figure>
       </section>
