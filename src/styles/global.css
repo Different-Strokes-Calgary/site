@@ -804,6 +804,83 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
 .calendar-open-link {
   font-size: var(--font-size-sm);
 }
+.calendar-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 38rem;
+  border-radius: 0.65rem;
+  overflow: hidden;
+  background: color-mix(in oklch, var(--surface) 60%, var(--canvas));
+}
+.calendar-skeleton {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: color-mix(in oklch, var(--surface) 80%, var(--canvas));
+  border: 1px solid color-mix(in oklch, var(--line) 45%, transparent);
+  border-radius: 0.65rem;
+  opacity: 1;
+  transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), visibility 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+.calendar-wrapper.loaded .calendar-skeleton {
+  opacity: 0;
+  visibility: hidden;
+}
+.skeleton-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.skeleton-pill {
+  height: 2rem;
+  width: 12rem;
+  border-radius: 0.4rem;
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklch, var(--line) 20%, transparent) 0%,
+    color-mix(in oklch, var(--line) 45%, transparent) 50%,
+    color-mix(in oklch, var(--line) 20%, transparent) 100%
+  );
+  background-size: 200% 100%;
+  animation: calendar-shimmer 1.8s ease-in-out infinite;
+}
+.skeleton-pill--sm {
+  width: 6rem;
+}
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.75rem;
+  flex: 1;
+}
+.skeleton-col {
+  height: 100%;
+  min-height: 26rem;
+  border-radius: 0.4rem;
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklch, var(--line) 15%, transparent) 0%,
+    color-mix(in oklch, var(--line) 35%, transparent) 50%,
+    color-mix(in oklch, var(--line) 15%, transparent) 100%
+  );
+  background-size: 200% 100%;
+  animation: calendar-shimmer 1.8s ease-in-out infinite;
+}
+@keyframes calendar-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-pill, .skeleton-col {
+    animation: none;
+  }
+}
 .calendar-frame iframe {
   width: 100%;
   min-height: 38rem;
@@ -811,7 +888,13 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   background: #ffffff;
   border-radius: 0.65rem;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
-  transition: filter 260ms var(--ease-out-quart), border-color 260ms var(--ease-out-quart);
+  opacity: 0;
+  transform: scale(0.995);
+  transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1), transform 500ms cubic-bezier(0.16, 1, 0.3, 1), filter 260ms var(--ease-out-quart), border-color 260ms var(--ease-out-quart);
+}
+.calendar-wrapper.loaded iframe {
+  opacity: 1;
+  transform: scale(1);
 }
 :root[data-theme='dark'] .calendar-frame iframe {
   filter: invert(0.9) hue-rotate(180deg) contrast(0.96) saturate(1.05);

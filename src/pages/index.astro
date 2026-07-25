@@ -189,7 +189,24 @@ const merchHref = isConfigured(club.merchStoreUrl)
                     trackers inside) only loads when the user expressed intent.
                     referrerpolicy + sandbox lock down what the embed can read
                     from the parent page and what it can spawn. */}
-                <iframe title="Different Strokes Calgary practice calendar" data-src={club.calendarEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+                <div class="calendar-wrapper loading">
+                  <div class="calendar-skeleton" aria-hidden="true">
+                    <div class="skeleton-header">
+                      <div class="skeleton-pill"></div>
+                      <div class="skeleton-pill skeleton-pill--sm"></div>
+                    </div>
+                    <div class="skeleton-grid">
+                      <div class="skeleton-col"></div>
+                      <div class="skeleton-col"></div>
+                      <div class="skeleton-col"></div>
+                      <div class="skeleton-col"></div>
+                      <div class="skeleton-col"></div>
+                      <div class="skeleton-col"></div>
+                      <div class="skeleton-col"></div>
+                    </div>
+                  </div>
+                  <iframe title="Different Strokes Calgary practice calendar" data-src={club.calendarEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+                </div>
               </div>
             ) : (
               <p class="calendar-pending">The public calendar link will appear here. Until then, email <a href="mailto:info@differentstrokescalgary.org">info@differentstrokescalgary.org</a> for the latest schedule.</p>
@@ -460,19 +477,25 @@ const merchHref = isConfigured(club.merchStoreUrl)
       // (and any 3rd-party tracking inside) doesn't run until the visitor
       // clicked "View live practice calendar". Once bound, the src sticks.
       const calendarDetails = document.querySelector<HTMLDetailsElement>('.calendar-details');
+      const calendarWrapper = calendarDetails?.querySelector<HTMLElement>('.calendar-wrapper');
       const calendarIframe = calendarDetails?.querySelector<HTMLIFrameElement>('iframe');
-      if (calendarDetails && calendarIframe && !calendarIframe.src) {
+      if (calendarDetails && calendarIframe && calendarWrapper) {
         const bindSrc = () => {
           const pending = calendarIframe.getAttribute('data-src');
           if (pending) {
+            calendarIframe.addEventListener('load', () => {
+              calendarWrapper.classList.remove('loading');
+              calendarWrapper.classList.add('loaded');
+            }, { once: true });
             calendarIframe.src = pending;
             calendarIframe.removeAttribute('data-src');
+          } else if (calendarIframe.src && !calendarWrapper.classList.contains('loaded')) {
+            calendarIframe.addEventListener('load', () => {
+              calendarWrapper.classList.remove('loading');
+              calendarWrapper.classList.add('loaded');
+            }, { once: true });
           }
         };
-        // Guard against the rare case where the disclosure is already open at
-        // script load (e.g. browser-restore from history with the calendar
-        // expanded, or any future deep link that pre-opens the card). No
-        // `toggle` event will fire in that case — we must call once now.
         if (calendarDetails.open) bindSrc();
         calendarDetails.addEventListener('toggle', () => {
           if (calendarDetails.open) bindSrc();
