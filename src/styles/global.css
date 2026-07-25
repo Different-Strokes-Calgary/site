@@ -210,9 +210,9 @@ h3 {
   align-items: center;
   min-height: var(--header-min-height);
   padding-top: max(var(--space-xs), env(safe-area-inset-top));
-  padding-right: max(var(--gutter), env(safe-area-inset-right), calc((100vw - var(--max)) / 2));
+  padding-right: max(var(--gutter), env(safe-area-inset-right), calc((100% - var(--max)) / 2));
   padding-bottom: max(var(--space-xs), env(safe-area-inset-bottom));
-  padding-left: max(var(--gutter), env(safe-area-inset-left), calc((100vw - var(--max)) / 2));
+  padding-left: max(var(--gutter), env(safe-area-inset-left), calc((100% - var(--max)) / 2));
   background: color-mix(in oklch, var(--canvas) 92%, transparent);
   /* backdrop-filter: the @supports gate below only applies the blur/saturate
      where supported, and the prefers-reduced-transparency media query clamps
@@ -417,7 +417,7 @@ section {
   align-items: flex-start;
   min-height: clamp(38rem, 50vw, 54rem);
   overflow: hidden;
-  padding: clamp(2.5rem, 4vw, 4rem) max(var(--gutter), calc((100vw - var(--max)) / 2)) clamp(5rem, 8vw, 7.5rem);
+  padding: clamp(2.5rem, 4vw, 4rem) max(var(--gutter), calc((100% - var(--max)) / 2)) clamp(5rem, 8vw, 7.5rem);
   background: var(--canvas);
 }
 .hero__copy, .story__copy {
@@ -532,8 +532,8 @@ section {
   display: grid;
   /* Slightly wider right column than the story grid so the calendar embed (needs
      ~520px to read cleanly) and the practice-list place names fit on a single line. */
-  grid-template-columns: minmax(16rem, 1fr) minmax(28rem, 1.7fr);
-  padding: clamp(3rem, 5.2vw, 4.5rem) max(var(--gutter), calc((100vw - var(--max)) / 2));
+  grid-template-columns: minmax(15rem, 1fr) minmax(28rem, 2fr);
+  padding: clamp(3rem, 5.2vw, 4.5rem) max(var(--gutter), calc((100% - var(--max)) / 2));
   background: color-mix(in oklch, var(--surface) 40%, var(--canvas));
   border-top: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
   border-bottom: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
@@ -559,6 +559,8 @@ section {
   /* Start (not end) so the schedule sits at the top of its column rather than
      floating at whatever baseline the left intro paragraph happens to end at. */
   align-self: start;
+  width: 100%;
+  min-width: 0;
 }
 .practice-schedule-group h3 {
   /* Match the schedule rows: same font-size + line-height as .practice-list so
@@ -589,10 +591,12 @@ section {
   padding: 0;
   margin: 0;
   list-style: none;
+  width: 100%;
+  min-width: 0;
 }
 .practice-list li {
   display: grid;
-  grid-template-columns: 5rem 7.5rem 1fr auto;
+  grid-template-columns: 5rem 7.5rem minmax(0, 1fr) max-content;
   /* Adaptive horizontal gap: floor at --space-2xs (8px) so the four columns
      read as one continuous row of inline metadata at narrow viewports, grows
      to --space-xs (12px) on wide desktop. Floor and ceiling are both reused
@@ -608,6 +612,8 @@ section {
   border-radius: 0;
   font-variant-numeric: tabular-nums;
   transition: color 180ms var(--ease-out-quart);
+  width: 100%;
+  min-width: 0;
 }
 .practice-list li:hover {
   color: var(--blue-deep);
@@ -618,10 +624,19 @@ section {
 .practice-list strong, .practice-list em {
   font-style: normal;
   font-weight: 700;
+  white-space: nowrap;
+}
+.practice-list li > span:first-of-type {
+  white-space: nowrap;
+}
+.practice-list li > span:nth-of-type(2) {
+  min-width: 0;
 }
 .practice-list em {
   color: var(--pink-deep);
   text-align: right;
+  white-space: nowrap;
+  min-width: max-content;
 }
 
 .practice__details {
@@ -815,7 +830,7 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
 
 /* Membership (Join) Section */
 .join {
-  padding: clamp(3rem, 5.2vw, 4.5rem) max(var(--gutter), calc((100vw - var(--max)) / 2));
+  padding: clamp(3rem, 5.2vw, 4.5rem) max(var(--gutter), calc((100% - var(--max)) / 2));
   background: var(--canvas);
 }
 
@@ -910,7 +925,7 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   align-items: flex-start;
   min-height: auto;
   overflow: hidden;
-  padding: clamp(3rem, 5.2vw, 4.5rem) max(var(--gutter), calc((100vw - var(--max)) / 2)) clamp(2rem, 3.5vw, 3rem);
+  padding: clamp(3rem, 5.2vw, 4.5rem) max(var(--gutter), calc((100% - var(--max)) / 2)) clamp(2rem, 3.5vw, 3rem);
   background: color-mix(in oklch, var(--surface) 40%, var(--canvas));
   border-top: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
   border-bottom: 0;
@@ -1026,7 +1041,7 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
 }
 
 .story-art {
-  padding: 0 max(var(--gutter), calc((100vw - var(--max)) / 2)) clamp(3rem, 5vw, 4.5rem);
+  padding: 0 max(var(--gutter), calc((100% - var(--max)) / 2)) clamp(3rem, 5vw, 4.5rem);
   background: var(--canvas);
 }
 .story-art__figure {
@@ -1059,7 +1074,7 @@ footer {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: var(--space-lg);
-  padding: var(--space-lg) max(var(--gutter), calc((100vw - var(--max)) / 2));
+  padding: var(--space-lg) max(var(--gutter), calc((100% - var(--max)) / 2));
   background: var(--surface);
   border-top: 1px solid color-mix(in oklch, var(--line) 50%, transparent);
 }
