@@ -807,10 +807,15 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
 .calendar-wrapper {
   position: relative;
   width: 100%;
-  min-height: 38rem;
+  min-height: 26rem;
   border-radius: 0.65rem;
   overflow: hidden;
   background: color-mix(in oklch, var(--surface) 60%, var(--canvas));
+}
+@media (min-width: 640px) {
+  .calendar-wrapper {
+    min-height: 38rem;
+  }
 }
 .calendar-skeleton {
   position: absolute;
@@ -861,7 +866,7 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
 }
 .skeleton-col {
   height: 100%;
-  min-height: 26rem;
+  min-height: 18rem;
   border-radius: 0.4rem;
   background: linear-gradient(
     90deg,
@@ -871,6 +876,11 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   );
   background-size: 200% 100%;
   animation: calendar-shimmer 1.8s ease-in-out infinite;
+}
+@media (min-width: 640px) {
+  .skeleton-col {
+    min-height: 26rem;
+  }
 }
 @keyframes calendar-shimmer {
   0% { background-position: 200% 0; }
@@ -883,7 +893,7 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
 }
 .calendar-frame iframe {
   width: 100%;
-  min-height: 38rem;
+  min-height: 26rem;
   border: 1px solid color-mix(in oklch, var(--line) 45%, transparent);
   background: #ffffff;
   border-radius: 0.65rem;
@@ -891,6 +901,11 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   opacity: 0;
   transform: scale(0.995);
   transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1), transform 500ms cubic-bezier(0.16, 1, 0.3, 1), filter 260ms var(--ease-out-quart), border-color 260ms var(--ease-out-quart);
+}
+@media (min-width: 640px) {
+  .calendar-frame iframe {
+    min-height: 38rem;
+  }
 }
 .calendar-wrapper.loaded iframe {
   opacity: 1;
