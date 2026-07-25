@@ -276,7 +276,8 @@ nav a, footer a {
   transition: color 180ms var(--ease-out-quart), background 180ms var(--ease-out-quart), transform 180ms var(--ease-out-quart);
 }
 .site-header nav .nav-contact,
-.site-header nav .nav-merch {
+.site-header nav .nav-merch,
+.site-header nav .nav-join {
   display: none;
 }
 nav a:hover, nav a[aria-current] {
@@ -1347,7 +1348,7 @@ footer p {
     right: 0;
     display: none;
     flex-direction: column;
-    gap: 0;
+    gap: var(--space-2xs);
     padding: var(--space-xs) var(--gutter) var(--space-md);
     background: var(--canvas);
     border-bottom: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
@@ -1359,11 +1360,19 @@ footer p {
   }
   .site-header nav a,
   .site-header nav .nav-contact,
-  .site-header nav .nav-merch {
+  .site-header nav .nav-merch,
+  .site-header nav .nav-join {
     display: inline-flex;
-    min-height: auto;
-    padding: var(--space-xs) 0;
-    border-radius: 0;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.5rem var(--space-sm);
+    border-radius: 0.65rem;
+    font-size: var(--font-size-base);
+  }
+  .site-header nav .nav-join {
+    margin-top: var(--space-2xs);
+    width: 100%;
+    justify-content: center;
   }
   .practice {
     grid-template-columns: 1fr;
