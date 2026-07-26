@@ -13,10 +13,13 @@
   --blue: oklch(0.61 0.17 247);
   --blue-deep: oklch(0.43 0.13 252);
   --pink: oklch(0.7 0.19 344);
-  --pink-deep: oklch(0.53 0.18 347);
+  --pink-deep: oklch(0.44 0.20 347);
   --surface: oklch(0.94 0.03 245);
   --surface-strong: oklch(0.88 0.07 245);
   --line: oklch(0.84 0.03 245);
+
+  /* Typography Fonts */
+  --font-display: 'Bricolage Grotesque', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   /* Micro-animation Easings */
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
@@ -140,6 +143,7 @@ h1, h2, h3, p {
 }
 
 h1, h2, h3 {
+  font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.05;
@@ -371,7 +375,7 @@ nav a:hover {
   transform: translateY(-1px);
 }
 .site-header nav a:focus-visible, .theme-toggle:focus-visible, .button:focus-visible, .brand:focus-visible {
-  outline: 3px solid var(--pink);
+  outline: 3px solid var(--pink-deep);
   outline-offset: 3px;
 }
 
@@ -548,17 +552,8 @@ section {
 .practice-schedule-group {
   display: flex;
   flex-direction: column;
-  /* h3 has margin: 0 and .practice-list has margin: 0, so a gap of 0 collapses
-     to nothing between them and the first row's 0.25rem top-padding acts as
-     the breathing room — same rhythm as the row-to-row gap inside the list. */
   gap: 0;
-  /* Push the schedule heading ("Summer Jul-Aug 2026") down to the same baseline
-     as "Schedule at a glance." in the left column — i.e., past the
-     .section-kicker and its margin-bottom. Calc re-uses the kicker's font-size
-     token and its bottom-margin token so the offset tracks the same scale. */
-  padding-top: calc(var(--font-size-sm) * 1.6 + var(--space-xs));
-  /* Start (not end) so the schedule sits at the top of its column rather than
-     floating at whatever baseline the left intro paragraph happens to end at. */
+  padding-top: 0;
   align-self: start;
   width: 100%;
   min-width: 0;
@@ -1049,12 +1044,7 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
 }
 
 .story__coaches {
-  /* Push "Meet the Coaches" down to the same baseline as "A place to swim
-     as yourself." — i.e., past the .section-kicker and its margin-bottom —
-     mirroring the practice-schedule-group trick used for the Summer heading.
-     Calc re-uses the kicker's font-size token and its bottom-margin token so
-     the offset tracks the same scale. */
-  padding-top: calc(var(--font-size-sm) * 1.6 + var(--space-xs));
+  padding-top: 0;
 }
 .coaches-title {
   /* Mirrors .practice-schedule-group h3 exactly: same body-copy size as the
