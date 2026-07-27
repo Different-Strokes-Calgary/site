@@ -460,22 +460,6 @@ section {
   letter-spacing: 0.01em;
 }
 
-/* Kicker styles apply only to elements explicitly marked .section-kicker; the old
-   structural fallback (.section-heading > p:first-child) would otherwise repaint the
-   section-intro paragraph as a kicker whenever a section drops the kicker line. */
-.section-kicker {
-  display: block;
-  padding: 0;
-  margin-bottom: var(--space-xs);
-  color: var(--pink-deep);
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  font-size: var(--font-size-sm);
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
-
 .text-link {
   display: inline-flex;
   gap: var(--space-2xs);
@@ -752,11 +736,11 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
 .practice__details, .join__details, .story__copy details {
   width: 100%;
 }
-.winter-list, .guide-list {
+.guide-list {
   padding-left: 1.25rem;
   margin-bottom: 0;
 }
-.winter-list li + li, .guide-list li + li {
+.guide-list li + li {
   margin-top: var(--space-2xs);
 }
 
@@ -991,16 +975,6 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   color: color-mix(in oklch, var(--ink) 85%, var(--canvas));
 }
 
-.join__action {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-  align-items: center;
-}
-.join__action > span:last-child {
-  color: color-mix(in oklch, var(--ink) 72%, var(--canvas));
-  font-size: var(--font-size-sm);
-}
 .join__details {
   margin-top: var(--space-md);
 }
@@ -1237,9 +1211,6 @@ footer p {
   from { opacity: 0.01; transform: translate3d(1.4rem, 1rem, 0) scale(1.015); filter: blur(0.18rem); }
   to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0); }
 }
-@keyframes pool-light {
-  to { opacity: 1; transform: scale(1); }
-}
 @keyframes ripple {
   to { opacity: 0; transform: translate(-50%, -50%) scale(18); }
 }
@@ -1431,9 +1402,6 @@ footer p {
   }
   .calendar-frame iframe {
     min-height: 32rem;
-  }
-  .fee-list {
-    grid-template-columns: 1fr;
   }
   footer {
     grid-template-columns: 1fr;
