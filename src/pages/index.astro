@@ -142,7 +142,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
               visible variant depends on the result. The big LCP win is the
               <picture> wrapper cutting payload from ~850KB PNG to ~52KB WebP;
               both variants now sit at the browser's default priority and race
-              symmetrically. The PNG inside <img> remains a fallback for
+              symmetrically. The PNG inside img element remains a fallback for
               browsers without WebP; the 1774×887 width/height attributes
               preserve CLS. */}
           <picture style="display: contents;">
@@ -151,7 +151,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
           </picture>
           <picture style="display: contents;" aria-hidden="true">
             <source type="image/webp" srcset="/site/assets/hero-art-dark.webp" />
-            <img class="hero__illustration hero__illustration--dark" src="/site/assets/hero-art-dark.png" alt="" aria-hidden="true" width="1774" height="887" decoding="async" />
+            <img class="hero__illustration hero__illustration--dark" src="/site/assets/hero-art-dark.png" alt="Four diverse swimmers moving through water and a sweeping rainbow." aria-hidden="true" width="1774" height="887" decoding="async" />
           </picture>
         </div>
       </section>
@@ -368,7 +368,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
           </picture>
           <picture style="display: contents;" aria-hidden="true">
             <source type="image/webp" srcset="/site/assets/story-community-dark.webp" />
-            <img class="story-art__illustration story-art__illustration--dark" src="/site/assets/story-community-dark.png" alt="" aria-hidden="true" width="1774" height="887" loading="lazy" decoding="async" />
+            <img class="story-art__illustration story-art__illustration--dark" src="/site/assets/story-community-dark.png" alt="A diverse group of swimmers smiling together in a pool beneath rainbow bunting." aria-hidden="true" width="1774" height="887" loading="lazy" decoding="async" />
           </picture>
           <figcaption class="sr-only">Different Strokes Calgary community.</figcaption>
         </figure>
