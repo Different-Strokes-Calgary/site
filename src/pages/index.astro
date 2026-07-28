@@ -2,7 +2,6 @@
 import '../styles/global.css';
 import { club, isConfigured } from '../data/club';
 
-const joinReady = isConfigured(club.joinUrl);
 const contactHref = isConfigured(club.contactUrl)
   ? club.contactUrl
   : 'mailto:info@differentstrokescalgary.org';
@@ -91,7 +90,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
         <a href="#join">Membership</a>
         <a href="#story">Our Story</a>
         <a class="nav-contact" href={contactHref}>Contact</a>
-        <a class="nav-merch" href={merchHref} target="_blank" rel="noreferrer">Merch ↗</a>
+        <a class="nav-merch" href={merchHref} target="_blank" rel="noreferrer">Merch <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
         <a class="nav-join button" href={club.joinUrl}>Join</a>
       </nav>
       <a class="brand" href="#top" aria-label="Different Strokes Calgary home">
@@ -99,7 +98,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
       </a>
       <div class="header-actions">
         <a class="button header-join" href={club.joinUrl}>Join</a>
-        <a class="button button--outline header-merch" href={merchHref} target="_blank" rel="noreferrer">Merch</a>
+        <a class="button button--outline header-merch" href={merchHref} target="_blank" rel="noreferrer">Merch <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
         <a class="button button--outline header-contact" href={contactHref}>Contact</a>
         <button class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
           <span class="theme-toggle__sun" aria-hidden="true">
@@ -189,7 +188,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
                     <span class="calendar-status__dot"></span>
                     <span>Live practice schedule</span>
                   </div>
-                  <a class="text-link calendar-open-link" href={calendarOpenHref} target="_blank" rel="noreferrer">Open in Google Calendar <span aria-hidden="true">↗</span></a>
+                  <a class="text-link calendar-open-link" href={calendarOpenHref} target="_blank" rel="noreferrer">Open in Google Calendar <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
                 </div>
                 {/* Lazy-bind src: defer the 3rd-party Google Calendar request
                     until the disclosure is opened, so the iframe (and any
@@ -381,20 +380,22 @@ const merchHref = isConfigured(club.merchStoreUrl)
       <p>Fun and fitness for life.</p>
       <div class="footer-links">
         <div class="footer-board">
-          <a href="https://clubbots.wlabscode.com/admin/signin" target="_blank" rel="external noopener noreferrer" data-external-browser>Board sign in <span aria-hidden="true">↗</span></a>
-          <span class="footer-powered"><strong>Powered by</strong> <a href="https://clubbots.wlabscode.com/" target="_blank" rel="external noopener noreferrer" data-external-browser><strong>club & bots</strong></a></span>
+          <a href="https://clubbots.wlabscode.com/admin/signin" target="_blank" rel="external noopener noreferrer" data-external-browser>Board sign in <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
+          <span class="footer-powered"><strong>Powered by</strong> <a href="https://clubbots.wlabscode.com/" target="_blank" rel="external noopener noreferrer" data-external-browser><strong>club &amp; bots</strong> <span class="sr-only">(opens in new tab)</span></a></span>
         </div>
       </div>
     </footer>
 
     <script>
       const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const toggleSr = toggle?.querySelector<HTMLElement>('.sr-only');
       const nav = document.querySelector<HTMLElement>('#site-nav');
       const main = document.querySelector<HTMLElement>('main');
       const footer = document.querySelector<HTMLElement>('footer');
       const setDrawerOpen = (open: boolean) => {
         toggle?.setAttribute('aria-expanded', String(open));
         nav?.toggleAttribute('data-open', open);
+        if (toggleSr) toggleSr.textContent = open ? 'Close navigation' : 'Open navigation';
         if (open) {
           main?.setAttribute('inert', '');
           footer?.setAttribute('inert', '');
