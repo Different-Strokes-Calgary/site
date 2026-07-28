@@ -1159,13 +1159,19 @@ footer p {
 .footer-board {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3xs);
   align-items: flex-start;
 }
 .footer-powered {
   font-size: var(--font-size-xs);
   line-height: 1.25;
   color: color-mix(in oklch, var(--ink) 65%, var(--canvas));
+  margin-top: -0.25rem;
+  font-weight: 400;
+}
+.footer-powered a {
+  min-height: auto;
+  padding: 0;
+  font-weight: 600;
 }
 .footer-links a {
   display: inline-flex;
