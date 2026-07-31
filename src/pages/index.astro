@@ -1,7 +1,11 @@
 ---
 import '../styles/global.css';
-import { club, isConfigured } from '../data/club';
+import { club, getMembershipSeason, getPracticeSchedule, isConfigured } from '../data/club';
 
+const canonicalUrl = new URL(import.meta.env.BASE_URL, Astro.site ?? Astro.url).toString();
+const ogImageUrl = new URL(`${import.meta.env.BASE_URL}assets/og-image.jpg`, Astro.site ?? Astro.url).toString();
+const practiceSchedule = getPracticeSchedule();
+const membershipSeason = getMembershipSeason();
 const contactHref = isConfigured(club.contactUrl)
   ? club.contactUrl
   : 'mailto:info@differentstrokescalgary.org';
@@ -34,7 +38,8 @@ const merchHref = isConfigured(club.merchStoreUrl)
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Different Strokes Calgary | Fun and fitness for life" />
     <meta property="og:description" content="Different Strokes Calgary is an LGBTQ+ masters swim club for fun and fitness for life." />
-    <meta property="og:image" content="/site/assets/og-image.jpg" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="600" />
     <meta property="og:image:alt" content="Different Strokes Calgary swimmers moving through water under a sweeping rainbow on a clean light background." />
@@ -42,7 +47,9 @@ const merchHref = isConfigured(club.merchStoreUrl)
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Different Strokes Calgary | Fun and fitness for life" />
     <meta name="twitter:description" content="Different Strokes Calgary is an LGBTQ+ masters swim club for fun and fitness for life." />
-    <meta name="twitter:image" content="/site/assets/og-image.jpg" />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content="Different Strokes Calgary swimmers moving through water under a sweeping rainbow on a clean light background." />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/site/assets/dsc-logo.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -90,7 +97,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
         <a href="#join">Membership</a>
         <a href="#story">Our Story</a>
         <a class="nav-contact" href={contactHref}>Contact</a>
-        <a class="nav-merch" href={merchHref} target="_blank" rel="noreferrer">Merch <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
+        <a class="nav-merch" href={merchHref} target="_blank" rel="noopener noreferrer">Merch <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
         <a class="nav-join button" href={club.joinUrl}>Join</a>
       </nav>
       <a class="brand" href="#top" aria-label="Different Strokes Calgary home">
@@ -98,7 +105,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
       </a>
       <div class="header-actions">
         <a class="button header-join" href={club.joinUrl}>Join</a>
-        <a class="button button--outline header-merch" href={merchHref} target="_blank" rel="noreferrer">Merch <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
+        <a class="button button--outline header-merch" href={merchHref} target="_blank" rel="noopener noreferrer">Merch <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
         <a class="button button--outline header-contact" href={contactHref}>Contact</a>
         <button class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
           <span class="theme-toggle__sun" aria-hidden="true">
@@ -133,25 +140,27 @@ const merchHref = isConfigured(club.merchStoreUrl)
           <a class="text-link" href="#story">Learn more <span aria-hidden="true">→</span></a>
         </div>
         <div class="hero__art">
-          {/* Above-the-fold: both light and dark variants are always in the DOM so
-              a no-JS first visit shows the dark default and a JS-localStorage
-              flip reveals the user-saved theme instantly. Neither sets
-              fetchpriority because we can't know which is the LCP candidate at
-              HTML parse time — the inline head script flips data-theme
-              synchronously based on localStorage/prefers-color-scheme, and the
-              visible variant depends on the result. The big LCP win is the
-              <picture> wrapper cutting payload from ~850KB PNG to ~52KB WebP;
-              both variants now sit at the browser's default priority and race
-              symmetrically. The PNG inside img element remains a fallback for
-              browsers without WebP; the 1774×887 width/height attributes
-              preserve CLS. */}
-          <picture style="display: contents;">
-            <source type="image/webp" srcset="/site/assets/hero-art-light.webp" />
-            <img class="hero__illustration hero__illustration--light" src="/site/assets/hero-art-light.png" alt="Four diverse swimmers moving through water and a sweeping rainbow." width="1774" height="887" decoding="async" />
-          </picture>
-          <picture style="display: contents;" aria-hidden="true">
-            <source type="image/webp" srcset="/site/assets/hero-art-dark.webp" />
-            <img class="hero__illustration hero__illustration--dark" src="/site/assets/hero-art-dark.png" alt="Four diverse swimmers moving through water and a sweeping rainbow." aria-hidden="true" width="1774" height="887" decoding="async" />
+          {/* Above-the-fold art uses one WebP image element. The inline head theme
+              check runs before this image is parsed, and later theme changes swap
+              its data-selected source without keeping both variants in the DOM. */}
+          <picture data-theme-image>
+            {/* LCP priority hint lives on the rendered <img> fallback because
+                 Astro's SourceHTMLAttributes type doesn't yet expose
+                 fetchpriority. The matched <source> still fetches first per
+                 HTML spec; the hint ensures OS-default-theme users still see
+                 the high-priority signal on the LCP candidate. */}
+            <source data-dark-src="/site/assets/hero-art-dark.webp" srcset="/site/assets/hero-art-dark.webp" media="(prefers-color-scheme: dark)" type="image/webp" />
+            <img
+              class="hero__illustration"
+              src="/site/assets/hero-art-light.webp"
+              data-light-src="/site/assets/hero-art-light.webp"
+              data-dark-src="/site/assets/hero-art-dark.webp"
+              alt="Four diverse swimmers moving through water and a sweeping rainbow."
+              width="1774"
+              height="887"
+              decoding="async"
+              fetchpriority="high"
+            />
           </picture>
         </div>
       </section>
@@ -161,18 +170,24 @@ const merchHref = isConfigured(club.merchStoreUrl)
           <h2 id="practice-title">Practice at<br />a glance.</h2>
           <p class="section-intro">Coached workouts for recreational and competitive swimmers. Work at your own pace, in the lane that suits you.</p>
         </div>
-        <div class="practice-schedule-group reveal">
-          <h3>Summer Jul-Aug 2026</h3>
-          <ol class="practice-list" aria-label="Summer practice times">
-            {club.practices.map((practice) => (
-              <li>
-                <strong>{practice.day}</strong>
-                <span>{practice.time}</span>
-                <span>{practice.place}</span>
-                <em>{practice.level}</em>
-              </li>
-            ))}
-          </ol>
+        <div class="practice-schedule-group reveal" role="region" aria-labelledby="practice-schedule-heading">
+          <h3 id="practice-schedule-heading">{practiceSchedule.label}</h3>
+          {practiceSchedule.isCurrent && (              <p class="schedule-note" role="status">Practice times can change. Check the live calendar for current times.</p>
+          )}
+          {practiceSchedule.isCurrent ? (
+            <ol class="practice-list" aria-label={`${practiceSchedule.label} practice times`}>
+              {practiceSchedule.practices.map((practice) => (
+                <li>
+                  <strong>{practice.day}</strong>
+                  <span>{practice.time}</span>
+                  <span>{practice.place}</span>
+                  <em>{practice.level}</em>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p class="schedule-unavailable">All strokes welcome. Practice times are being updated — check the live calendar for current times.</p>
+          )}
         </div>
 
         <div class="practice__details">
@@ -184,11 +199,11 @@ const merchHref = isConfigured(club.merchStoreUrl)
             {calendarReady ? (
               <div class="calendar-frame">
                 <div class="calendar-header">
-                  <div class="calendar-status">
-                    <span class="calendar-status__dot"></span>
-                    <span>Live practice schedule</span>
+                  <div class="calendar-status" data-state="idle" role="status" aria-live="polite">
+                    <span class="calendar-status__dot" aria-hidden="true"></span>
+                    <span data-calendar-status>Open to load the live practice schedule</span>
                   </div>
-                  <a class="text-link calendar-open-link" href={calendarOpenHref} target="_blank" rel="noreferrer">Open in Google Calendar <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
+                  <a class="text-link calendar-open-link" href={calendarOpenHref} target="_blank" rel="noopener noreferrer">Open in Google Calendar <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
                 </div>
                 {/* Lazy-bind src: defer the 3rd-party Google Calendar request
                     until the disclosure is opened, so the iframe (and any
@@ -211,8 +226,28 @@ const merchHref = isConfigured(club.merchStoreUrl)
                       <div class="skeleton-col"></div>
                     </div>
                   </div>
-                  <iframe title="Different Strokes Calgary practice calendar" data-src={club.calendarEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+                  <div class="calendar-error" role="alert" hidden>
+                    <p><strong>We couldn't load the live calendar.</strong> The direct calendar link is still available, or you can try loading it again.</p>
+                    <div class="calendar-error__actions">
+                      <button class="button button--outline calendar-retry" type="button">Try again</button>
+                      <a class="button" href={calendarOpenHref} target="_blank" rel="noopener noreferrer">Open Google Calendar <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
+                    </div>
+                  </div>
+                                    {/* Sandbox scope: Google Calendar needs its real
+                     calendar.google.com origin for storage-backed app state;
+                     without allow-same-origin the browser gives it an opaque
+                     origin and the document can load blank after a 200 response.
+                     The embed is cross-origin from this page, so
+                     allow-same-origin does not grant it access to the parent
+                     origin. The JS data-src gate already defers the third-party
+                     request until this disclosure opens, so native iframe lazy
+                     loading is intentionally omitted to avoid a second hidden-
+                     details visibility gate. */}
+                  <iframe title="Different Strokes Calgary practice calendar" src="about:blank" data-src={club.calendarEmbedUrl} referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
                 </div>
+                <noscript>
+                  <p class="calendar-noscript">JavaScript is disabled, so the embedded calendar is unavailable. <a href={calendarOpenHref} target="_blank" rel="noopener noreferrer">Open the practice calendar in Google Calendar <span aria-hidden="true">↗</span></a>.</p>
+                </noscript>
               </div>
             ) : (
               <p class="calendar-pending">The public calendar link will appear here. Until then, email <a href="mailto:info@differentstrokescalgary.org">info@differentstrokescalgary.org</a> for the latest schedule.</p>
@@ -283,21 +318,26 @@ const merchHref = isConfigured(club.merchStoreUrl)
             </div>
           </div>
           <p class="section-intro"><strong>There is currently a waitlist for new non-returning members.</strong> Use the Join button above to sign up for the waitlist. Returning members can use the Join button to renew membership.</p>
+          <p class="season-stale" role="status">The prices below are for the {membershipSeason.label} season, {membershipSeason.validityLabel}.</p>
         </div>
-        <div class="fee-table reveal">
-          <div class="fee-table__header">
-            <span>Membership Tier</span>
-            <span>Price</span>
-            <span>Coverage &amp; Details</span>
-          </div>
-          {club.fees.map((fee) => (
-            <div class="fee-row">
-              <strong class="fee-row__name">{fee.name}</strong>
-              <span class="fee-row__price">{fee.price}</span>
-              <span class="fee-row__detail">{fee.detail}</span>
+        {membershipSeason.isCurrent ? (
+          <div class="fee-table reveal">
+            <div class="fee-table__header">
+              <span>Membership Tier</span>
+              <span>Price</span>
+              <span>Coverage &amp; Details</span>
             </div>
-          ))}
-        </div>
+            {club.fees.map((fee) => (
+              <div class="fee-row">
+                <strong class="fee-row__name">{fee.name}</strong>
+                <span class="fee-row__price">{fee.price}</span>
+                <span class="fee-row__detail">{fee.detail}</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p class="fees-unavailable">Welcome to our lane. Membership pricing is being updated — please <a href={contactHref}>contact the club</a> for current fees before registering.</p>
+        )}
       </section>
 
       <section class="story" id="story" aria-labelledby="story-title">
@@ -360,15 +400,21 @@ const merchHref = isConfigured(club.merchStoreUrl)
 
       <section class="story-art" aria-label="Different Strokes Calgary community illustration">
         <figure class="story-art__figure reveal">
-          {/* Below-the-fold: lazy-load with async decode so they don't compete
+          {/* Below-the-fold: lazy-load with async decode so it doesn't compete
               with the hero for bandwidth during the critical first render. */}
-          <picture style="display: contents;">
-            <source type="image/webp" srcset="/site/assets/story-community-light.webp" />
-            <img class="story-art__illustration story-art__illustration--light" src="/site/assets/story-community-light.png" alt="A diverse group of swimmers smiling together in a pool beneath rainbow bunting." width="1774" height="887" loading="lazy" decoding="async" />
-          </picture>
-          <picture style="display: contents;" aria-hidden="true">
-            <source type="image/webp" srcset="/site/assets/story-community-dark.webp" />
-            <img class="story-art__illustration story-art__illustration--dark" src="/site/assets/story-community-dark.png" alt="A diverse group of swimmers smiling together in a pool beneath rainbow bunting." aria-hidden="true" width="1774" height="887" loading="lazy" decoding="async" />
+          <picture data-theme-image>
+            <source data-dark-src="/site/assets/story-community-dark.webp" srcset="/site/assets/story-community-dark.webp" media="(prefers-color-scheme: dark)" type="image/webp" />
+            <img
+              class="story-art__illustration"
+              src="/site/assets/story-community-light.webp"
+              data-light-src="/site/assets/story-community-light.webp"
+              data-dark-src="/site/assets/story-community-dark.webp"
+              alt="A diverse group of swimmers smiling together in a pool beneath rainbow bunting."
+              width="1774"
+              height="887"
+              loading="lazy"
+              decoding="async"
+            />
           </picture>
           <figcaption class="sr-only">Different Strokes Calgary community.</figcaption>
         </figure>
@@ -377,7 +423,8 @@ const merchHref = isConfigured(club.merchStoreUrl)
 
     <footer>
       <a class="brand brand--footer" href="#top"><img src="/site/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBT+ Masters Swim Club" width="137" height="68" /></a>
-      <p>Fun and fitness for life.</p>
+      <p>Fun and fitness for life.<span class="footer-muted"> Volunteer-run since 1995.</span></p>
+
       <div class="footer-links">
         <div class="footer-board">
           <a href="https://clubbots.wlabscode.com/admin/signin" target="_blank" rel="external noopener noreferrer" data-external-browser>Board sign in <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
@@ -429,8 +476,9 @@ const merchHref = isConfigured(club.merchStoreUrl)
       // to the toggle so keyboard users know where they are after navigation.
       nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
         if (isExternalNavLink(link)) {
+          const drawerWasOpen = toggle?.getAttribute('aria-expanded') === 'true';
           setDrawerOpen(false);
-          toggle?.focus({ preventScroll: true });
+          if (drawerWasOpen) toggle?.focus({ preventScroll: true });
         } else {
           // Defer the drawer close to the next frame so the browser can complete
           // its hash-navigation (scroll + focus on the link) before the drawer
@@ -457,8 +505,18 @@ const merchHref = isConfigured(club.merchStoreUrl)
         }
       });
 
+      const updateThemeImages = (theme: string) => {
+        document.querySelectorAll<HTMLPictureElement>('[data-theme-image]').forEach((picture) => {
+          const image = picture.querySelector<HTMLImageElement>('[data-light-src][data-dark-src]');
+          const darkSource = picture.querySelector<HTMLSourceElement>('[data-dark-src]');
+          const nextSrc = theme === 'dark' ? image?.dataset.darkSrc : image?.dataset.lightSrc;
+          if (darkSource) darkSource.media = theme === 'dark' ? '(min-width: 0px)' : 'not all';
+          if (image && nextSrc && image.getAttribute('src') !== nextSrc) image.src = nextSrc;
+        });
+      };
       const themeToggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
       const themeLabel = themeToggle?.querySelector<HTMLElement>('.sr-only');
+      updateThemeImages(document.documentElement.dataset.theme ?? 'light');
       const updateThemeToggle = (theme: string) => {
         const nextTheme = theme === 'dark' ? 'light' : 'dark';
         themeToggle?.setAttribute('aria-pressed', String(theme === 'dark'));
@@ -466,10 +524,35 @@ const merchHref = isConfigured(club.merchStoreUrl)
         if (themeLabel) themeLabel.textContent = `Switch to ${nextTheme} theme`;
       };
       updateThemeToggle(document.documentElement.dataset.theme ?? 'light');
+      const getSavedTheme = () => {
+        try {
+          const saved = localStorage.getItem('dsc-theme');
+          return saved === 'light' || saved === 'dark' ? saved : null;
+        } catch {
+          return null;
+        }
+      };
+      const saveTheme = (theme: string) => {
+        try {
+          localStorage.setItem('dsc-theme', theme);
+        } catch {
+          // Storage can be blocked by privacy settings; the in-memory theme still works.
+        }
+      };
+      const themeMediaQuery = matchMedia('(prefers-color-scheme: dark)');
+      themeMediaQuery.addEventListener('change', (event) => {
+        if (!getSavedTheme()) {
+          const theme = event.matches ? 'dark' : 'light';
+          document.documentElement.dataset.theme = theme;
+          updateThemeImages(theme);
+          updateThemeToggle(theme);
+        }
+      });
       themeToggle?.addEventListener('click', () => {
         const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
         document.documentElement.dataset.theme = theme;
-        localStorage.setItem('dsc-theme', theme);
+        saveTheme(theme);
+        updateThemeImages(theme);
         updateThemeToggle(theme);
       });
 
@@ -484,40 +567,86 @@ const merchHref = isConfigured(club.merchStoreUrl)
         });
       }
 
-      // Lazy-bind the calendar iframe src only when the disclosure is opened.
-      // until-then the iframe's data-src is held in reserve, so the embed
-      // (and any 3rd-party tracking inside) doesn't run until the visitor
-      // clicked "View live practice calendar". Once bound, the src sticks.
+      // Lazy-bind the calendar until the visitor opens the disclosure. The
+      // loading state has a timeout and a retry/direct-link recovery path so a
+      // slow or blocked third-party embed never leaves a permanent skeleton.
       const calendarDetails = document.querySelector<HTMLDetailsElement>('.calendar-details');
       const calendarWrapper = calendarDetails?.querySelector<HTMLElement>('.calendar-wrapper');
       const calendarIframe = calendarDetails?.querySelector<HTMLIFrameElement>('iframe');
-      if (calendarDetails && calendarIframe && calendarWrapper) {
-        const bindSrc = () => {
-          const pending = calendarIframe.getAttribute('data-src');
-          if (pending) {
-            calendarIframe.addEventListener('load', () => {
-              calendarWrapper.classList.remove('loading');
-              calendarWrapper.classList.add('loaded');
-            }, { once: true });
-            calendarIframe.src = pending;
-            calendarIframe.removeAttribute('data-src');
-          } else if (calendarIframe.src && !calendarWrapper.classList.contains('loaded')) {
-            calendarIframe.addEventListener('load', () => {
-              calendarWrapper.classList.remove('loading');
-              calendarWrapper.classList.add('loaded');
-            }, { once: true });
-          }
+      const calendarStatus = calendarDetails?.querySelector<HTMLElement>('.calendar-status');
+      const calendarStatusText = calendarDetails?.querySelector<HTMLElement>('[data-calendar-status]');
+      const calendarError = calendarDetails?.querySelector<HTMLElement>('.calendar-error');
+      const calendarRetry = calendarDetails?.querySelector<HTMLButtonElement>('.calendar-retry');
+      if (calendarDetails && calendarIframe && calendarWrapper && calendarStatus && calendarStatusText && calendarError) {
+        let calendarLoadTimer: number | undefined;
+        let calendarLoaded = false;
+        let calendarAttempt = 0;
+        let removeCalendarListeners = () => {};
+        const setCalendarState = (state: 'loading' | 'loaded' | 'error') => {
+          calendarWrapper.classList.toggle('loading', state === 'loading');
+          calendarWrapper.classList.toggle('loaded', state === 'loaded');
+          calendarWrapper.classList.toggle('error', state === 'error');
+          calendarStatus.dataset.state = state;
+          calendarStatus.hidden = state === 'loaded';
+          calendarError.hidden = state !== 'error';
+          calendarStatusText.textContent = state === 'loading'
+            ? 'See you in the pool. Loading the live schedule…'
+            : state === 'error'
+              ? 'Live practice schedule unavailable'
+              : '';
         };
-        if (calendarDetails.open) bindSrc();
+        const showCalendarError = (attempt: number) => {
+          if (attempt !== calendarAttempt) return;
+          window.clearTimeout(calendarLoadTimer);
+          calendarLoaded = false;
+          setCalendarState('error');
+        };
+        const loadCalendar = (retry = false) => {
+          const source = calendarIframe.dataset.calendarSource
+            ?? calendarIframe.getAttribute('data-src')
+            ?? calendarIframe.src;
+          if (!source) return;
+          const attempt = ++calendarAttempt;
+          calendarIframe.dataset.calendarSource = source;
+          calendarIframe.removeAttribute('data-src');
+          window.clearTimeout(calendarLoadTimer);
+          removeCalendarListeners();
+          calendarLoaded = false;
+          setCalendarState('loading');
+          const requestUrl = retry
+            ? `${source}${source.includes('?') ? '&' : '?'}dsc_retry=${Date.now()}`
+            : source;
+          const handleLoad = () => {
+            if (attempt !== calendarAttempt) return;
+            calendarLoaded = true;
+            window.clearTimeout(calendarLoadTimer);
+            setCalendarState('loaded');
+          };
+          const handleError = () => showCalendarError(attempt);
+          calendarIframe.addEventListener('load', handleLoad, { once: true });
+          calendarIframe.addEventListener('error', handleError, { once: true });
+          removeCalendarListeners = () => {
+            calendarIframe.removeEventListener('load', handleLoad);
+            calendarIframe.removeEventListener('error', handleError);
+          };
+          calendarIframe.src = requestUrl;
+          calendarLoadTimer = window.setTimeout(() => {
+            if (attempt === calendarAttempt && !calendarLoaded) showCalendarError(attempt);
+          }, 8000);
+        };
+        calendarRetry?.addEventListener('click', () => loadCalendar(true));
+        if (calendarDetails.open) loadCalendar();
         calendarDetails.addEventListener('toggle', () => {
-          if (calendarDetails.open) bindSrc();
+          if (calendarDetails.open && !calendarWrapper.classList.contains('loaded')) loadCalendar();
         });
       }
 
-      const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const motionMediaQuery = matchMedia('(prefers-reduced-motion: reduce)');
+      const prefersReducedMotion = motionMediaQuery.matches;
       if (!prefersReducedMotion) {
         document.querySelectorAll<HTMLElement>('.button, .theme-toggle, .menu-toggle').forEach((control) => {
           control.addEventListener('pointerdown', (event) => {
+            if (motionMediaQuery.matches) return;
             const rect = control.getBoundingClientRect();
             const ripple = document.createElement('span');
             ripple.className = 'button__ripple';
@@ -533,12 +662,14 @@ const merchHref = isConfigured(club.merchStoreUrl)
       const sections = navLinks
         .map((link) => document.querySelector(link.hash))
         .filter((section): section is HTMLElement => Boolean(section));
-      const observer = new IntersectionObserver((entries) => {
-        const current = entries.find((entry) => entry.isIntersecting);
-        if (!current) return;
-        navLinks.forEach((link) => link.toggleAttribute('aria-current', link.hash === `#${current.target.id}`));
-      }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
-      sections.forEach((section) => observer.observe(section));
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          const current = entries.find((entry) => entry.isIntersecting);
+          if (!current) return;
+          navLinks.forEach((link) => link.toggleAttribute('aria-current', link.hash === `#${current.target.id}`));
+        }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
+        sections.forEach((section) => observer.observe(section));
+      }
 
 // Scroll-driven reveals: arm each .reveal element when it enters the viewport so
 // the settle keyframe fires on visibility rather than only at page load. Falls
@@ -546,19 +677,26 @@ const merchHref = isConfigured(club.merchStoreUrl)
 // the page never stays half-hidden if either fails.
 const revealTargets = document.querySelectorAll<HTMLElement>('.reveal');
 const armReveal = (el: Element) => el.setAttribute('data-revealed', 'true');
+let revealObserver: IntersectionObserver | undefined;
 if (prefersReducedMotion || !('IntersectionObserver' in window)) {
   revealTargets.forEach(armReveal);
 } else {
-  const revealObserver = new IntersectionObserver((entries) => {
+  revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         armReveal(entry.target);
-        revealObserver.unobserve(entry.target);
+        revealObserver?.unobserve(entry.target);
       }
     });
   }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
-  revealTargets.forEach((el) => revealObserver.observe(el));
+  revealTargets.forEach((el) => revealObserver?.observe(el));
 }
+motionMediaQuery.addEventListener('change', (event) => {
+  if (event.matches) {
+    revealObserver?.disconnect();
+    revealTargets.forEach(armReveal);
+  }
+});
     </script>
   </body>
 </html>

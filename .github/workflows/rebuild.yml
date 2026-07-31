@@ -1,0 +1,53 @@
+name: Scheduled rebuild
+
+# Different Strokes Calgary is a static site whose published schedule and fees
+# are evaluated when Astro builds the bundle. A scheduled rebuild replaces the
+# GitHub Pages artifact on a sparse cadence so that, when a season expires, the
+# page falls back to the .schedule-unavailable / .fees-unavailable copy instead
+# of serving a stale build from before the rollover date.
+
+on:
+  schedule:
+    # 05:00 UTC on the 1st of each month — a sparse cadence that catches
+    # expiry within at most ~30 days of a published schedule's endsOn date.
+    # Idempotent: if the source hasn't changed, the build artifact is identical
+    # and the Pages deployment is a no-op.
+    - cron: '0 5 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  # Distinct from the push-triggered deploy workflow's `pages` group so a
+  # scheduled rebuild never cancels an in-flight push-triggered build (and vice
+  # versa). Each workflow stays self-cancellable.
+  group: pages-rebuild
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

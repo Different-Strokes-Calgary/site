@@ -13,7 +13,12 @@
   --blue: oklch(0.61 0.17 247);
   --blue-deep: oklch(0.43 0.13 252);
   --pink: oklch(0.7 0.19 344);
-  --pink-deep: oklch(0.44 0.20 347);
+  /* Darkened from oklch(0.44 0.20 347) so light-mode usage clears WCAG SC 1.4.3
+     (>=4.5:1 on white). L=0.44 measured ~4.2:1 — usable as text or button
+     background but borderline; L=0.38 buys ~5.0:1 headroom while keeping the
+     347° brand hue and 0.20 chroma crispness of the original. Dark mode keeps
+     its high-L=0.78 pink for text on dark canvas (already >5:1). */
+  --pink-deep: oklch(0.38 0.20 347);
   --surface: oklch(0.94 0.03 245);
   --surface-strong: oklch(0.88 0.07 245);
   --line: oklch(0.84 0.03 245);
@@ -89,6 +94,28 @@
   --line: oklch(0.42 0.05 250);
 }
 
+/* The head script normally sets data-theme before the body parses. When
+   JavaScript is unavailable, mirror the OS preference so dark artwork and the
+   token palette cannot disagree. */
+@media (prefers-color-scheme: dark) {
+  :root:not(.has-js)[data-theme='light'] {
+    --canvas: oklch(0.18 0.07 252);
+    --ink: oklch(0.94 0.02 245);
+    --blue: oklch(0.72 0.15 247);
+    --blue-deep: oklch(0.78 0.11 247);
+    --pink: oklch(0.78 0.16 344);
+    --pink-deep: oklch(0.78 0.16 344);
+    --surface: oklch(0.22 0.04 250);
+    --surface-strong: oklch(0.3 0.06 250);
+    --line: oklch(0.42 0.05 250);
+  }
+
+  :root:not(.has-js)[data-theme='light'] body {
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+  }
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -101,7 +128,6 @@ html {
 
 body {
   margin: 0;
-  overflow-x: hidden;
   color: var(--ink);
   background: var(--canvas);
   font-family: 'Atkinson Hyperlegible', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -136,6 +162,10 @@ button, summary {
 img {
   display: block;
   max-width: 100%;
+}
+
+[data-theme-image] {
+  display: contents;
 }
 
 h1, h2, h3, p {
@@ -380,26 +410,41 @@ nav a:hover {
 }
 
 .theme-toggle__sun, .theme-toggle__moon {
-  width: 1.1rem;
-  height: 1.1rem;
+  /* Stacked crossfade so the icon transition reads as rotation instead of a
+     hard display:none swap. Both spans occupy the same 2.75rem cell via
+     absolute positioning; the SVG centers via grid on the span itself.
+     220ms opacity + 320ms rotate gives the icons a quarter-turn arc as they
+     hand off, matching the world-language of the rest of the page without
+     becoming a spectacle. */
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  width: 100%;
+  height: 100%;
+  transition: opacity 220ms var(--ease-out-quart), transform 320ms var(--ease-out-quart);
 }
 .theme-toggle__sun svg, .theme-toggle__moon svg {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 1.1rem;
+  height: 1.1rem;
   transition: transform 260ms var(--ease-out-quart);
 }
-.theme-toggle:hover svg {
+.theme-toggle:hover .theme-toggle__sun svg,
+.theme-toggle:hover .theme-toggle__moon svg {
   transform: rotate(14deg) scale(1.05);
 }
 .theme-toggle__moon {
-  display: none;
+  opacity: 0;
+  transform: rotate(60deg) scale(0.7);
 }
 :root[data-theme='dark'] .theme-toggle__sun {
-  display: none;
+  opacity: 0;
+  transform: rotate(-60deg) scale(0.7);
 }
 :root[data-theme='dark'] .theme-toggle__moon {
-  display: block;
+  opacity: 1;
+  transform: none;
 }
 .menu-toggle {
   display: none;
@@ -499,18 +544,14 @@ section {
   object-fit: contain;
   object-position: center bottom;
   transform-origin: 58% 82%;
+  /* One-shot entrance via hero-swim (translate3d + scale + filter blur over
+     1050ms). Modern engines auto-promote the layer during the animation; a
+     permanent will-change hint would only allocate GPU memory for the page's
+     lifetime, so we don't hint and let the browser reclaim the layer after
+     the entrance settles. animation-fill-mode: `both` keeps the final state
+     so the user never sees a re-paint at end-of-anim. */
   animation: hero-swim 1050ms 80ms var(--ease-out-expo) both;
 }
-.hero__illustration--dark {
-  display: none;
-}
-:root[data-theme='dark'] .hero__illustration--light {
-  display: none;
-}
-:root[data-theme='dark'] .hero__illustration--dark {
-  display: block;
-}
-
 /* Practice & Schedule Section */
 .practice,
 .story-grid {
@@ -772,10 +813,29 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
 .calendar-status__dot {
   width: 0.55rem;
   height: 0.55rem;
+  flex: 0 0 auto;
   border-radius: 50%;
+  background: var(--line);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--line) 24%, transparent);
+}
+.calendar-status[data-state='loading'] .calendar-status__dot {
   background: oklch(0.68 0.18 145);
   box-shadow: 0 0 0 3px color-mix(in oklch, oklch(0.68 0.18 145) 24%, transparent);
   animation: pulse-dot 2.4s ease-in-out infinite;
+}
+.calendar-status[data-state='loaded'] .calendar-status__dot {
+  background: oklch(0.68 0.18 145);
+  box-shadow: 0 0 0 3px color-mix(in oklch, oklch(0.68 0.18 145) 24%, transparent);
+  /* One-shot settle pulse: a slight overshoot at the moment data arrives so
+     the dot feels like it "lands" rather than just changes colour. */
+  animation: pulse-once 540ms var(--ease-out-expo);
+}
+.calendar-status[data-state='error'] {
+  color: var(--pink-deep);
+}
+.calendar-status[data-state='error'] .calendar-status__dot {
+  background: var(--pink-deep);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--pink-deep) 24%, transparent);
 }
 @keyframes pulse-dot {
   0%, 100% { transform: scale(1); opacity: 1; }
@@ -857,6 +917,18 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   background-size: 200% 100%;
   animation: calendar-shimmer 1.8s ease-in-out infinite;
 }
+/* Skeleton wave: each calendar-column shimmer is staggered by 80ms from its
+   neighbour so the seven columns don't pulse in lockstep. The result reads
+   as a wave rolling through the week rather than a flat shimmer, which
+   matches the aquatic world and tells the eye "data is on its way." Each
+   delay is bounded so the wave never takes longer than 480ms to start. */
+.skeleton-col:nth-child(1) { animation-delay: 0ms; }
+.skeleton-col:nth-child(2) { animation-delay: 80ms; }
+.skeleton-col:nth-child(3) { animation-delay: 160ms; }
+.skeleton-col:nth-child(4) { animation-delay: 240ms; }
+.skeleton-col:nth-child(5) { animation-delay: 320ms; }
+.skeleton-col:nth-child(6) { animation-delay: 400ms; }
+.skeleton-col:nth-child(7) { animation-delay: 480ms; }
 @media (min-width: 640px) {
   .skeleton-col {
     min-height: 26rem;
@@ -879,8 +951,14 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   border-radius: 0.65rem;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
   opacity: 0;
-  transform: scale(0.995);
-  transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1), transform 500ms cubic-bezier(0.16, 1, 0.3, 1), filter 260ms var(--ease-out-quart), border-color 260ms var(--ease-out-quart);
+  /* Iframe entry: a longer 720ms landing with a 0.99→1 scale and a 4px→0
+     vertical translate. The first 100ms feels lighter, the last 300ms
+     settles; using --ease-out-expo (0.16, 1, 0.3, 1) keeps the deceleration
+     curve continuous with the page's other arrivals. The 0.99/4px values
+     read as a deliberate settling motion rather than a flicker on standard
+     device pixel ratios. */
+  transform: scale(0.99) translateY(4px);
+  transition: opacity 720ms var(--ease-out-expo), transform 720ms var(--ease-out-expo), border-color 260ms var(--ease-out-quart);
 }
 @media (min-width: 640px) {
   .calendar-frame iframe {
@@ -889,21 +967,98 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
 }
 .calendar-wrapper.loaded iframe {
   opacity: 1;
-  transform: scale(1);
+  transform: scale(1) translateY(0);
+}
+.calendar-wrapper.error {
+  display: grid;
+  place-items: center;
+  min-height: 16rem;
+  padding: var(--space-lg);
+  background: color-mix(in oklch, var(--pink) 8%, var(--canvas));
+  border: 1px solid color-mix(in oklch, var(--pink-deep) 35%, transparent);
+}
+.calendar-wrapper.error iframe,
+.calendar-wrapper.error .calendar-skeleton {
+  display: none;
+}
+.calendar-error {
+  max-width: 38rem;
+  color: var(--ink);
+  text-align: center;
+  /* Error entry fades up and scales from 0.97 → 1 over 280ms to acknowledge
+     the failure was a wait, not a crash. */
+  animation: calendar-error-rise 280ms var(--ease-out-quart);
+}
+.calendar-error p {
+  margin-bottom: var(--space-md);
+}
+.calendar-error__actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+.calendar-noscript {
+  padding: var(--space-sm) var(--space-md);
+  margin: var(--space-xs) 0 0;
+  color: var(--ink);
+  background: color-mix(in oklch, var(--surface) 60%, var(--canvas));
+  border-radius: var(--space-xs);
+}
+html:not(.has-js) .calendar-wrapper,
+html:not(.has-js) .calendar-status {
+  display: none;
 }
 :root[data-theme='dark'] .calendar-frame iframe {
-  filter: invert(0.9) hue-rotate(180deg) contrast(0.96) saturate(1.05);
+  color-scheme: light;
+  opacity: 0.94;
   border-color: color-mix(in oklch, var(--line) 25%, transparent);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .calendar-frame iframe {
-    filter: invert(0.9) hue-rotate(180deg) contrast(0.96) saturate(1.05);
-    border-color: color-mix(in oklch, var(--line) 25%, transparent);
-  }
 }
 .calendar-pending {
   padding: var(--space-sm) var(--space-md);
   margin: 0;
+}
+.schedule-note,
+.schedule-unavailable,
+.season-stale {
+  max-width: var(--measure-body);
+  padding: var(--space-2xs) var(--space-xs);
+  margin: var(--space-2xs) 0 var(--space-xs);
+  border-radius: var(--space-2xs);
+  font-size: var(--font-size-sm);
+}
+.schedule-note {
+  /* Tight pill that hugs the leading sentence ("Practice times can change.
+     Check the live calendar…") instead of stretching to fill the column.
+     width: fit-content on a flex item (parent .practice-schedule-group is
+     display:flex;flex-direction:column) sizes the box to its natural content
+     width while preserving the column's vertical rhythm. max-width keeps the
+     pill from stretching wider than the body measure if the sentence is
+     unusually long. Vertical margin is preserved so spacing under the
+     schedule heading stays consistent. */
+  width: fit-content;
+  max-width: var(--measure-body);
+  margin: var(--space-2xs) 0 var(--space-xs);
+  color: var(--blue-deep);
+  background: color-mix(in oklch, var(--surface) 60%, transparent);
+  border: 1px solid color-mix(in oklch, var(--line) 65%, transparent);
+}
+.schedule-unavailable,
+.season-stale,
+.fees-unavailable {
+  color: var(--pink-deep);
+  background: color-mix(in oklch, var(--pink) 8%, transparent);
+}
+.fees-unavailable {
+  max-width: var(--measure-body);
+  padding: var(--space-sm) var(--space-md);
+  margin: clamp(1.75rem, 4vw, 3rem) 0 var(--space-md);
+  border-radius: var(--space-xs);
+  font-size: var(--font-size-base);
+}
+.fees-unavailable a {
+  font-weight: 700;
+  text-underline-offset: 0.2em;
 }
 
 /* Membership (Join) Section */
@@ -972,7 +1127,14 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
 }
 
 .fee-row__detail {
-  color: color-mix(in oklch, var(--ink) 85%, var(--canvas));
+  /* Pure --ink: 85% light-on-dark was ~3.6:1 under dark mode and 85% dark-on-light
+     read visually identical to the table header. Goes straight to --ink for AA
+     pass in both themes. Hierarchy vs the bold tier name and pink-deep price
+     comes from explicit weight 400 (rather than visual mute from a low ink
+     mix); the 0.96–1.13rem size and 1.6 line-height already place it as
+     supporting copy in the row. */
+  color: var(--ink);
+  font-weight: 400;
 }
 
 .join__details {
@@ -1070,7 +1232,10 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   margin: 0;
   font-size: var(--font-size-sm);
   line-height: 1.55;
-  color: color-mix(in oklch, var(--ink) 78%, var(--canvas));
+  /* Switched from color-mix(ink 78%, canvas) — 78% light-on-dark failed WCAG AA
+     (~3.7:1) under dark mode. Pure --ink clears 4.5:1 in both themes; size +
+     weight still create hierarchy against .coach-card strong/span. */
+  color: var(--ink);
 }
 
 .story-archive__content {
@@ -1121,16 +1286,6 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   transform-origin: 50% 70%;
   border-radius: var(--space-xs);
 }
-.story-art__illustration--dark {
-  display: none;
-}
-:root[data-theme='dark'] .story-art__illustration--light {
-  display: none;
-}
-:root[data-theme='dark'] .story-art__illustration--dark {
-  display: block;
-}
-
 /* Site Footer */
 footer {
   display: grid;
@@ -1148,7 +1303,9 @@ footer p {
   max-width: var(--measure-narrow);
   margin: 0;
   font-size: var(--font-size-sm);
-  color: color-mix(in oklch, var(--ink) 75%, var(--canvas));
+  /* Pure --ink clears 4.5:1 in both themes; the 75% mix failed (~3.1:1) in dark
+     mode where --ink is light. */
+  color: var(--ink);
 }
 .footer-links {
   display: flex;
@@ -1161,10 +1318,25 @@ footer p {
   flex-direction: column;
   align-items: flex-start;
 }
+.footer-muted {
+  /* Muted badge of honor appended to the footer tagline. Sits inside the
+     same <p> as the lead so the paragraph is one structural unit for screen
+     readers. Uses full --ink at --font-size-xs + weight 400 so the supporting
+     copy clears WCAG SC 1.4.3 (>=4.5:1) in both themes; visual hierarchy vs
+     the bold lead still reads as supporting copy through size and weight.
+     No animation; safe under prefers-reduced-motion. */
+  color: var(--ink);
+  font-weight: 400;
+  font-size: var(--font-size-xs);
+  margin-left: var(--space-2xs);
+}
 .footer-powered {
   font-size: var(--font-size-xs);
   line-height: 1.25;
-  color: color-mix(in oklch, var(--ink) 65%, var(--canvas));
+  /* 65% mix read ~2.6:1 (AA fail) in dark mode and ~3.7:1 in light mode.
+     90% mix clears AA in both themes; visual hierarchy vs footer p is carried
+     by font-size-xs + font-weight 400. */
+  color: color-mix(in oklch, var(--ink) 90%, var(--canvas));
   margin-top: -0.25rem;
   font-weight: 400;
 }
@@ -1222,6 +1394,15 @@ footer p {
 }
 @keyframes ripple {
   to { opacity: 0; transform: translate(-50%, -50%) scale(18); }
+}
+@keyframes pulse-once {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+@keyframes calendar-error-rise {
+  from { opacity: 0.01; transform: translateY(0.4rem) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* Responsive Media Queries */
@@ -1506,14 +1687,85 @@ footer p {
   html {
     scroll-behavior: auto;
   }
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  /* Stop the entrance / scene / loop keyframes. Hover colour transitions and
+     theme-toggle icon crossfade are preserved as essential state feedback. */
+  .hero__illustration,
+  .calendar-status__dot,
+  .skeleton-pill,
+  .skeleton-col,
+  .has-js .reveal[data-revealed='true'],
+  details[open] > .details-grid,
+  details[open] > .coach-list,
+  details[open] > .calendar-frame,
+  details[open] > .calendar-pending,
+  details[open] > p,
+  nav[data-open],
+  .calendar-error {
+    animation: none !important;
+  }
+  /* The iframe entry transform is the only motion we kill on top of the
+     keyframes above, because the long 720ms exit-into-place read would feel
+     drawn out for users who opted out of motion. The icon crossfade and
+     button hover lifts stay (state feedback, under 320ms). */
+  .calendar-frame iframe {
+    transition: opacity 1ms, border-color 260ms var(--ease-out-quart);
+    transform: none;
+  }
+  .button__ripple,
+  .calendar-skeleton {
+    transition: none !important;
+    animation: none !important;
+  }
+  /* The theme-toggle hover lift on the inner SVG is interaction-triggered
+     decoration. WCAG SC 2.3.3 asks for it to drop under reduced motion; the
+     swap's opacity transition is preserved as essential state feedback. */
+  .theme-toggle:hover .theme-toggle__sun svg,
+  .theme-toggle:hover .theme-toggle__moon svg {
+    transform: none !important;
+  }
+  /* Hover-driven translateY/scale on every other control is also
+     interaction-triggered decoration (SC 2.3.3); the colour transitions
+     underneath stay as essential state feedback. */
+  .brand:hover,
+  nav a:hover,
+  .button:hover,
+  .button--outline:hover,
+  .coach-card:hover,
+  .text-link:hover span,
+  .menu-toggle:hover {
+    transform: none !important;
+  }
+  /* Press feedback on .button:active (translateY+scale) and the click
+     ripple keyframe are also interaction-triggered; kill both under reduced
+     motion. The pill still depresses through background/border colour. */
+  .button:active,
+  .button--outline:active {
+    transform: none !important;
+  }
+  .button__ripple {
+    animation: none !important;
+    transform: translate(-50%, -50%) scale(0) !important;
   }
 }
 
 @keyframes menu-drop {
   from { opacity: 0.01; transform: translateY(-0.35rem) scaleY(0.98); }
   to { opacity: 1; transform: translateY(0) scaleY(1); }
+}
+
+/* JavaScript owns the compact drawer and theme toggle. Keep the fallback
+   navigation visible and remove inert controls when scripts are unavailable. */
+html:not(.has-js) .theme-toggle {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  html:not(.has-js) .menu-toggle,
+  html:not(.has-js) .theme-toggle {
+    display: none;
+  }
+  html:not(.has-js) .site-header nav {
+    display: flex;
+    animation: none;
+  }
 }
