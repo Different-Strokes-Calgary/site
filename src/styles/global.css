@@ -797,49 +797,10 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
 .calendar-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: var(--space-xs);
   flex-wrap: wrap;
   padding: 0.1rem 0.2rem 0.25rem;
-}
-.calendar-status {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2xs);
-  font-size: var(--font-size-sm);
-  font-weight: 700;
-  color: var(--blue-deep);
-}
-.calendar-status__dot {
-  width: 0.55rem;
-  height: 0.55rem;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  background: var(--line);
-  box-shadow: 0 0 0 3px color-mix(in oklch, var(--line) 24%, transparent);
-}
-.calendar-status[data-state='loading'] .calendar-status__dot {
-  background: oklch(0.68 0.18 145);
-  box-shadow: 0 0 0 3px color-mix(in oklch, oklch(0.68 0.18 145) 24%, transparent);
-  animation: pulse-dot 2.4s ease-in-out infinite;
-}
-.calendar-status[data-state='loaded'] .calendar-status__dot {
-  background: oklch(0.68 0.18 145);
-  box-shadow: 0 0 0 3px color-mix(in oklch, oklch(0.68 0.18 145) 24%, transparent);
-  /* One-shot settle pulse: a slight overshoot at the moment data arrives so
-     the dot feels like it "lands" rather than just changes colour. */
-  animation: pulse-once 540ms var(--ease-out-expo);
-}
-.calendar-status[data-state='error'] {
-  color: var(--pink-deep);
-}
-.calendar-status[data-state='error'] .calendar-status__dot {
-  background: var(--pink-deep);
-  box-shadow: 0 0 0 3px color-mix(in oklch, var(--pink-deep) 24%, transparent);
-}
-@keyframes pulse-dot {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.18); opacity: 0.75; }
 }
 .calendar-open-link {
   font-size: var(--font-size-sm);
@@ -1005,8 +966,7 @@ details[open] > .details-grid, details[open] > .coach-list, details[open] > .cal
   background: color-mix(in oklch, var(--surface) 60%, var(--canvas));
   border-radius: var(--space-xs);
 }
-html:not(.has-js) .calendar-wrapper,
-html:not(.has-js) .calendar-status {
+html:not(.has-js) .calendar-wrapper {
   display: none;
 }
 :root[data-theme='dark'] .calendar-frame iframe {
@@ -1698,7 +1658,6 @@ footer p {
   /* Stop the entrance / scene / loop keyframes. Hover colour transitions and
      theme-toggle icon crossfade are preserved as essential state feedback. */
   .hero__illustration,
-  .calendar-status__dot,
   .skeleton-pill,
   .skeleton-col,
   .has-js .reveal[data-revealed='true'],

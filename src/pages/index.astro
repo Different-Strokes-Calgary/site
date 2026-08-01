@@ -199,10 +199,6 @@ const merchHref = isConfigured(club.merchStoreUrl)
             {calendarReady ? (
               <div class="calendar-frame">
                 <div class="calendar-header">
-                  <div class="calendar-status" data-state="idle" role="status" aria-live="polite">
-                    <span class="calendar-status__dot" aria-hidden="true"></span>
-                    <span data-calendar-status>Open to load the live practice schedule</span>
-                  </div>
                   <a class="text-link calendar-open-link" href={calendarOpenHref} target="_blank" rel="noopener noreferrer">Open in Google Calendar <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
                 </div>
                 {/* Lazy-bind src: defer the 3rd-party Google Calendar request
@@ -573,11 +569,9 @@ const merchHref = isConfigured(club.merchStoreUrl)
       const calendarDetails = document.querySelector<HTMLDetailsElement>('.calendar-details');
       const calendarWrapper = calendarDetails?.querySelector<HTMLElement>('.calendar-wrapper');
       const calendarIframe = calendarDetails?.querySelector<HTMLIFrameElement>('iframe');
-      const calendarStatus = calendarDetails?.querySelector<HTMLElement>('.calendar-status');
-      const calendarStatusText = calendarDetails?.querySelector<HTMLElement>('[data-calendar-status]');
       const calendarError = calendarDetails?.querySelector<HTMLElement>('.calendar-error');
       const calendarRetry = calendarDetails?.querySelector<HTMLButtonElement>('.calendar-retry');
-      if (calendarDetails && calendarIframe && calendarWrapper && calendarStatus && calendarStatusText && calendarError) {
+      if (calendarDetails && calendarIframe && calendarWrapper && calendarError) {
         let calendarLoadTimer: number | undefined;
         let calendarLoaded = false;
         let calendarAttempt = 0;
@@ -586,14 +580,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
           calendarWrapper.classList.toggle('loading', state === 'loading');
           calendarWrapper.classList.toggle('loaded', state === 'loaded');
           calendarWrapper.classList.toggle('error', state === 'error');
-          calendarStatus.dataset.state = state;
-          calendarStatus.hidden = state === 'loaded';
           calendarError.hidden = state !== 'error';
-          calendarStatusText.textContent = state === 'loading'
-            ? 'See you in the pool. Loading the live schedule…'
-            : state === 'error'
-              ? 'Live practice schedule unavailable'
-              : '';
         };
         const showCalendarError = (attempt: number) => {
           if (attempt !== calendarAttempt) return;
