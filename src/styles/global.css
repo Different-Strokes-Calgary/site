@@ -763,7 +763,7 @@ details[open].disclosure-card > summary.disclosure-bar .chevron {
   gap: var(--space-lg);
   padding: var(--space-md) var(--space-md) var(--space-lg);
 }
-details[open] > .details-grid, details[open] > .coach-list, details[open] > .calendar-frame, details[open] > .calendar-pending, details[open] > p {
+details[open] > .details-grid, details[open] > .coach-list, details[open] > .calendar-frame, details[open] > .calendar-pending, details[open] > .story-archive__content, details[open] > p {
   animation: detail-rise 260ms var(--ease-out-quart) both;
 }
 .details-grid h3 {
@@ -1111,6 +1111,11 @@ html:not(.has-js) .calendar-status {
   padding: 0.85rem var(--space-md);
   font-size: var(--font-size-sm);
   border-bottom: 1px solid color-mix(in oklch, var(--line) 45%, transparent);
+  transition: background 180ms var(--ease-out-quart);
+}
+
+.fee-row:hover {
+  background: color-mix(in oklch, var(--surface) 40%, transparent);
 }
 
 .fee-row:last-child {
@@ -1419,6 +1424,9 @@ footer p {
   .text-link:hover span,
   .theme-toggle:hover svg {
     transform: none;
+  }
+  .fee-row:hover {
+    background: transparent;
   }
 }
 

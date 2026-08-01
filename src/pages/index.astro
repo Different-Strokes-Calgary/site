@@ -186,7 +186,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
               ))}
             </ol>
           ) : (
-            <p class="schedule-unavailable">All strokes welcome. Practice times are being updated — check the live calendar for current times.</p>
+            <p class="schedule-unavailable">All strokes welcome. Practice times are being updated. Check the live calendar for current times.</p>
           )}
         </div>
 
@@ -302,7 +302,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
                   <li>Ease toward the wall before turning so you can push off straight.</li>
                   <li>Follow the posted workout, or move lanes if you are doing something different.</li>
                   <li>Rest at the side of the lane so others can turn safely.</li>
-                  <li>Smile—then help tidy up when the workout ends.</li>
+                  <li>Smile, then help tidy up when the workout ends.</li>
                 </ul>
               </div>
             </div>
@@ -336,7 +336,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
             ))}
           </div>
         ) : (
-          <p class="fees-unavailable">Welcome to our lane. Membership pricing is being updated — please <a href={contactHref}>contact the club</a> for current fees before registering.</p>
+          <p class="fees-unavailable">Welcome to our lane. Membership pricing is being updated. Please <a href={contactHref}>contact the club</a> for current fees before registering.</p>
         )}
       </section>
 
@@ -697,6 +697,13 @@ motionMediaQuery.addEventListener('change', (event) => {
     revealTargets.forEach(armReveal);
   }
 });
+try {
+  console.log(
+    '%cDifferent Strokes Calgary 🏊‍♂️%c\nFun and fitness for life! See you in the pool.',
+    'color: #0284c7; font-weight: bold; font-size: 14px; font-family: sans-serif;',
+    'color: #db2777; font-size: 12px; font-family: sans-serif;'
+  );
+} catch {}
     </script>
   </body>
 </html>
