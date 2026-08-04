@@ -1019,9 +1019,17 @@ html:not(.has-js) .calendar-wrapper {
   display: none;
 }
 :root[data-theme='dark'] .calendar-frame iframe {
-  color-scheme: light;
-  opacity: 0.94;
+  color-scheme: dark;
+  filter: invert(0.9) hue-rotate(180deg) contrast(0.95);
   border-color: color-mix(in oklch, var(--line) 25%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.has-js) .calendar-frame iframe {
+    color-scheme: dark;
+    filter: invert(0.9) hue-rotate(180deg) contrast(0.95);
+    border-color: color-mix(in oklch, var(--line) 25%, transparent);
+  }
 }
 .calendar-pending {
   padding: var(--space-sm) var(--space-md);
