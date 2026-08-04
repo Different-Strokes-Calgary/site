@@ -15,6 +15,14 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
 const merchHref = isConfigured(club.merchStoreUrl)
   ? club.merchStoreUrl
   : 'https://differentstrokescalgary.org/merch';
+
+const today = new Date();
+const currentCalgaryMonth = parseInt(
+  new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Edmonton', month: 'numeric' }).format(today),
+  10
+);
+const isSummerSeason = currentCalgaryMonth === 7 || currentCalgaryMonth === 8;
+const activeSeason = isSummerSeason ? 'summer' : 'regular';
 ---
 
 <!doctype html>
@@ -172,26 +180,94 @@ const merchHref = isConfigured(club.merchStoreUrl)
         <div class="practice-schedule-group reveal" role="region" aria-labelledby="practice-schedule-heading">
           <h3 id="practice-schedule-heading">Practice Schedule</h3>
           <p class="schedule-note" role="status">Practice times can change. Check the live calendar below for current times.</p>
-          <ol class="practice-list" aria-label="Practice schedule overview">
-            <li>
-              <strong>Regular</strong>
-              <span>Sept–June</span>
-              <span>Friday &amp; Sunday evenings</span>
-              <em>MNP &amp; Killarney</em>
-            </li>
-            <li>
-              <strong>Summer</strong>
-              <span>July–Aug</span>
-              <span>Wednesday &amp; Friday evenings</span>
-              <em>MNP Centre</em>
-            </li>
-            <li>
-              <strong>Summer</strong>
-              <span>July–Aug</span>
-              <span>Sunday mornings (outdoor)</span>
-              <em>Bowview Pool</em>
-            </li>
-          </ol>
+          
+          <div class="schedule-cards" aria-label="Practice schedule options by season">
+            <div class={`schedule-card ${activeSeason === 'regular' ? 'schedule-card--active' : ''}`} data-season="regular">
+              <div class="schedule-card__header">
+                <div class="schedule-card__title-wrap">
+                  <h4 class="schedule-card__title">Regular Season</h4>
+                  <span class="schedule-card__months">Sept–June</span>
+                </div>
+                {activeSeason === 'regular' && (
+                  <span class="schedule-card__badge">Active Season</span>
+                )}
+                <span class="schedule-card__badge schedule-card__badge--js" hidden>Active Season</span>
+              </div>
+              <ul class="schedule-card__list">
+                <li class="schedule-card__item">
+                  <span class="schedule-card__time">Friday &amp; Sunday evenings</span>
+                  <em class="schedule-card__venue">MNP &amp; Killarney</em>
+                </li>
+              </ul>
+            </div>
+
+            <div class={`schedule-card ${activeSeason === 'summer' ? 'schedule-card--active' : ''}`} data-season="summer">
+              <div class="schedule-card__header">
+                <div class="schedule-card__title-wrap">
+                  <h4 class="schedule-card__title">Summer Season</h4>
+                  <span class="schedule-card__months">July–Aug</span>
+                </div>
+                {activeSeason === 'summer' && (
+                  <span class="schedule-card__badge">Active Season</span>
+                )}
+                <span class="schedule-card__badge schedule-card__badge--js" hidden>Active Season</span>
+              </div>
+              <ul class="schedule-card__list">
+                <li class="schedule-card__item">
+                  <span class="schedule-card__time">Wednesday &amp; Friday evenings</span>
+                  <em class="schedule-card__venue">MNP Centre</em>
+                </li>
+                <li class="schedule-card__item">
+                  <span class="schedule-card__time">
+                    Sunday mornings
+                    <span class="outdoor-pill">
+                      <svg class="sun-icon-smile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="15" height="15">
+                        <circle cx="12" cy="12" r="4" />
+                        <path d="M12 2v2" />
+                        <path d="M12 20v2" />
+                        <path d="m4.93 4.93 1.41 1.41" />
+                        <path d="m17.66 17.66 1.41 1.41" />
+                        <path d="M2 12h2" />
+                        <path d="M20 12h2" />
+                        <path d="m6.34 17.66-1.41 1.41" />
+                        <path d="m19.07 4.93-1.41 1.41" />
+                        <circle cx="10" cy="11" r="0.5" fill="currentColor" />
+                        <circle cx="14" cy="11" r="0.5" fill="currentColor" />
+                        <path d="M10 13.5a2.5 2.5 0 0 0 4 0" />
+                      </svg>
+                      outdoor
+                    </span>
+                  </span>
+                  <em class="schedule-card__venue">Bowview Pool</em>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <script>
+            (() => {
+              try {
+                const now = new Date();
+                const month = parseInt(
+                  new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Edmonton', month: 'numeric' }).format(now),
+                  10
+                );
+                const isSummer = month === 7 || month === 8;
+                const activeSeason = isSummer ? 'summer' : 'regular';
+
+                document.querySelectorAll('.schedule-card').forEach((card) => {
+                  const season = card.getAttribute('data-season');
+                  const isActive = season === activeSeason;
+                  card.classList.toggle('schedule-card--active', isActive);
+                  const jsBadge = card.querySelector('.schedule-card__badge--js');
+                  if (jsBadge instanceof HTMLElement) {
+                    jsBadge.hidden = !isActive;
+                  }
+                });
+              } catch (e) {
+                // Keep server rendered fallback
+              }
+            })();
+          </script>
         </div>
 
         <div class="practice__details">
