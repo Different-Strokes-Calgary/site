@@ -584,27 +584,20 @@ section {
   min-width: 0;
 }
 .practice-schedule-group h3 {
-  /* Match the schedule rows: same font-size + line-height as .practice-list so
-     "Summer Jul-Aug 2026" reads as a caption label rather than a separate
-     tier of heading above the list. Font-weight 700 is inherited from the
-     global h1/h2/h3 rule. `letter-spacing: 0` overrides the global h3 tracking
-     (which sits at -0.02em) because negative tracking at body-copy size would
-     visually amplify the small size. */
-  font-size: var(--font-size-base);
-  line-height: 1.6;
-  letter-spacing: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.2vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
   color: var(--blue-deep);
-  margin: 0;
+  margin: 0 0 var(--space-3xs) 0;
 }
-.practice-schedule-group .calendar-details {
-  margin-top: 0;
-}
-/* Practice Schedule Split Cards (Option B) */
+/* Practice Schedule Split Cards */
 .schedule-cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-md);
-  margin-top: var(--space-xs);
+  margin-top: 0;
   margin-bottom: var(--space-md);
   width: 100%;
   min-width: 0;
@@ -615,69 +608,53 @@ section {
   flex-direction: column;
   gap: var(--space-xs);
   padding: clamp(var(--space-sm), 3.5vw, var(--space-md));
-  background: var(--surface);
-  border: 1px solid color-mix(in oklch, var(--line) 80%, transparent);
-  border-radius: 0.75rem;
+  background: color-mix(in oklch, var(--surface) 35%, var(--canvas));
+  border: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
+  border-radius: var(--space-xs);
   position: relative;
   min-width: 0;
-  transition: border-color 220ms var(--ease-out-quart),
-              background-color 220ms var(--ease-out-quart),
-              box-shadow 220ms var(--ease-out-quart);
+  transition: border-color 180ms var(--ease-out-quart),
+              background 180ms var(--ease-out-quart),
+              box-shadow 180ms var(--ease-out-quart);
 }
 
-.schedule-card--active {
-  background: color-mix(in oklch, var(--surface) 85%, var(--blue) 15%);
-  border-color: color-mix(in oklch, var(--blue) 75%, transparent);
-  box-shadow: 0 4px 16px -4px color-mix(in oklch, var(--blue) 20%, transparent);
+.schedule-card:hover {
+  border-color: color-mix(in oklch, var(--blue) 50%, transparent);
+  background: color-mix(in oklch, var(--surface) 50%, var(--canvas));
+  box-shadow: 0 4px 16px -4px color-mix(in oklch, var(--blue) 12%, transparent);
 }
 
 .schedule-card__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  row-gap: var(--space-2xs);
-  column-gap: var(--space-xs);
+  gap: var(--space-xs);
   padding-bottom: var(--space-2xs);
-  border-bottom: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
-  min-width: 0;
-}
-
-.schedule-card__title-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+  border-bottom: 1px solid color-mix(in oklch, var(--line) 50%, transparent);
   min-width: 0;
 }
 
 .schedule-card__title {
+  font-family: var(--font-display);
   font-size: 1.05rem;
   font-weight: 700;
   line-height: 1.3;
+  letter-spacing: -0.01em;
   color: var(--ink);
   margin: 0;
 }
 
 .schedule-card__months {
-  font-size: var(--font-size-sm);
+  font-size: 0.775rem;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
   color: var(--blue-deep);
-}
-
-.schedule-card__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.725rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  padding: 0.2rem 0.55rem;
+  background: color-mix(in oklch, var(--blue) 12%, var(--canvas));
+  padding: 0.15rem 0.55rem;
   border-radius: 9999px;
-  background: var(--blue);
-  color: oklch(0.99 0 0);
+  border: 1px solid color-mix(in oklch, var(--blue) 25%, transparent);
   white-space: nowrap;
-  box-shadow: 0 1px 4px color-mix(in oklch, var(--blue-deep) 30%, transparent);
 }
 
 .schedule-card__list {
@@ -720,8 +697,8 @@ section {
   font-size: 0.725rem;
   font-weight: 700;
   color: var(--ink);
-  background: color-mix(in oklch, var(--pink) 18%, var(--surface));
-  border: 1px solid color-mix(in oklch, var(--pink) 40%, transparent);
+  background: color-mix(in oklch, var(--pink) 15%, var(--canvas));
+  border: 1px solid color-mix(in oklch, var(--pink) 35%, transparent);
   padding: 0.15rem 0.5rem;
   border-radius: 9999px;
   line-height: 1;
@@ -1060,20 +1037,24 @@ html:not(.has-js) .calendar-wrapper {
   font-size: var(--font-size-sm);
 }
 .schedule-note {
-  /* Tight pill that hugs the leading sentence ("Practice times can change.
-     Check the live calendar…") instead of stretching to fill the column.
-     width: fit-content on a flex item (parent .practice-schedule-group is
-     display:flex;flex-direction:column) sizes the box to its natural content
-     width while preserving the column's vertical rhythm. max-width keeps the
-     pill from stretching wider than the body measure if the sentence is
-     unusually long. Vertical margin is preserved so spacing under the
-     schedule heading stays consistent. */
-  width: fit-content;
-  max-width: var(--measure-body);
-  margin: var(--space-2xs) 0 var(--space-xs);
+  width: 100%;
+  box-sizing: border-box;
+  margin: var(--space-xs) 0 var(--space-sm);
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--space-xs);
   color: var(--blue-deep);
-  background: color-mix(in oklch, var(--surface) 60%, transparent);
-  border: 1px solid color-mix(in oklch, var(--line) 65%, transparent);
+  background: color-mix(in oklch, var(--surface) 35%, var(--canvas));
+  border: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.schedule-note__icon {
+  flex-shrink: 0;
+  color: var(--blue-deep);
 }
 .schedule-unavailable,
 .season-stale,

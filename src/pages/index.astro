@@ -15,14 +15,6 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
 const merchHref = isConfigured(club.merchStoreUrl)
   ? club.merchStoreUrl
   : 'https://differentstrokescalgary.org/merch';
-
-const today = new Date();
-const currentCalgaryMonth = parseInt(
-  new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Edmonton', month: 'numeric' }).format(today),
-  10
-);
-const isSummerSeason = currentCalgaryMonth === 7 || currentCalgaryMonth === 8;
-const activeSeason = isSummerSeason ? 'summer' : 'regular';
 ---
 
 <!doctype html>
@@ -179,19 +171,20 @@ const activeSeason = isSummerSeason ? 'summer' : 'regular';
         </div>
         <div class="practice-schedule-group reveal" role="region" aria-labelledby="practice-schedule-heading">
           <h3 id="practice-schedule-heading">Practice Schedule</h3>
-          <p class="schedule-note" role="status">Practice times can change. Check the live calendar below for current times.</p>
+          <p class="schedule-note" role="status">
+            <svg class="schedule-note__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="16" height="16">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4" />
+              <path d="M12 8h.01" />
+            </svg>
+            <span>Practice times can change. Check the live calendar below for current times.</span>
+          </p>
           
           <div class="schedule-cards" aria-label="Practice schedule options by season">
-            <div class={`schedule-card ${activeSeason === 'regular' ? 'schedule-card--active' : ''}`} data-season="regular">
+            <div class="schedule-card">
               <div class="schedule-card__header">
-                <div class="schedule-card__title-wrap">
-                  <h4 class="schedule-card__title">Regular Season</h4>
-                  <span class="schedule-card__months">Sept–June</span>
-                </div>
-                {activeSeason === 'regular' && (
-                  <span class="schedule-card__badge">Active Season</span>
-                )}
-                <span class="schedule-card__badge schedule-card__badge--js" hidden>Active Season</span>
+                <h4 class="schedule-card__title">Regular Season</h4>
+                <span class="schedule-card__months">Sept–June</span>
               </div>
               <ul class="schedule-card__list">
                 <li class="schedule-card__item">
@@ -201,16 +194,10 @@ const activeSeason = isSummerSeason ? 'summer' : 'regular';
               </ul>
             </div>
 
-            <div class={`schedule-card ${activeSeason === 'summer' ? 'schedule-card--active' : ''}`} data-season="summer">
+            <div class="schedule-card">
               <div class="schedule-card__header">
-                <div class="schedule-card__title-wrap">
-                  <h4 class="schedule-card__title">Summer Season</h4>
-                  <span class="schedule-card__months">July–Aug</span>
-                </div>
-                {activeSeason === 'summer' && (
-                  <span class="schedule-card__badge">Active Season</span>
-                )}
-                <span class="schedule-card__badge schedule-card__badge--js" hidden>Active Season</span>
+                <h4 class="schedule-card__title">Summer Season</h4>
+                <span class="schedule-card__months">July–Aug</span>
               </div>
               <ul class="schedule-card__list">
                 <li class="schedule-card__item">
@@ -221,7 +208,7 @@ const activeSeason = isSummerSeason ? 'summer' : 'regular';
                   <span class="schedule-card__time">
                     Sunday mornings
                     <span class="outdoor-pill">
-                      <svg class="sun-icon-smile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="15" height="15">
+                      <svg class="sun-icon-smile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="14" height="14">
                         <circle cx="12" cy="12" r="4" />
                         <path d="M12 2v2" />
                         <path d="M12 20v2" />
@@ -243,31 +230,6 @@ const activeSeason = isSummerSeason ? 'summer' : 'regular';
               </ul>
             </div>
           </div>
-          <script>
-            (() => {
-              try {
-                const now = new Date();
-                const month = parseInt(
-                  new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Edmonton', month: 'numeric' }).format(now),
-                  10
-                );
-                const isSummer = month === 7 || month === 8;
-                const activeSeason = isSummer ? 'summer' : 'regular';
-
-                document.querySelectorAll('.schedule-card').forEach((card) => {
-                  const season = card.getAttribute('data-season');
-                  const isActive = season === activeSeason;
-                  card.classList.toggle('schedule-card--active', isActive);
-                  const jsBadge = card.querySelector('.schedule-card__badge--js');
-                  if (jsBadge instanceof HTMLElement) {
-                    jsBadge.hidden = !isActive;
-                  }
-                });
-              } catch (e) {
-                // Keep server rendered fallback
-              }
-            })();
-          </script>
         </div>
 
         <div class="practice__details">
