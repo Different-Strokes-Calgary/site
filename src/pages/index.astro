@@ -486,7 +486,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
     </main>
 
     <footer>
-      <a class="brand brand--footer" href="#top"><img src="/site/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBT+ Masters Swim Club" width="137" height="68" /></a>
+      <a class="brand brand--footer" href="#top" aria-label="Different Strokes Calgary home"><img src="/site/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBT+ Masters Swim Club" width="137" height="68" /></a>
       <p>Fun and fitness for life.<span class="footer-muted"> Volunteer-run since 1995.</span></p>
 
       <div class="footer-links">
@@ -498,6 +498,11 @@ const merchHref = isConfigured(club.merchStoreUrl)
     </footer>
 
     <script>
+      console.log(
+        '%c🏊‍♂️ Different Strokes Calgary %c— Fun and fitness for life since 1995!',
+        'color: #0284c7; font-size: 14px; font-weight: bold;',
+        'color: #db2777; font-size: 14px;'
+      );
       const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
       const toggleSr = toggle?.querySelector<HTMLElement>('.sr-only');
       const nav = document.querySelector<HTMLElement>('#site-nav');
