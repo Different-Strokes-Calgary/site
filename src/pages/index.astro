@@ -356,7 +356,14 @@ const merchHref = isConfigured(club.merchStoreUrl)
             </div>
           </div>
           <p class="section-intro"><strong>There is currently a waitlist for new non-returning members.</strong> Use the Join button above to sign up for the waitlist. Returning members can use the Join button to renew membership.</p>
-          <p class="season-stale" role="status">The prices below are for the {membershipSeason.label} season, {membershipSeason.validityLabel}.</p>
+          <p class="season-stale" role="status">
+            <svg class="schedule-note__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="16" height="16">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4" />
+              <path d="M12 8h.01" />
+            </svg>
+            <span>The prices below are for the {membershipSeason.label} season, {membershipSeason.validityLabel}.</span>
+          </p>
         </div>
         {membershipSeason.isCurrent ? (
           <div class="fee-table reveal">
@@ -745,13 +752,7 @@ motionMediaQuery.addEventListener('change', (event) => {
     revealTargets.forEach(armReveal);
   }
 });
-try {
-  console.log(
-    '%cDifferent Strokes Calgary 🏊‍♂️%c\nFun and fitness for life! See you in the pool.',
-    'color: #0284c7; font-weight: bold; font-size: 14px; font-family: sans-serif;',
-    'color: #db2777; font-size: 12px; font-family: sans-serif;'
-  );
-} catch {}
+
     </script>
   </body>
 </html>

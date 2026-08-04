@@ -1028,15 +1028,7 @@ html:not(.has-js) .calendar-wrapper {
   margin: 0;
 }
 .schedule-note,
-.schedule-unavailable,
 .season-stale {
-  max-width: var(--measure-body);
-  padding: var(--space-2xs) var(--space-xs);
-  margin: var(--space-2xs) 0 var(--space-xs);
-  border-radius: var(--space-2xs);
-  font-size: var(--font-size-sm);
-}
-.schedule-note {
   width: 100%;
   box-sizing: border-box;
   margin: var(--space-xs) 0 var(--space-sm);
@@ -1057,7 +1049,6 @@ html:not(.has-js) .calendar-wrapper {
   color: var(--blue-deep);
 }
 .schedule-unavailable,
-.season-stale,
 .fees-unavailable {
   color: var(--pink-deep);
   background: color-mix(in oklch, var(--pink) 8%, transparent);
