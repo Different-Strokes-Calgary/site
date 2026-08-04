@@ -68,9 +68,9 @@ export const club = {
   practices: summerPractices,
   winterPractices,
   fees: [
-    { name: 'Annual pass', price: '$380', detail: `${membershipSeason.label} · Swim Alberta registration and GST included.` },
+    { name: 'Annual pass', price: '$380', detail: `${membershipSeason.label} · Swim Alberta registration included.` },
     { name: '10-practice pass', price: '$169', detail: 'Use within 12 months. Later 10-practice passes in the same season cost $110.' },
-    { name: 'Student annual pass', price: '$220', detail: `${membershipSeason.label} · For current students with valid ID. Swim Alberta registration and GST included.` },
+    { name: 'Student annual pass', price: '$220', detail: `${membershipSeason.label} · For current students with valid ID. Swim Alberta registration included.` },
   ],
 };
 

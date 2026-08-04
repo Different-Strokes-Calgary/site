@@ -1,10 +1,9 @@
 ---
 import '../styles/global.css';
-import { club, getMembershipSeason, getPracticeSchedule, isConfigured } from '../data/club';
+import { club, getMembershipSeason, isConfigured } from '../data/club';
 
 const canonicalUrl = new URL(import.meta.env.BASE_URL, Astro.site ?? Astro.url).toString();
 const ogImageUrl = new URL(`${import.meta.env.BASE_URL}assets/og-image.jpg`, Astro.site ?? Astro.url).toString();
-const practiceSchedule = getPracticeSchedule();
 const membershipSeason = getMembershipSeason();
 const contactHref = isConfigured(club.contactUrl)
   ? club.contactUrl
@@ -171,23 +170,28 @@ const merchHref = isConfigured(club.merchStoreUrl)
           <p class="section-intro">Coached workouts for recreational and competitive swimmers. Work at your own pace, in the lane that suits you.</p>
         </div>
         <div class="practice-schedule-group reveal" role="region" aria-labelledby="practice-schedule-heading">
-          <h3 id="practice-schedule-heading">{practiceSchedule.label}</h3>
-          {practiceSchedule.isCurrent && (              <p class="schedule-note" role="status">Practice times can change. Check the live calendar for current times.</p>
-          )}
-          {practiceSchedule.isCurrent ? (
-            <ol class="practice-list" aria-label={`${practiceSchedule.label} practice times`}>
-              {practiceSchedule.practices.map((practice) => (
-                <li>
-                  <strong>{practice.day}</strong>
-                  <span>{practice.time}</span>
-                  <span>{practice.place}</span>
-                  <em>{practice.level}</em>
-                </li>
-              ))}
-            </ol>
-          ) : (
-            <p class="schedule-unavailable">All strokes welcome. Practice times are being updated. Check the live calendar for current times.</p>
-          )}
+          <h3 id="practice-schedule-heading">Practice Schedule</h3>
+          <p class="schedule-note" role="status">Practice times can change. Check the live calendar below for current times.</p>
+          <ol class="practice-list" aria-label="Practice schedule overview">
+            <li>
+              <strong>Regular</strong>
+              <span>Sept–June</span>
+              <span>Friday &amp; Sunday evenings</span>
+              <em>MNP &amp; Killarney</em>
+            </li>
+            <li>
+              <strong>Summer</strong>
+              <span>July–Aug</span>
+              <span>Wednesday &amp; Friday evenings</span>
+              <em>MNP Centre</em>
+            </li>
+            <li>
+              <strong>Summer</strong>
+              <span>July–Aug</span>
+              <span>Sunday mornings (outdoor)</span>
+              <em>Bowview Pool</em>
+            </li>
+          </ol>
         </div>
 
         <div class="practice__details">
@@ -263,7 +267,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
               </div>
               <div>
                 <h3>Come prepared</h3>
-                <p>Bring a swimsuit, towel, goggles, and preferably a cap and lock. Keep valuables at home or on deck with you.</p>
+                <p>Bring a swimsuit, towel, goggles, pull buoy, fins, kickboard, and preferably a cap and lock. Keep valuables at home or on deck with you.</p>
                 <p>We welcome swimmers who know the basics. Coaches help with technique and fitness; beginner swimmers are not expected to arrive already polished, but DSC does not teach people to swim from scratch.</p>
               </div>
             </div>
@@ -284,7 +288,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
               <div>
                 <h3>On deck</h3>
                 <p>Choose a lane that suits your level: lane 1 is for beginners, lane 6 for advanced swimmers, and lanes 2–5 sit between those levels.</p>
-                <p>After practice, swimmers cool down in the hot tub for announcements. Club members often go for dinner afterward; everyone is welcome.</p>
+                <p>After practice, swimmers often cool down in the hot tub to socialize and connect. Club members often go for dinner afterward; everyone is welcome.</p>
               </div>
               <div>
                 <h3>Share the lane well</h3>
@@ -334,6 +338,25 @@ const merchHref = isConfigured(club.merchStoreUrl)
         ) : (
           <p class="fees-unavailable">Welcome to our lane. Membership pricing is being updated. Please <a href={contactHref}>contact the club</a> for current fees before registering.</p>
         )}
+
+        <details class="disclosure-card join__details reveal">
+          <summary class="disclosure-bar">
+            <span>Pricing details &amp; pass policies</span>
+            <span class="chevron" aria-hidden="true">▾</span>
+          </summary>
+          <div class="details-grid">
+            <div>
+              <h3>Annual Membership Details</h3>
+              <p>An annual membership provides access to all scheduled club swims from your join date through August 31 (approx. 109 swims per year for full-season members, averaging ~$3.12 per swim). We swim twice weekly in winter and three times weekly in summer.</p>
+              <p>New members can join anytime as space allows. Dues are prorated across two pricing periods depending on when you join, with all memberships expiring August 31 regardless of start date. Full-time students receive a 50% discount on annual dues.</p>
+            </div>
+            <div>
+              <h3>10-Practice Punch Passes</h3>
+              <p>Punch passes offer a flexible option for swimmers unable to commit to a full season. Sold in packs of 10, passes are valid for one year from purchase and grant full access to any club swim. Pass holders are added to the club email list and invited to all social events.</p>
+              <p>Swim Canada registration is required for all members, including punch pass holders. The fee is included in your first 10-pass purchase of the club year and waived on subsequent purchases. Student discounts do not apply to punch passes. Pass usage is tracked automatically—email <a href="mailto:info@differentstrokescalgary.org">info@differentstrokescalgary.org</a> to check your remaining balance.</p>
+            </div>
+          </div>
+        </details>
       </section>
 
       <section class="story" id="story" aria-labelledby="story-title">
@@ -355,7 +378,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
               <article class="coach-card">
                 <strong>Tammy Andersen</strong>
                 <span>Head Coach</span>
-                <p>25+ years coaching experience. Killarney Swim Club Lead &amp; MNP 3433 coach.</p>
+                <p>25+ years coaching experience. Killarney Swim Club Lead Coach.</p>
               </article>
             </div>
           </div>
@@ -372,7 +395,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
 
                 <h3>Tammy Andersen · Head Coach</h3>
                 <p>Tammy joined DSC in November 2022 and full time in spring 2025. With more than 25 years of coaching, she has led the Glenmore Seals and Okotoks Stingrays summer clubs, assisted the Calgary Tritons, and helped the City of Calgary develop youth and adult conditioning programs.</p>
-                <p>She coached junior national swimmers in Limburg, Belgium while studying education. Tammy is now Sprocket Coordinator and Junior 1 Lead Coach at Killarney Swim Club, leads the swim program at 3433 Sport Performance at MNP, and is a Swim Canada-certified coach working toward full 201 certification. Her coaching focuses on swimming science, individual feedback, form, and celebrating every swimmer’s progress.</p>
+                <p>She coached junior national swimmers in Limburg, Belgium while studying education. Tammy is now Sprocket Coordinator and Junior 1 Lead Coach at Killarney Swim Club, and is a Swim Canada-certified coach working toward full 201 certification. Her coaching focuses on swimming science, individual feedback, form, and celebrating every swimmer’s progress.</p>
               </section>
 
               <section class="archive-group">
