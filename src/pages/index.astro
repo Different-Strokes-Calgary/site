@@ -104,13 +104,20 @@ const instagramHref = isConfigured(club.instagramUrl)
         <a class="nav-join button" href={club.joinUrl}>Join</a>
       </nav>
       <a class="brand" href="#top" aria-label="Different Strokes Calgary home">
-        <img src="/site/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBT+ Masters Swim Club" width="137" height="68" />
+        <img src="/site/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBTQ+ Masters Swim Club" width="137" height="68" />
       </a>
       <div class="header-actions">
         <a class="button header-join" href={club.joinUrl}>Join</a>
-        <a class="button button--outline header-merch" href={merchHref} target="_blank" rel="noopener noreferrer">Merch <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
         <a class="button button--outline header-contact" href={contactHref}>Contact</a>
-        <a class="header-social" href={instagramHref} target="_blank" rel="noopener noreferrer" aria-label="Different Strokes Calgary Instagram">
+        <a class="header-social header-merch" href={merchHref} target="_blank" rel="noopener noreferrer" aria-label="Different Strokes Calgary Merch Store">
+          <svg viewBox="0 0 24 24" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+            <path d="M3 6h18"></path>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="sr-only">(opens in new tab)</span>
+        </a>
+        <a class="header-social header-instagram" href={instagramHref} target="_blank" rel="noopener noreferrer" aria-label="Different Strokes Calgary Instagram">
           <svg viewBox="0 0 24 24" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true">
             <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
@@ -352,7 +359,7 @@ const instagramHref = isConfigured(club.instagramUrl)
                   <li>Ease toward the wall before turning so you can push off straight.</li>
                   <li>Follow the posted workout, or move lanes if you are doing something different.</li>
                   <li>Rest at the side of the lane so others can turn safely.</li>
-                  <li>Smile, then assist in clean up at the end of the workout.</li>
+                  <li>Smile, then assist with cleanup at the end of the workout.</li>
                 </ul>
               </div>
             </div>
@@ -414,7 +421,7 @@ const instagramHref = isConfigured(club.instagramUrl)
             </div>
             <div>
               <h3>Swim Alberta Membership</h3>
-              <p>Swim Alberta registration is required for all members, including punch pass holders. Swim Alberta Fees are included in your annual membership fee, or your first 10-pass purchase of the club year and waived on subsequent purchases. Once registered with DSC, the club will register you with Swim Alberta on your behalf. Should you have an existing Swim Alberta membership for the current year, please let us know upon registration.</p>
+              <p>Swim Alberta registration is required for all members, including punch pass holders. Swim Alberta fees are included in your annual membership fee or your first 10-pass purchase of the club year, and waived on subsequent purchases. Once registered with DSC, the club will register you with Swim Alberta on your behalf. If you already have an existing Swim Alberta membership for the current year, please let us know upon registration.</p>
             </div>
           </div>
         </details>
@@ -470,7 +477,7 @@ const instagramHref = isConfigured(club.instagramUrl)
                 <p>In 2007, Sunday practice moved to SAIT while Wednesday remained at the YWCA; later that year both sessions moved to SAIT on Thursdays and Sundays. In 2015, DSC added Wednesday nights at MNP (then the Talisman Centre). From fall 2016, Friday and Sunday practices moved to the Talisman Centre, now the MNP Community &amp; Sports Centre.</p>
 
                 <h3>Competition, Social Life &amp; Inclusion</h3>
-                <p>DSC belongs to Swim Alberta, FINA, and International Gay and Lesbian Aquatics. Members have competed across North America, including Washington DC, Seattle, San Francisco, Atlanta, Edmonton, Calgary, and Vancouver, and in Paris, Reykjavik, Amsterdam, and Copenhagen. The club has also participated in Gay Games and Outgames events in Sydney, Chicago, Montréal, and Copenhagen.</p>
+                <p>DSC belongs to Swim Alberta, World Aquatics (formerly FINA), and International Gay and Lesbian Aquatics. Members have competed across North America, including Washington, D.C., Seattle, San Francisco, Atlanta, Edmonton, Calgary, and Vancouver, and in Paris, Reykjavik, Amsterdam, and Copenhagen. The club has also participated in Gay Games and Outgames events in Sydney, Chicago, Montréal, and Copenhagen.</p>
                 <p>Alongside swimming, DSC is known for social events and community fundraising, including a breast-cancer swim-a-thon, Small Change Big Changes, and Calgary Cares. DSC supports inclusive sport where people can build confidence, community, and lifelong swimming skills regardless of gender identity, and unequivocally supports trans athletes in recreational and competitive swimming.</p>
               </section>
             </div>
@@ -502,7 +509,7 @@ const instagramHref = isConfigured(club.instagramUrl)
     </main>
 
     <footer>
-      <a class="brand brand--footer" href="#top" aria-label="Different Strokes Calgary home"><img src="/site/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBT+ Masters Swim Club" width="137" height="68" /></a>
+      <a class="brand brand--footer" href="#top" aria-label="Different Strokes Calgary home"><img src="/site/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBTQ+ Masters Swim Club" width="137" height="68" /></a>
       <p>Fun and fitness for life.<span class="footer-muted"> Volunteer-run since 1995.</span></p>
 
       <div class="footer-links">
