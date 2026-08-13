@@ -311,6 +311,7 @@ nav a, footer a {
 }
 .site-header nav .nav-contact,
 .site-header nav .nav-merch,
+.site-header nav .nav-instagram,
 .site-header nav .nav-join {
   display: none;
 }
@@ -398,13 +399,40 @@ nav a:hover {
   line-height: 1;
   transition: color 180ms var(--ease-out-quart), background 180ms var(--ease-out-quart), border-color 180ms var(--ease-out-quart), transform 180ms var(--ease-out-quart);
 }
-.theme-toggle:hover {
+.header-social {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  overflow: hidden;
+  padding: 0;
+  color: var(--blue-deep);
+  background: var(--surface);
+  border: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
+  border-radius: 50%;
+  text-decoration: none;
+  line-height: 1;
+  transition: color 180ms var(--ease-out-quart), background 180ms var(--ease-out-quart), border-color 180ms var(--ease-out-quart), transform 180ms var(--ease-out-quart);
+}
+.header-social:hover {
   color: var(--pink-deep);
   background: var(--surface-strong);
   border-color: var(--pink-deep);
   transform: translateY(-1px);
 }
-.site-header nav a:focus-visible, .theme-toggle:focus-visible, .button:focus-visible, .brand:focus-visible {
+.header-social svg {
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  transition: transform 260ms var(--ease-out-quart);
+}
+.header-social:hover svg {
+  transform: scale(1.08);
+}
+
+.site-header nav a:focus-visible, .theme-toggle:focus-visible, .header-social:focus-visible, .button:focus-visible, .brand:focus-visible {
   outline: 3px solid var(--pink-deep);
   outline-offset: 3px;
 }
@@ -1439,10 +1467,12 @@ footer p {
   .button:hover,
   .button--outline:hover,
   .theme-toggle:hover,
+  .header-social:hover,
   .menu-toggle:hover,
   .coach-card:hover,
   .text-link:hover span,
-  .theme-toggle:hover svg {
+  .theme-toggle:hover svg,
+  .header-social:hover svg {
     transform: none;
   }
   .fee-row:hover {
@@ -1474,7 +1504,7 @@ footer p {
     flex: 0 0 2.75rem;
   }
   .header-actions {
-    flex: 0 0 2.75rem;
+    flex: 0 0 auto;
     gap: var(--space-2xs);
   }
   .header-contact, .header-merch, .header-join {
@@ -1540,6 +1570,7 @@ footer p {
   .site-header nav a,
   .site-header nav .nav-contact,
   .site-header nav .nav-merch,
+  .site-header nav .nav-instagram,
   .site-header nav .nav-join {
     display: inline-flex;
     align-items: center;
@@ -1745,7 +1776,8 @@ footer p {
      decoration. WCAG SC 2.3.3 asks for it to drop under reduced motion; the
      swap's opacity transition is preserved as essential state feedback. */
   .theme-toggle:hover .theme-toggle__sun svg,
-  .theme-toggle:hover .theme-toggle__moon svg {
+  .theme-toggle:hover .theme-toggle__moon svg,
+  .header-social:hover svg {
     transform: none !important;
   }
   /* Hover-driven translateY/scale on every other control is also
@@ -1755,6 +1787,8 @@ footer p {
   nav a:hover,
   .button:hover,
   .button--outline:hover,
+  .theme-toggle:hover,
+  .header-social:hover,
   .coach-card:hover,
   .text-link:hover span,
   .menu-toggle:hover {

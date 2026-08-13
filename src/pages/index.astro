@@ -15,6 +15,9 @@ const calendarOpenHref = isConfigured(club.calendarOpenUrl)
 const merchHref = isConfigured(club.merchStoreUrl)
   ? club.merchStoreUrl
   : 'https://differentstrokescalgary.org/merch';
+const instagramHref = isConfigured(club.instagramUrl)
+  ? club.instagramUrl
+  : 'https://www.instagram.com/differentstrokescalgary/';
 ---
 
 <!doctype html>
@@ -97,6 +100,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
         <a href="#story">Our Story</a>
         <a class="nav-contact" href={contactHref}>Contact</a>
         <a class="nav-merch" href={merchHref} target="_blank" rel="noopener noreferrer">Merch <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
+        <a class="nav-instagram" href={instagramHref} target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
         <a class="nav-join button" href={club.joinUrl}>Join</a>
       </nav>
       <a class="brand" href="#top" aria-label="Different Strokes Calgary home">
@@ -106,6 +110,14 @@ const merchHref = isConfigured(club.merchStoreUrl)
         <a class="button header-join" href={club.joinUrl}>Join</a>
         <a class="button button--outline header-merch" href={merchHref} target="_blank" rel="noopener noreferrer">Merch <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
         <a class="button button--outline header-contact" href={contactHref}>Contact</a>
+        <a class="header-social" href={instagramHref} target="_blank" rel="noopener noreferrer" aria-label="Different Strokes Calgary Instagram">
+          <svg viewBox="0 0 24 24" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true">
+            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+          </svg>
+          <span class="sr-only">(opens in new tab)</span>
+        </a>
         <button class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
           <span class="theme-toggle__sun" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" focusable="false" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -303,11 +315,6 @@ const merchHref = isConfigured(club.merchStoreUrl)
                 <p>MNP Community &amp; Sports Centre · 2225 Macleod Trail S<br />Killarney Aquatic &amp; Recreation Centre · 1919 29 St SW<br />Bowview Outdoor Pool · 1910 6 Ave NW</p>
                 <p>At MNP, parking is free for up to three hours from 4:00 AM–4:00 PM on weekdays, two hours from 4:00 PM–4:00 AM on weekdays, and two hours on weekends. Cameras start and end sessions automatically; longer stays can be paid by app or kiosk. Free auxiliary parking is available at Indigo Lot #286 near Elbow River Casino when the main lot fills during events.</p>
               </div>
-              <div>
-                <h3>Come prepared</h3>
-                <p>Bring a swimsuit, towel, goggles, pull buoy, fins, kickboard, and preferably a cap and lock. Keep valuables at home or on deck with you.</p>
-                <p>We welcome swimmers who know the basics. Coaches help with technique and fitness; beginner swimmers are not expected to arrive already polished, but DSC does not teach people to swim from scratch.</p>
-              </div>
             </div>
           </details>
 
@@ -317,6 +324,11 @@ const merchHref = isConfigured(club.merchStoreUrl)
               <span class="chevron" aria-hidden="true">▾</span>
             </summary>
             <div class="details-grid guide-grid">
+              <div>
+                <h3>Come prepared</h3>
+                <p>Bring a swimsuit, towel, goggles, pull buoy, fins, kickboard, and preferably a cap and lock. Keep valuables at home or on deck with you.</p>
+                <p>We welcome swimmers who know the basics. Coaches help with technique and fitness; beginner swimmers are not expected to arrive already polished. DSC does not provide swim lessons.</p>
+              </div>
               <div>
                 <h3>Every kind of swimmer</h3>
                 <p>DSC supports recreational and competitive swimming. Coaching develops technique and fitness, while every swimmer is encouraged to work at their own pace and comfort level.</p>
@@ -332,7 +344,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
                 <h3>Share the lane well</h3>
                 <ul class="guide-list">
                   <li>Help set up and put away lane ropes and training equipment.</li>
-                  <li>If late, join at the point your lane has reached.</li>
+                  <li>If late, join the workout at the point your lane has reached.</li>
                   <li>Circle swim, stay off the centre line, and follow your lane’s direction.</li>
                   <li>Set order from fastest to slowest; the lead swimmer keeps the lane on pace.</li>
                   <li>Leave five to ten seconds between swimmers during repeats.</li>
@@ -340,7 +352,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
                   <li>Ease toward the wall before turning so you can push off straight.</li>
                   <li>Follow the posted workout, or move lanes if you are doing something different.</li>
                   <li>Rest at the side of the lane so others can turn safely.</li>
-                  <li>Smile, then help tidy up when the workout ends.</li>
+                  <li>Smile, then assist in clean up at the end of the workout.</li>
                 </ul>
               </div>
             </div>
@@ -362,7 +374,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
               <path d="M12 16v-4" />
               <path d="M12 8h.01" />
             </svg>
-            <span>The prices below are for the {membershipSeason.label} season, {membershipSeason.validityLabel}.</span>
+            <span>The prices below are for the {membershipSeason.label} season, {membershipSeason.validityLabel}. Prices include mandatory annual Swim Alberta membership.</span>
           </p>
         </div>
         {membershipSeason.isCurrent ? (
@@ -398,7 +410,11 @@ const merchHref = isConfigured(club.merchStoreUrl)
             <div>
               <h3>10-Practice Punch Passes</h3>
               <p>Punch passes offer a flexible option for swimmers unable to commit to a full season. Sold in packs of 10, passes are valid for one year from purchase and grant full access to any club swim. Pass holders are added to the club email list and invited to all social events.</p>
-              <p>Swim Canada registration is required for all members, including punch pass holders. The fee is included in your first 10-pass purchase of the club year and waived on subsequent purchases. Student discounts do not apply to punch passes. Pass usage is tracked automatically—email <a href="mailto:info@differentstrokescalgary.org">info@differentstrokescalgary.org</a> to check your remaining balance.</p>
+              <p>Student discounts do not apply to punch passes. Pass usage is tracked automatically—email <a href="mailto:info@differentstrokescalgary.org">info@differentstrokescalgary.org</a> to check your remaining balance.</p>
+            </div>
+            <div>
+              <h3>Swim Alberta Membership</h3>
+              <p>Swim Alberta registration is required for all members, including punch pass holders. Swim Alberta Fees are included in your annual membership fee, or your first 10-pass purchase of the club year and waived on subsequent purchases. Once registered with DSC, the club will register you with Swim Alberta on your behalf. Should you have an existing Swim Alberta membership for the current year, please let us know upon registration.</p>
             </div>
           </div>
         </details>
@@ -417,12 +433,12 @@ const merchHref = isConfigured(club.merchStoreUrl)
             <div class="coach-cards">
               <article class="coach-card">
                 <strong>Dan MacGregor</strong>
-                <span>Co-Founder &amp; Beginner Coach</span>
-                <p>Co-founded DSC in 1995. Swim Canada Volunteer of the Year 2024.</p>
+                <span>Co-Founder &amp; Coach (Beginner Lanes)</span>
+                <p>Co-founded DSC in 1995. Swim Alberta Volunteer of the Year 2024.</p>
               </article>
               <article class="coach-card">
                 <strong>Tammy Andersen</strong>
-                <span>Head Coach</span>
+                <span>Head Coach (Intermediate &amp; Advanced Lanes)</span>
                 <p>25+ years coaching experience. Killarney Swim Club Lead Coach.</p>
               </article>
             </div>
@@ -435,12 +451,12 @@ const merchHref = isConfigured(club.merchStoreUrl)
             </summary>
             <div class="story-archive__content">
               <section class="archive-group">
-                <h3>Dan MacGregor · Co-Founder &amp; Beginner Coach</h3>
-                <p>Dan co-founded DSC and has coached beginner swimmers since the club began. An accountant by trade, he may vanish during tax season, but the club makes sure swimmers are looked after. His continued volunteer work earned Swim Canada’s Volunteer of the Year award in 2024.</p>
+                <h3>Dan MacGregor · Co-Founder &amp; Coach (Beginner Lanes)</h3>
+                <p>Dan co-founded DSC and has coached beginner swimmers since the club began. An accountant by trade, he may vanish during tax season, but the club makes sure swimmers are looked after. His continued volunteer work earned Swim Alberta’s Volunteer of the Year award in 2024.</p>
 
-                <h3>Tammy Andersen · Head Coach</h3>
+                <h3>Tammy Andersen · Head Coach (Intermediate &amp; Advanced Lanes)</h3>
                 <p>Tammy joined DSC in November 2022 and full time in spring 2025. With more than 25 years of coaching, she has led the Glenmore Seals and Okotoks Stingrays summer clubs, assisted the Calgary Tritons, and helped the City of Calgary develop youth and adult conditioning programs.</p>
-                <p>She coached junior national swimmers in Limburg, Belgium while studying education. Tammy is now Sprocket Coordinator and Junior 1 Lead Coach at Killarney Swim Club, and is a Swim Canada-certified coach working toward full 201 certification. Her coaching focuses on swimming science, individual feedback, form, and celebrating every swimmer’s progress.</p>
+                <p>She coached junior national swimmers in Limburg, Belgium while studying education. Tammy is now Sprocket Coordinator and Junior 1 Lead Coach at Killarney Swim Club, and is a Swim Alberta-certified coach working toward full 201 certification. Her coaching focuses on swimming science, individual feedback, form, and celebrating every swimmer’s progress.</p>
               </section>
 
               <section class="archive-group">
@@ -451,7 +467,7 @@ const merchHref = isConfigured(club.merchStoreUrl)
                 <p>Calgary’s first swim club for lesbian, gay, and bisexual communities began in early 1993 as Chinook City Aquatics, organized by David Whiteside. It ended after six months because interest was too low.</p>
                 <p>Dan MacGregor and James Cooke revived the idea as Different Strokes Calgary. After gathering swimmers to test interest, the group agreed to a three-month trial of weekly swims. The first DSC workout was held March 5, 1995 at Lindsay Park Sports Centre, with Dan as head coach, Nancy Ingram coaching beginners, Rick Matthews coaching competitive swimmers, and thirteen swimmers on deck.</p>
                 <p>That September, DSC moved to the YWCA and added Wednesday and Sunday practices. Rita Bercan later became head coach with Graham Taylor as assistant; after Rita left, Graham became head coach while Dan and Pat Lee Loy continued beginner coaching. Pat later moved to Pennsylvania and joined the Philadelphia Fins. By 1997, DSC averaged about 20 swimmers per practice and had more than 40 members.</p>
-                <p>In 2007, Sunday practice moved to SAIT while Wednesday remained at the YWCA; later that year both sessions moved to SAIT on Thursdays and Sundays. In 2015, DSC added Wednesday nights at Talisman Centre. From fall 2016, Friday and Sunday practices moved to Repsol Sports Centre, now MNP Community &amp; Sports Centre.</p>
+                <p>In 2007, Sunday practice moved to SAIT while Wednesday remained at the YWCA; later that year both sessions moved to SAIT on Thursdays and Sundays. In 2015, DSC added Wednesday nights at MNP (then the Talisman Centre). From fall 2016, Friday and Sunday practices moved to the Talisman Centre, now the MNP Community &amp; Sports Centre.</p>
 
                 <h3>Competition, Social Life &amp; Inclusion</h3>
                 <p>DSC belongs to Swim Alberta, FINA, and International Gay and Lesbian Aquatics. Members have competed across North America, including Washington DC, Seattle, San Francisco, Atlanta, Edmonton, Calgary, and Vancouver, and in Paris, Reykjavik, Amsterdam, and Copenhagen. The club has also participated in Gay Games and Outgames events in Sydney, Chicago, Montréal, and Copenhagen.</p>
