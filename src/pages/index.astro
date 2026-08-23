@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { club, getMembershipSeason, isConfigured } from '../data/club';
+import { club, getMembershipSeason, isConfigured, annualMembershipPeriods, punchPassOptions } from '../data/club';
 
 const canonicalUrl = new URL(import.meta.env.BASE_URL, Astro.site ?? Astro.url).toString();
 const ogImageUrl = new URL(`${import.meta.env.BASE_URL}assets/og-image.jpg`, Astro.site ?? Astro.url).toString();
@@ -386,23 +386,78 @@ const instagramHref = isConfigured(club.instagramUrl)
               <path d="M12 16v-4" />
               <path d="M12 8h.01" />
             </svg>
-            <span>The prices below are for the {membershipSeason.label} season, {membershipSeason.validityLabel}. Prices include mandatory annual Swim Alberta membership.</span>
+            <span>The prices below are for the {membershipSeason.label} season, {membershipSeason.validityLabel}. Prices include mandatory Swimming Canada dues ($60.25) required once per season.</span>
           </p>
         </div>
         {membershipSeason.isCurrent ? (
-          <div class="fee-table reveal">
-            <div class="fee-table__header">
-              <span>Membership Tier</span>
-              <span>Price</span>
-              <span>Coverage &amp; Details</span>
-            </div>
-            {club.fees.map((fee) => (
-              <div class="fee-row">
-                <strong class="fee-row__name">{fee.name}</strong>
-                <span class="fee-row__price">{fee.price}</span>
-                <span class="fee-row__detail">{fee.detail}</span>
+          <div class="pricing-tables reveal">
+            <div class="pricing-group">
+              <div class="pricing-group__header">
+                <h3>Annual Membership Cost</h3>
+                <p>An annual membership gives you full access to all 109 scheduled swims for the entire season (September 1 – August 31), working out to roughly $3.12 per swim. We swim twice per week through the winter and three times per week in the summer. Membership fees are pro-rated across two periods depending on when you join, but your membership always runs through August 31 regardless of your start date. A 50% student discount is available on annual dues.</p>
               </div>
-            ))}
+              <div class="fee-table-wrap" tabindex="0" role="region" aria-label="Annual membership cost table">
+                <table class="fee-table fee-table--matrix">
+                  <thead>
+                    <tr>
+                      <th scope="col">Period</th>
+                      <th scope="col">Period Start</th>
+                      <th scope="col">Period End</th>
+                      <th scope="col">Club Dues</th>
+                      <th scope="col">Swimming Canada Dues</th>
+                      <th scope="col" class="th--highlight">Full Membership Total Cost</th>
+                      <th scope="col">Student Membership Total Cost</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {annualMembershipPeriods.map((period) => (
+                      <tr>
+                        <th scope="row" class="row-label">{period.period}</th>
+                        <td>{period.startDate}</td>
+                        <td>{period.endDate}</td>
+                        <td>{period.clubDues}</td>
+                        <td>{period.swimmingCanadaDues}</td>
+                        <td class="cell--highlight"><strong>{period.totalCost}</strong></td>
+                        <td class="cell--student"><strong>{period.studentCost}</strong></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="pricing-group">
+              <div class="pricing-group__header">
+                <h3>10 Punch Pass Membership Cost</h3>
+                <p>Punch passes are a flexible option for swimmers who can't commit to a full season. Passes are sold in packs of 10, give you full access to any club swim, and are valid through August 31, 2027 regardless of when you purchase them. Swimming Canada registration is required for all members — this is a national association fee, not a club fee, and since you only need to register once per season, it's included in your first 10-pass purchase and not charged again on any subsequent booklets. Note that student discounts do not apply to punch passes. As a pass holder you'll be added to the club email list and invited to all club social events. Pass usage is tracked automatically — just email us at <a href="mailto:info@differentstrokescalgary.org">info@differentstrokescalgary.org</a> if you'd like to know how many you have remaining.</p>
+              </div>
+              <div class="fee-table-wrap" tabindex="0" role="region" aria-label="10 punch pass cost table">
+                <table class="fee-table fee-table--matrix">
+                  <thead>
+                    <tr>
+                      <th scope="col">Booklet Option</th>
+                      <th scope="col">Booklet Quantity</th>
+                      <th scope="col">Pass Quantity</th>
+                      <th scope="col">Club Dues</th>
+                      <th scope="col">Swimming Canada Dues</th>
+                      <th scope="col" class="th--highlight">Total Cost</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {punchPassOptions.map((pass) => (
+                      <tr>
+                        <th scope="row" class="row-label">{pass.tier}</th>
+                        <td>{pass.bookletQuantity}</td>
+                        <td>{pass.passQuantity}</td>
+                        <td>{pass.clubDues}</td>
+                        <td>{pass.swimmingCanadaDues}</td>
+                        <td class="cell--highlight"><strong>{pass.totalCost}</strong></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         ) : (
           <p class="fees-unavailable">Welcome to our lane. Membership pricing is being updated. Please <a href={contactHref}>contact the club</a> for current fees before registering.</p>
@@ -416,17 +471,17 @@ const instagramHref = isConfigured(club.instagramUrl)
           <div class="details-grid">
             <div>
               <h3>Annual Membership Details</h3>
-              <p>An annual membership provides access to all scheduled club swims from your join date through August 31 (approx. 109 swims per year for full-season members, averaging ~$3.12 per swim). We swim twice weekly in winter and three times weekly in summer.</p>
-              <p>New members can join anytime as space allows. Dues are prorated across two pricing periods depending on when you join, with all memberships expiring August 31 regardless of start date. Full-time students receive a 50% discount on annual dues.</p>
+              <p>An annual membership provides access to all 109 scheduled club swims for the entire season (September 1 – August 31), working out to roughly $3.12 per swim. We swim twice per week through the winter and three times per week in the summer.</p>
+              <p>New members can join anytime as space allows. Dues are pro-rated across two pricing periods depending on when you join, with all memberships expiring August 31 regardless of start date. A 50% student discount is available on annual dues.</p>
             </div>
             <div>
-              <h3>10-Practice Punch Passes</h3>
-              <p>Punch passes offer a flexible option for swimmers unable to commit to a full season. Sold in packs of 10, passes are valid for one year from purchase and grant full access to any club swim. Pass holders are added to the club email list and invited to all social events.</p>
-              <p>Student discounts do not apply to punch passes. Pass usage is tracked automatically—email <a href="mailto:info@differentstrokescalgary.org">info@differentstrokescalgary.org</a> to check your remaining balance.</p>
+              <h3>10 Punch Passes</h3>
+              <p>Punch passes offer a flexible option for swimmers unable to commit to a full season. Sold in packs of 10, passes give you full access to any club swim and are valid through August 31, 2027 regardless of when you purchase them. Pass holders are added to the club email list and invited to all club social events.</p>
+              <p>Student discounts do not apply to punch passes. Pass usage is tracked automatically — email <a href="mailto:info@differentstrokescalgary.org">info@differentstrokescalgary.org</a> to check your remaining balance.</p>
             </div>
             <div>
-              <h3>Swim Alberta Membership</h3>
-              <p>Swim Alberta registration is required for all members, including punch pass holders. Swim Alberta fees are included in your annual membership fee or your first 10-pass purchase of the club year, and waived on subsequent purchases. Once registered with DSC, the club will register you with Swim Alberta on your behalf. If you already have an existing Swim Alberta membership for the current year, please let us know upon registration.</p>
+              <h3>Swimming Canada Registration</h3>
+              <p>Swimming Canada registration is required for all members, including punch pass holders. This is a national association fee ($60.25), not a club fee. Since you only need to register once per season, it is included in your annual membership fee or your first 10-pass purchase, and waived on subsequent booklets in the same season. Once registered with DSC, the club will register you with Swimming Canada / Swim Alberta on your behalf.</p>
             </div>
           </div>
         </details>
