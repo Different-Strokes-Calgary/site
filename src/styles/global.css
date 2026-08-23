@@ -1117,16 +1117,29 @@ html:not(.has-js) .calendar-wrapper {
   width: 100%;
 }
 
-.join__header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--space-md);
+.join__heading h2 {
   margin-bottom: var(--space-xs);
 }
 
-.join__header-row h2 {
-  margin-bottom: 0;
+.waitlist-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: 0.75rem 1rem;
+  background: color-mix(in oklch, var(--pink) 10%, var(--canvas));
+  border: 1px solid color-mix(in oklch, var(--pink-deep) 35%, transparent);
+  border-radius: var(--space-xs);
+  color: var(--ink);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  max-width: var(--measure-body);
+  margin-top: 0;
+}
+
+.waitlist-note__icon {
+  flex-shrink: 0;
+  color: var(--pink-deep);
+  margin-top: 0.15rem;
 }
 
 .join__content {
@@ -1183,9 +1196,11 @@ html:not(.has-js) .calendar-wrapper {
   color: var(--blue-deep);
   background: color-mix(in oklch, var(--surface) 50%, var(--canvas));
   border: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
-  padding: 0.15rem 0.55rem;
+  padding: 0.18rem 0.55rem;
   border-radius: 9999px;
   margin: 0;
+  max-width: 100%;
+  line-height: 1.35;
 }
 
 .fee-table-wrap {
@@ -1214,44 +1229,50 @@ html:not(.has-js) .calendar-wrapper {
   font-variant-numeric: tabular-nums;
   font-size: var(--font-size-sm);
   text-align: left;
-  min-width: 28rem;
 }
 
-.fee-table--matrix thead th {
-  padding: 0.65rem var(--space-sm);
-  font-size: var(--font-size-sm);
-  font-weight: 700;
-  color: var(--pink-deep);
-  background: color-mix(in oklch, var(--surface) 50%, transparent);
-  border-bottom: 1px solid color-mix(in oklch, var(--line) 55%, transparent);
-  white-space: nowrap;
-}
+/* Tablet & Desktop Table Mode (>= 640px) */
+@media (min-width: 640px) {
+  .fee-table--matrix {
+    min-width: 28rem;
+  }
 
-.fee-table--matrix tbody th,
-.fee-table--matrix tbody td {
-  padding: 0.8rem var(--space-sm);
-  border-bottom: 1px solid color-mix(in oklch, var(--line) 45%, transparent);
-  vertical-align: baseline;
-}
+  .fee-table--matrix thead th {
+    padding: 0.65rem var(--space-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--pink-deep);
+    background: color-mix(in oklch, var(--surface) 50%, transparent);
+    border-bottom: 1px solid color-mix(in oklch, var(--line) 55%, transparent);
+    white-space: nowrap;
+  }
 
-.fee-table--matrix tbody tr:last-child th,
-.fee-table--matrix tbody tr:last-child td {
-  border-bottom: 0;
-}
+  .fee-table--matrix tbody th,
+  .fee-table--matrix tbody td {
+    padding: 0.8rem var(--space-sm);
+    border-bottom: 1px solid color-mix(in oklch, var(--line) 45%, transparent);
+    vertical-align: baseline;
+  }
 
-.fee-table--matrix tbody tr {
-  transition: background 180ms var(--ease-out-quart);
-}
+  .fee-table--matrix tbody tr:last-child th,
+  .fee-table--matrix tbody tr:last-child td {
+    border-bottom: 0;
+  }
 
-.fee-table--matrix tbody tr:hover {
-  background: color-mix(in oklch, var(--surface) 45%, transparent);
-}
+  .fee-table--matrix tbody tr {
+    transition: background 180ms var(--ease-out-quart);
+  }
 
-.fee-table--matrix .row-label {
-  font-weight: 700;
-  color: var(--ink);
-  text-align: left;
-  white-space: nowrap;
+  .fee-table--matrix tbody tr:hover {
+    background: color-mix(in oklch, var(--surface) 45%, transparent);
+  }
+
+  .fee-table--matrix .row-label {
+    font-weight: 700;
+    color: var(--ink);
+    text-align: left;
+    white-space: nowrap;
+  }
 }
 
 .fee-table--matrix .cell--highlight strong,
@@ -1269,13 +1290,90 @@ html:not(.has-js) .calendar-wrapper {
   color: var(--blue-deep);
 }
 
+/* Mobile Adaptive Card Mode (< 640px) */
+@media (max-width: 639px) {
+  .fee-table-wrap {
+    background: transparent;
+    border: 0;
+    overflow-x: visible;
+  }
+
+  .fee-table--matrix {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .fee-table--matrix thead {
+    display: none;
+  }
+
+  .fee-table--matrix tbody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    width: 100%;
+  }
+
+  .fee-table--matrix tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2xs) var(--space-sm);
+    padding: var(--space-sm);
+    background: color-mix(in oklch, var(--surface) 35%, var(--canvas));
+    border: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
+    border-radius: var(--space-xs);
+    transition: border-color 180ms var(--ease-out-quart),
+                background 180ms var(--ease-out-quart),
+                box-shadow 180ms var(--ease-out-quart);
+  }
+
+  .fee-table--matrix tbody tr:hover {
+    border-color: color-mix(in oklch, var(--blue) 50%, transparent);
+    background: color-mix(in oklch, var(--surface) 50%, var(--canvas));
+    box-shadow: 0 4px 16px -4px color-mix(in oklch, var(--blue) 12%, transparent);
+  }
+
+  .fee-table--matrix .row-label {
+    grid-column: 1 / -1;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+    padding: 0 0 var(--space-3xs) 0;
+    border-bottom: 1px solid color-mix(in oklch, var(--line) 50%, transparent);
+    margin-bottom: var(--space-3xs);
+    text-align: left;
+  }
+
+  .fee-table--matrix tbody td {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.15rem 0;
+    border: 0;
+    font-size: var(--font-size-sm);
+  }
+
+  .fee-table--matrix tbody td[data-label]::before {
+    content: attr(data-label);
+    font-size: 0.725rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--blue-deep);
+    text-transform: uppercase;
+  }
+
+  .fee-table--matrix .cell--breakdown {
+    grid-column: 1 / -1;
+    border-top: 1px dashed color-mix(in oklch, var(--line) 45%, transparent);
+    padding-top: var(--space-2xs);
+    margin-top: var(--space-3xs);
+  }
+}
+
 .join__details {
   margin-top: 0;
-}
-.join__details p {
-  max-width: 100%;
-  padding: var(--space-sm) var(--space-md);
-  margin: 0;
 }
 
 /* Story Section */
