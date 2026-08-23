@@ -1111,8 +1111,15 @@ html:not(.has-js) .calendar-wrapper {
 
 /* Membership (Join) Section */
 .join {
+  display: grid;
+  grid-template-columns: minmax(15rem, 1fr) minmax(28rem, 2fr);
+  gap: var(--space-xl);
   padding: clamp(3rem, 5.2vw, 4.5rem) max(var(--gutter), calc((100% - var(--max)) / 2));
   background: var(--canvas);
+}
+
+.join__heading {
+  align-self: start;
 }
 
 .join__header-row {
@@ -1127,18 +1134,38 @@ html:not(.has-js) .calendar-wrapper {
   margin-bottom: 0;
 }
 
+.join__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-width: 0;
+  width: 100%;
+}
+
 /* Tabular Membership Fee Matrix */
 .pricing-tables {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
-  margin: var(--space-md) 0;
+  gap: var(--space-md);
+  width: 100%;
+  min-width: 0;
 }
 
 .pricing-group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap: var(--space-2xs);
+  width: 100%;
+  min-width: 0;
+}
+
+.pricing-group__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin-bottom: var(--space-3xs);
 }
 
 .pricing-group__header h3 {
@@ -1151,12 +1178,17 @@ html:not(.has-js) .calendar-wrapper {
   margin: 0;
 }
 
-.pricing-summary {
-  font-size: var(--font-size-sm);
-  color: var(--blue-deep);
+.pricing-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--font-size-xs);
   font-weight: 700;
-  margin: var(--space-3xs) 0 var(--space-3xs) 0;
-  line-height: 1.4;
+  color: var(--blue-deep);
+  background: color-mix(in oklch, var(--surface) 50%, var(--canvas));
+  border: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--space-3xs);
+  margin: 0;
 }
 
 .fee-table-wrap {
@@ -1164,7 +1196,14 @@ html:not(.has-js) .calendar-wrapper {
   -webkit-overflow-scrolling: touch;
   border: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
   border-radius: var(--space-xs);
-  background: color-mix(in oklch, var(--surface) 25%, var(--canvas));
+  background: color-mix(in oklch, var(--surface) 35%, var(--canvas));
+  transition: border-color 180ms var(--ease-out-quart),
+              background 180ms var(--ease-out-quart),
+              box-shadow 180ms var(--ease-out-quart);
+}
+
+.fee-table-wrap:hover {
+  border-color: color-mix(in oklch, var(--blue) 50%, transparent);
 }
 
 .fee-table-wrap:focus-visible {
@@ -1178,11 +1217,11 @@ html:not(.has-js) .calendar-wrapper {
   font-variant-numeric: tabular-nums;
   font-size: var(--font-size-sm);
   text-align: left;
-  min-width: 30rem;
+  min-width: 28rem;
 }
 
 .fee-table--matrix thead th {
-  padding: 0.75rem var(--space-sm);
+  padding: 0.65rem var(--space-sm);
   font-size: var(--font-size-xs);
   font-weight: 700;
   color: var(--pink-deep);
@@ -1193,9 +1232,9 @@ html:not(.has-js) .calendar-wrapper {
 
 .fee-table--matrix tbody th,
 .fee-table--matrix tbody td {
-  padding: 0.85rem var(--space-sm);
+  padding: 0.8rem var(--space-sm);
   border-bottom: 1px solid color-mix(in oklch, var(--line) 45%, transparent);
-  vertical-align: middle;
+  vertical-align: baseline;
 }
 
 .fee-table--matrix tbody tr:last-child th,
@@ -1208,7 +1247,7 @@ html:not(.has-js) .calendar-wrapper {
 }
 
 .fee-table--matrix tbody tr:hover {
-  background: color-mix(in oklch, var(--surface) 40%, transparent);
+  background: color-mix(in oklch, var(--surface) 45%, transparent);
 }
 
 .fee-table--matrix .row-label {
@@ -1225,13 +1264,17 @@ html:not(.has-js) .calendar-wrapper {
 }
 
 .fee-table--matrix .cell--breakdown {
-  color: var(--ink);
+  color: color-mix(in oklch, var(--ink) 80%, transparent);
   font-size: var(--font-size-xs);
   line-height: 1.4;
 }
 
 .fee-table--matrix .th--highlight {
   color: var(--blue-deep);
+}
+
+.join__details {
+  margin-top: 0;
 }
 .join__details p {
   max-width: 100%;
@@ -1624,7 +1667,8 @@ footer p {
     width: 100%;
     justify-content: center;
   }
-  .practice {
+  .practice,
+  .join {
     grid-template-columns: 1fr;
   }
   .practice-schedule-group {

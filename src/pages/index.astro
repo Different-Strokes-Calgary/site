@@ -380,103 +380,97 @@ const instagramHref = isConfigured(club.instagramUrl)
             </div>
           </div>
           <p class="section-intro"><strong>There is currently a waitlist for new non-returning members.</strong> Use the Join button above to sign up for the waitlist. Returning members can use the Join button to renew membership.</p>
-          <p class="season-stale" role="status">
-            <svg class="schedule-note__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="16" height="16">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 16v-4" />
-              <path d="M12 8h.01" />
-            </svg>
-            <span>The prices below are for the {membershipSeason.label} season, {membershipSeason.validityLabel}. Prices include mandatory Swimming Canada dues ($60.25) required once per season.</span>
-          </p>
         </div>
-        {membershipSeason.isCurrent ? (
-          <div class="pricing-tables reveal">
-            <div class="pricing-group">
-              <div class="pricing-group__header">
-                <h3>ANNUAL MEMBERSHIP</h3>
-                <p class="pricing-summary">109 swims · ~$3.12/swim · Valid through Aug 31</p>
-              </div>
-              <div class="fee-table-wrap" tabindex="0" role="region" aria-label="Annual membership cost table">
-                <table class="fee-table fee-table--matrix">
-                  <thead>
-                    <tr>
-                      <th scope="col">Period</th>
-                      <th scope="col">Dates</th>
-                      <th scope="col" class="th--highlight">Full Total</th>
-                      <th scope="col">Student (50% dues)</th>
-                      <th scope="col">Dues Breakdown</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {annualMembershipPeriods.map((period) => (
+        <div class="join__content">
+          {membershipSeason.isCurrent ? (
+            <div class="pricing-tables reveal">
+              <div class="pricing-group">
+                <div class="pricing-group__header">
+                  <h3>Annual Membership</h3>
+                  <span class="pricing-badge">109 swims · ~$3.12/swim · Valid through Aug 31</span>
+                </div>
+                <div class="fee-table-wrap" tabindex="0" role="region" aria-label="Annual membership cost table">
+                  <table class="fee-table fee-table--matrix">
+                    <thead>
                       <tr>
-                        <th scope="row" class="row-label">{period.label}</th>
-                        <td>{period.startDate} – {period.endDate}</td>
-                        <td class="cell--highlight"><strong>{period.totalCost}</strong></td>
-                        <td class="cell--student"><strong>{period.studentCost}</strong></td>
-                        <td class="cell--breakdown">{period.clubDues} club + {period.swimmingCanadaDues} Swimming Canada</td>
+                        <th scope="col">Period</th>
+                        <th scope="col">Dates</th>
+                        <th scope="col" class="th--highlight">Full Total</th>
+                        <th scope="col">Student (50% dues)</th>
+                        <th scope="col">Dues Breakdown</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {annualMembershipPeriods.map((period) => (
+                        <tr>
+                          <th scope="row" class="row-label">{period.label}</th>
+                          <td>{period.startDate} – {period.endDate}</td>
+                          <td class="cell--highlight"><strong>{period.totalCost}</strong></td>
+                          <td class="cell--student"><strong>{period.studentCost}</strong></td>
+                          <td class="cell--breakdown">{period.clubDues} club + {period.swimmingCanadaDues} Swimming Canada</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
 
-            <div class="pricing-group">
-              <div class="pricing-group__header">
-                <h3>10 PUNCH PASS</h3>
-                <p class="pricing-summary">Valid through August 31, 2027 · All club swims</p>
-              </div>
-              <div class="fee-table-wrap" tabindex="0" role="region" aria-label="10 punch pass cost table">
-                <table class="fee-table fee-table--matrix">
-                  <thead>
-                    <tr>
-                      <th scope="col">Option</th>
-                      <th scope="col">Quantity</th>
-                      <th scope="col" class="th--highlight">Total Price</th>
-                      <th scope="col">Details</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {punchPassOptions.map((pass) => (
+              <div class="pricing-group">
+                <div class="pricing-group__header">
+                  <h3>10 Punch Pass</h3>
+                  <span class="pricing-badge">Valid through August 31, 2027 · All club swims</span>
+                </div>
+                <div class="fee-table-wrap" tabindex="0" role="region" aria-label="10 punch pass cost table">
+                  <table class="fee-table fee-table--matrix">
+                    <thead>
                       <tr>
-                        <th scope="row" class="row-label">{pass.tier}</th>
-                        <td>{pass.passQuantity} swims</td>
-                        <td class="cell--highlight"><strong>{pass.totalCost}</strong></td>
-                        <td class="cell--breakdown">{pass.notes}</td>
+                        <th scope="col">Option</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col" class="th--highlight">Total Price</th>
+                        <th scope="col">Details</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {punchPassOptions.map((pass) => (
+                        <tr>
+                          <th scope="row" class="row-label">{pass.tier}</th>
+                          <td>{pass.passQuantity} swims</td>
+                          <td class="cell--highlight"><strong>{pass.totalCost}</strong></td>
+                          <td class="cell--breakdown">{pass.notes}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <p class="fees-unavailable">Welcome to our lane. Membership pricing is being updated. Please <a href={contactHref}>contact the club</a> for current fees before registering.</p>
-        )}
+          ) : (
+            <p class="fees-unavailable">Welcome to our lane. Membership pricing is being updated. Please <a href={contactHref}>contact the club</a> for current fees before registering.</p>
+          )}
 
-        <details class="disclosure-card join__details reveal">
-          <summary class="disclosure-bar">
-            <span>Pricing details &amp; pass policies</span>
-            <span class="chevron" aria-hidden="true">▾</span>
-          </summary>
-          <div class="details-grid">
-            <div>
-              <h3>Annual Membership Details</h3>
-              <p>An annual membership provides access to all 109 scheduled club swims for the entire season (September 1 – August 31), working out to roughly $3.12 per swim. We swim twice per week through the winter and three times per week in the summer.</p>
-              <p>New members can join anytime as space allows. Dues are pro-rated across two pricing periods depending on when you join, with all memberships expiring August 31 regardless of start date. A 50% student discount is available on annual dues.</p>
+          <details class="disclosure-card join__details reveal">
+            <summary class="disclosure-bar">
+              <span>Pricing details &amp; pass policies</span>
+              <span class="chevron" aria-hidden="true">▾</span>
+            </summary>
+            <div class="details-grid">
+              <div>
+                <h3>Annual Membership Details</h3>
+                <p>An annual membership provides access to all 109 scheduled club swims for the entire season (September 1 – August 31), working out to roughly $3.12 per swim. We swim twice per week through the winter and three times per week in the summer.</p>
+                <p>New members can join anytime as space allows. Dues are pro-rated across two pricing periods depending on when you join, with all memberships expiring August 31 regardless of start date. A 50% student discount is available on annual dues.</p>
+              </div>
+              <div>
+                <h3>10 Punch Passes</h3>
+                <p>Punch passes offer a flexible option for swimmers unable to commit to a full season. Sold in packs of 10, passes give you full access to any club swim and are valid through August 31, 2027 regardless of when you purchase them. Pass holders are added to the club email list and invited to all club social events.</p>
+                <p>Student discounts do not apply to punch passes. Pass usage is tracked automatically — email <a href="mailto:info@differentstrokescalgary.org">info@differentstrokescalgary.org</a> to check your remaining balance.</p>
+              </div>
+              <div>
+                <h3>Swimming Canada Registration</h3>
+                <p>Swimming Canada registration is required for all members, including punch pass holders. This is a national association fee ($60.25), not a club fee. Since you only need to register once per season, it is included in your annual membership fee or your first 10-pass purchase, and waived on subsequent booklets in the same season. Once registered with DSC, the club will register you with Swimming Canada / Swim Alberta on your behalf.</p>
+              </div>
             </div>
-            <div>
-              <h3>10 Punch Passes</h3>
-              <p>Punch passes offer a flexible option for swimmers unable to commit to a full season. Sold in packs of 10, passes give you full access to any club swim and are valid through August 31, 2027 regardless of when you purchase them. Pass holders are added to the club email list and invited to all club social events.</p>
-              <p>Student discounts do not apply to punch passes. Pass usage is tracked automatically — email <a href="mailto:info@differentstrokescalgary.org">info@differentstrokescalgary.org</a> to check your remaining balance.</p>
-            </div>
-            <div>
-              <h3>Swimming Canada Registration</h3>
-              <p>Swimming Canada registration is required for all members, including punch pass holders. This is a national association fee ($60.25), not a club fee. Since you only need to register once per season, it is included in your annual membership fee or your first 10-pass purchase, and waived on subsequent booklets in the same season. Once registered with DSC, the club will register you with Swimming Canada / Swim Alberta on your behalf.</p>
-            </div>
-          </div>
-        </details>
+          </details>
+        </div>
       </section>
 
       <section class="story" id="story" aria-labelledby="story-title">
