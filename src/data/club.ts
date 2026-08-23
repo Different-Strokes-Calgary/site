@@ -109,7 +109,7 @@ export const punchPassOptions: PunchPassOption[] = [
     clubDues: '$135.75',
     swimmingCanadaDues: '$60.25',
     totalCost: '$196.00',
-    notes: '$135.75 club + $60.25 Swimming Canada dues',
+    notes: '$135.75 club + $60.25 Swimming Canada',
   },
   {
     tier: 'Subsequent Booklets',
@@ -118,7 +118,7 @@ export const punchPassOptions: PunchPassOption[] = [
     clubDues: '$135.75',
     swimmingCanadaDues: '$0.00',
     totalCost: '$135.75',
-    notes: '$135.75 club dues (Swimming Canada paid)',
+    notes: '$135.75 club (Swimming Canada paid)',
   },
 ];
 

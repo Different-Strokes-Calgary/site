@@ -1111,15 +1111,15 @@ html:not(.has-js) .calendar-wrapper {
 
 /* Membership (Join) Section */
 .join {
-  display: grid;
-  grid-template-columns: minmax(15rem, 1fr) minmax(28rem, 2fr);
-  gap: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
   padding: clamp(3rem, 5.2vw, 4.5rem) max(var(--gutter), calc((100% - var(--max)) / 2));
   background: var(--canvas);
 }
 
 .join__heading {
-  align-self: start;
+  width: 100%;
 }
 
 .join__header-row {
@@ -1667,8 +1667,7 @@ footer p {
     width: 100%;
     justify-content: center;
   }
-  .practice,
-  .join {
+  .practice {
     grid-template-columns: 1fr;
   }
   .practice-schedule-group {
