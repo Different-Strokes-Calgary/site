@@ -1151,19 +1151,12 @@ html:not(.has-js) .calendar-wrapper {
   margin: 0;
 }
 
-.pricing-group__header p {
-  max-width: var(--measure-body);
+.pricing-summary {
   font-size: var(--font-size-sm);
-  line-height: 1.6;
-  color: var(--ink);
-  margin: var(--space-3xs) 0 0 0;
-  text-wrap: pretty;
-}
-
-.pricing-group__header p a {
+  color: var(--blue-deep);
   font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+  margin: var(--space-3xs) 0 var(--space-3xs) 0;
+  line-height: 1.4;
 }
 
 .fee-table-wrap {
@@ -1185,7 +1178,7 @@ html:not(.has-js) .calendar-wrapper {
   font-variant-numeric: tabular-nums;
   font-size: var(--font-size-sm);
   text-align: left;
-  min-width: 32rem;
+  min-width: 30rem;
 }
 
 .fee-table--matrix thead th {
@@ -1222,12 +1215,19 @@ html:not(.has-js) .calendar-wrapper {
   font-weight: 700;
   color: var(--ink);
   text-align: left;
+  white-space: nowrap;
 }
 
 .fee-table--matrix .cell--highlight strong,
 .fee-table--matrix .cell--student strong {
   color: var(--pink-deep);
   font-weight: 700;
+}
+
+.fee-table--matrix .cell--breakdown {
+  color: var(--ink);
+  font-size: var(--font-size-xs);
+  line-height: 1.4;
 }
 
 .fee-table--matrix .th--highlight {
