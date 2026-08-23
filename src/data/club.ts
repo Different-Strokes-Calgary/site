@@ -83,7 +83,7 @@ export const annualMembershipPeriods: AnnualMembershipPeriod[] = [
     period: 1,
     label: 'Period 1',
     startDate: 'Sep 1',
-    endDate: 'Dec 31',
+    endDate: 'Aug 31',
     clubDues: '$339.75',
     swimmingCanadaDues: '$60.25',
     totalCost: '$400.00',
