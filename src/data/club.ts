@@ -118,7 +118,7 @@ export const punchPassOptions: PunchPassOption[] = [
     clubDues: '$135.75',
     swimmingCanadaDues: '$0.00',
     totalCost: '$135.75',
-    notes: '$135.75 club (Swimming Canada paid)',
+    notes: '$135.75 club (Swimming Canada already paid)',
   },
 ];
 
