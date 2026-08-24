@@ -52,7 +52,7 @@ const instagramHref = isConfigured(club.instagramUrl)
     <meta name="twitter:image" content={ogImageUrl} />
     <meta name="twitter:image:alt" content="Different Strokes Calgary swimmers moving through water under a sweeping rainbow on a clean light background." />
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="icon" type="image/svg+xml" href="/site/assets/dsc-logo.svg" />
+    <link rel="icon" type="image/svg+xml" href="/assets/dsc-logo.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- Single stylesheet link. The earlier "<link rel=preload as=style> +
@@ -104,7 +104,7 @@ const instagramHref = isConfigured(club.instagramUrl)
         <a class="nav-join button" href={club.joinUrl}>Join</a>
       </nav>
       <a class="brand" href="#top" aria-label="Different Strokes Calgary home">
-        <img src="/site/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBTQ+ Masters Swim Club" width="137" height="68" />
+        <img src="/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBTQ+ Masters Swim Club" width="137" height="68" />
       </a>
       <div class="header-actions">
         <a class="button header-join" href={club.joinUrl}>Join</a>
@@ -172,12 +172,12 @@ const instagramHref = isConfigured(club.instagramUrl)
                  fetchpriority. The matched <source> still fetches first per
                  HTML spec; the hint ensures OS-default-theme users still see
                  the high-priority signal on the LCP candidate. */}
-            <source data-dark-src="/site/assets/hero-art-dark.webp" srcset="/site/assets/hero-art-dark.webp" media="(prefers-color-scheme: dark)" type="image/webp" />
+            <source data-dark-src="/assets/hero-art-dark.webp" srcset="/assets/hero-art-dark.webp" media="(prefers-color-scheme: dark)" type="image/webp" />
             <img
               class="hero__illustration"
-              src="/site/assets/hero-art-light.webp"
-              data-light-src="/site/assets/hero-art-light.webp"
-              data-dark-src="/site/assets/hero-art-dark.webp"
+              src="/assets/hero-art-light.webp"
+              data-light-src="/assets/hero-art-light.webp"
+              data-dark-src="/assets/hero-art-dark.webp"
               alt="Four diverse swimmers moving through water and a sweeping rainbow."
               width="1774"
               height="887"
@@ -547,12 +547,12 @@ const instagramHref = isConfigured(club.instagramUrl)
           {/* Below-the-fold: lazy-load with async decode so it doesn't compete
               with the hero for bandwidth during the critical first render. */}
           <picture data-theme-image>
-            <source data-dark-src="/site/assets/story-community-dark.webp" srcset="/site/assets/story-community-dark.webp" media="(prefers-color-scheme: dark)" type="image/webp" />
+            <source data-dark-src="/assets/story-community-dark.webp" srcset="/assets/story-community-dark.webp" media="(prefers-color-scheme: dark)" type="image/webp" />
             <img
               class="story-art__illustration"
-              src="/site/assets/story-community-light.webp"
-              data-light-src="/site/assets/story-community-light.webp"
-              data-dark-src="/site/assets/story-community-dark.webp"
+              src="/assets/story-community-light.webp"
+              data-light-src="/assets/story-community-light.webp"
+              data-dark-src="/assets/story-community-dark.webp"
               alt="A diverse group of swimmers smiling together in a pool beneath rainbow bunting."
               width="1774"
               height="887"
@@ -566,7 +566,7 @@ const instagramHref = isConfigured(club.instagramUrl)
     </main>
 
     <footer>
-      <a class="brand brand--footer" href="#top" aria-label="Different Strokes Calgary home"><img src="/site/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBTQ+ Masters Swim Club" width="137" height="68" /></a>
+      <a class="brand brand--footer" href="#top" aria-label="Different Strokes Calgary home"><img src="/assets/dsc-logo.svg" alt="Different Strokes Calgary LGBTQ+ Masters Swim Club" width="137" height="68" /></a>
       <p>Fun and fitness for life.<span class="footer-muted"> Volunteer-run since 1995.</span></p>
 
       <div class="footer-links">
