@@ -1229,12 +1229,11 @@ html:not(.has-js) .calendar-wrapper {
   border-radius: var(--space-xs);
   background: color-mix(in oklch, var(--surface) 35%, var(--canvas));
   transition: border-color 180ms var(--ease-out-quart),
-              background 180ms var(--ease-out-quart),
-              box-shadow 180ms var(--ease-out-quart);
+              background 180ms var(--ease-out-quart);
 }
 
 .fee-table-wrap:hover {
-  border-color: color-mix(in oklch, var(--blue) 50%, transparent);
+  border-color: color-mix(in oklch, var(--line) 90%, var(--blue-deep));
 }
 
 .fee-table-wrap:focus-visible {
@@ -1260,9 +1259,9 @@ html:not(.has-js) .calendar-wrapper {
     padding: 0.65rem var(--space-sm);
     font-size: var(--font-size-sm);
     font-weight: 700;
-    color: var(--pink-deep);
-    background: color-mix(in oklch, var(--surface) 50%, transparent);
-    border-bottom: 1px solid color-mix(in oklch, var(--line) 55%, transparent);
+    color: var(--ink);
+    background: color-mix(in oklch, var(--surface) 50%, var(--canvas));
+    border-bottom: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
     white-space: nowrap;
   }
 
@@ -1271,6 +1270,7 @@ html:not(.has-js) .calendar-wrapper {
     padding: 0.8rem var(--space-sm);
     border-bottom: 1px solid color-mix(in oklch, var(--line) 45%, transparent);
     vertical-align: baseline;
+    color: var(--ink);
   }
 
   .fee-table--matrix tbody tr:last-child th,
@@ -1296,17 +1296,17 @@ html:not(.has-js) .calendar-wrapper {
 
 .fee-table--matrix .cell--highlight strong,
 .fee-table--matrix .cell--student strong {
-  color: var(--pink-deep);
+  color: var(--ink);
   font-weight: 700;
 }
 
 .fee-table--matrix .cell--breakdown {
-  color: color-mix(in oklch, var(--ink) 80%, transparent);
+  color: color-mix(in oklch, var(--ink) 70%, transparent);
   line-height: 1.4;
 }
 
 .fee-table--matrix .th--highlight {
-  color: var(--blue-deep);
+  color: var(--ink);
 }
 
 /* Mobile Adaptive Card Mode (< 640px) */
@@ -1343,14 +1343,12 @@ html:not(.has-js) .calendar-wrapper {
     border: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
     border-radius: var(--space-xs);
     transition: border-color 180ms var(--ease-out-quart),
-                background 180ms var(--ease-out-quart),
-                box-shadow 180ms var(--ease-out-quart);
+                background 180ms var(--ease-out-quart);
   }
 
   .fee-table--matrix tbody tr:hover {
-    border-color: color-mix(in oklch, var(--blue) 50%, transparent);
+    border-color: color-mix(in oklch, var(--line) 90%, var(--blue-deep));
     background: color-mix(in oklch, var(--surface) 50%, var(--canvas));
-    box-shadow: 0 4px 16px -4px color-mix(in oklch, var(--blue) 12%, transparent);
   }
 
   .fee-table--matrix .row-label {
@@ -1376,10 +1374,10 @@ html:not(.has-js) .calendar-wrapper {
 
   .fee-table--matrix tbody td[data-label]::before {
     content: attr(data-label);
-    font-size: 0.725rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: var(--blue-deep);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: color-mix(in oklch, var(--ink) 65%, transparent);
     text-transform: uppercase;
   }
 
