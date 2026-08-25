@@ -1189,16 +1189,17 @@ html:not(.has-js) .calendar-wrapper {
 .pricing-badge {
   display: inline-flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.25rem 0.45rem;
-  font-size: var(--font-size-xs);
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  gap: 0.25rem 0.35rem;
+  font-size: clamp(0.68rem, 2.7vw, var(--font-size-xs));
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
   color: var(--blue-deep);
   background: color-mix(in oklch, var(--surface) 50%, var(--canvas));
   border: 1px solid color-mix(in oklch, var(--line) 60%, transparent);
-  padding: 0.25rem 0.65rem;
+  padding: 0.2rem 0.5rem;
   border-radius: var(--space-xs);
   margin: 0;
   max-width: 100%;
@@ -1211,6 +1212,8 @@ html:not(.has-js) .calendar-wrapper {
 
 @media (min-width: 640px) {
   .pricing-badge {
+    gap: 0.25rem 0.45rem;
+    font-size: var(--font-size-xs);
     border-radius: 9999px;
     padding: 0.18rem 0.6rem;
   }
