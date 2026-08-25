@@ -36,7 +36,7 @@ const scheduleSeasons = [
 
 const membershipSeason = {
   label: 'September 2026–August 2027',
-  validityLabel: 'valid through August 31, 2027',
+  validityLabel: 'Valid thru Aug 31, 2027',
   startsOn: '2026-08-01',
   endsOn: '2027-08-31',
 };
