@@ -1568,6 +1568,7 @@ footer p {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: var(--space-3xs);
 }
 .footer-muted {
   /* Muted badge of honor appended to the footer tagline. Sits inside the
@@ -1588,19 +1589,14 @@ footer p {
      90% mix clears AA in both themes; visual hierarchy vs footer p is carried
      by font-size-xs + font-weight 400. */
   color: color-mix(in oklch, var(--ink) 90%, var(--canvas));
-  margin-top: -0.25rem;
   font-weight: 400;
 }
 .footer-powered a {
-  min-height: auto;
-  padding: 0;
   font-weight: 600;
 }
 .footer-links a {
   display: inline-flex;
   align-items: center;
-  min-height: 2.75rem;
-  padding: 0.2rem 0;
   border-radius: var(--space-3xs);
   transition: color 180ms var(--ease-out-quart);
 }
