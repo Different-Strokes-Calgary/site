@@ -1122,6 +1122,8 @@ html:not(.has-js) .calendar-wrapper {
 }
 
 .waitlist-note {
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   align-items: flex-start;
   gap: 0.55rem;
@@ -1133,7 +1135,6 @@ html:not(.has-js) .calendar-wrapper {
   font-size: var(--font-size-sm);
   line-height: 1.5;
   text-wrap: pretty;
-  max-width: var(--measure-body);
   margin-top: 0;
 }
 
