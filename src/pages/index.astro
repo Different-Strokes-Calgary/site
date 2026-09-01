@@ -571,8 +571,8 @@ const instagramHref = isConfigured(club.instagramUrl)
 
       <div class="footer-links">
         <div class="footer-board">
-          <a href="https://clubbots.wlabscode.com/admin/signin" target="_blank" rel="external noopener noreferrer" data-external-browser>Board sign-in <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
-          <span class="footer-powered">Powered by <a href="https://clubbots.wlabscode.com/" target="_blank" rel="external noopener noreferrer" data-external-browser>club &amp; bots <span class="sr-only">(opens in new tab)</span></a></span>
+          <a href="https://clubbots.wlabscode.com/admin/signin" target="_blank" rel="noopener noreferrer">Board sign-in <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
+          <span class="footer-powered">Powered by <a href="https://clubbots.wlabscode.com/" target="_blank" rel="noopener noreferrer">club &amp; bots <span class="sr-only">(opens in new tab)</span></a></span>
         </div>
       </div>
     </footer>
@@ -704,17 +704,6 @@ const instagramHref = isConfigured(club.instagramUrl)
         updateThemeImages(theme);
         updateThemeToggle(theme);
       });
-
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches
-        || (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
-      if (isStandalone) {
-        document.querySelectorAll<HTMLAnchorElement>('a[data-external-browser]').forEach((link) => {
-          link.addEventListener('click', (event) => {
-            event.preventDefault();
-            window.open(link.href, '_blank', 'noopener,noreferrer');
-          });
-        });
-      }
 
       // Lazy-bind the calendar until the visitor opens the disclosure. The
       // loading state has a timeout and a retry/direct-link recovery path so a
