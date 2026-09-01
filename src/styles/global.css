@@ -81,9 +81,9 @@
 }
 
 :root[data-theme='dark'] {
-  /* Was #061425 (RGB 6,20,37). Converted to OKLCH keeps the palette on a single
-     color spec so brand harmonics with --blue-deep (~252 hue) stay traceable. */
-  --canvas: oklch(0.18 0.07 252);
+  /* Use explicit #061425 to perfectly match the rasterized dark-mode illustration backgrounds,
+     as OKLCH conversions can cause visible seams in some browsers/displays. */
+  --canvas: #061425;
   --ink: oklch(0.94 0.02 245);
   --blue: oklch(0.72 0.15 247);
   --blue-deep: oklch(0.78 0.11 247);
@@ -99,7 +99,7 @@
    token palette cannot disagree. */
 @media (prefers-color-scheme: dark) {
   :root:not(.has-js)[data-theme='light'] {
-    --canvas: oklch(0.18 0.07 252);
+    --canvas: #061425;
     --ink: oklch(0.94 0.02 245);
     --blue: oklch(0.72 0.15 247);
     --blue-deep: oklch(0.78 0.11 247);

@@ -571,8 +571,8 @@ const instagramHref = isConfigured(club.instagramUrl)
 
       <div class="footer-links">
         <div class="footer-board">
-          <a href="https://clubbots.wlabscode.com/admin/signin" target="_blank" rel="noopener noreferrer">Board sign-in <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
-          <span class="footer-powered">Powered by <a href="https://clubbots.wlabscode.com/" target="_blank" rel="noopener noreferrer">club &amp; bots <span class="sr-only">(opens in new tab)</span></a></span>
+          <a href="https://clubbots.wlabscode.com/admin/signin" target="_blank" rel="noopener noreferrer" data-external-browser>Board sign-in <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a>
+          <span class="footer-powered">Powered by <a href="https://clubbots.wlabscode.com/" target="_blank" rel="noopener noreferrer" data-external-browser>club &amp; bots <span class="sr-only">(opens in new tab)</span></a></span>
         </div>
       </div>
     </footer>
@@ -703,6 +703,22 @@ const instagramHref = isConfigured(club.instagramUrl)
         saveTheme(theme);
         updateThemeImages(theme);
         updateThemeToggle(theme);
+      });
+
+      // Force links with data-external-browser to open in a fresh browser tab
+      // instead of an installed PWA window by using the about:blank trick.
+      document.querySelectorAll<HTMLAnchorElement>('a[data-external-browser]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          const newTab = window.open('about:blank', '_blank', 'noopener,noreferrer');
+          if (newTab) {
+            newTab.opener = null;
+            newTab.location.href = link.href;
+          } else {
+            // Fallback if popup blocker intercepts
+            window.location.href = link.href;
+          }
+        });
       });
 
       // Lazy-bind the calendar until the visitor opens the disclosure. The
