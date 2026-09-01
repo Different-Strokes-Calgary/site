@@ -710,7 +710,7 @@ const instagramHref = isConfigured(club.instagramUrl)
       document.querySelectorAll<HTMLAnchorElement>('a[data-external-browser]').forEach((link) => {
         link.addEventListener('click', (event) => {
           event.preventDefault();
-          const newTab = window.open('about:blank', '_blank', 'noopener,noreferrer');
+          const newTab = window.open('about:blank', '_blank');
           if (newTab) {
             newTab.opener = null;
             newTab.location.href = link.href;
